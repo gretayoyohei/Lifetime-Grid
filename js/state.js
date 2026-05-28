@@ -22,7 +22,7 @@ LC.EC = { p:'#ffe693', h:'#6cc6b8', i:'#ff7369', w:'#57baf1', s:'#fcb25f', a:'#6
 LC.STORE='lifeCalV5';LC.LANG_KEY='lifeCalLang5';
 
 /* ========= 共享状态 ========= */
-LC.curLang=localStorage.getItem(LC.LANG_KEY)||'zh-CN';
+LC.curLang=localStorage.getItem(LC.LANG_KEY)||'en';
 LC.ud=null;
 LC.birthYr=0;LC.totalYrs=0;LC.gridW=0;LC.gridH=0;
 LC.zoom=.5;LC.tZoom=.5;LC.cx=0;LC.cy=0;LC.targetCx=undefined;LC.targetCy=undefined;
