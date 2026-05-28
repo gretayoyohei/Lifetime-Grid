@@ -168,14 +168,6 @@ document.getElementById('btnReset').onclick=function(){LC.resetView(); document.
 document.getElementById('btnThisYear').onclick=function(){LC.zoomToThisYear(); document.getElementById('sidebarOverlay').classList.remove('active'); LC.currentSidebarDate=null;};
 document.getElementById('btnThisMonth').onclick=function(){LC.zoomToThisMonth(); document.getElementById('sidebarOverlay').classList.remove('active'); LC.currentSidebarDate=null;};
 document.getElementById('btnToday').onclick=function(){LC.zoomToToday(); document.getElementById('sidebarOverlay').classList.remove('active'); LC.currentSidebarDate=null;};
-document.getElementById('btnOut').onclick=function(){
-  document.getElementById('controls').classList.remove('active');
-  document.getElementById('zoomSliderContainer').classList.remove('active');
-  document.getElementById('inputPage').classList.remove('hidden');
-  document.getElementById('sidebarOverlay').classList.remove('active');
-  LC.currentSidebarDate = null;
-  LC.showBgAnim=true;
-};
 
 /* ========= 进入日历 ========= */
 LC.enterCalendar=function(){
