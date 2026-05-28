@@ -1,0 +1,1211 @@
+:root {
+	  --bg: #f5f0e8;
+	  --paper: #faf7f2;
+	  --cell: #fefcf7;
+	  --border: #d8ccb8;
+	  --past: #f0ece4;
+	  --pastBd: #ddd4c4;
+	  --today: #fff8ec;
+	  --todayBd: #e8b878;
+	  --txt: #4a3728;
+	  --txtL: #8b7d6b;
+	  --txtM: #b0a090;
+	  --accent: #d4956b;
+	  --glow: rgba(220, 160, 80, 0.4);
+	}
+	* {
+	  margin: 0;
+	  padding: 0;
+	  box-sizing: border-box;
+	}
+	body {
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  background: var(--bg);
+	  overflow: hidden;
+	  width: 100vw;
+	  height: 100vh;
+	  -webkit-user-select: none;
+	  user-select: none;
+	}
+	body.rtl {
+	  direction: rtl;
+	}
+	.lang-sel {
+	  position: fixed;
+	  top: 14px;
+	  left: 14px;
+	  z-index: 500;
+	  padding: 7px 28px 7px 10px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: .78rem;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 12px 6px;
+	  background: #fefcf8;
+	  color: var(--txt);
+	  cursor: pointer;
+	  appearance: none;
+	  -webkit-appearance: none;
+	  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23876b50' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+	  background-repeat: no-repeat;
+	  background-position: right 8px center;
+	  outline: none;
+	  transition: border-color .2s;
+	  box-shadow: 2px 2px 0 rgba(150, 120, 80, .15);
+	}
+	.lang-sel:hover {
+	  border-color: var(--accent);
+	}
+	body.rtl .lang-sel {
+	  left: auto;
+	  right: 14px;
+	  background-position: left 8px center;
+	  padding: 7px 10px 7px 28px;
+	}
+	.input-page {
+	  position: fixed;
+	  inset: 0;
+	  z-index: 200;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 20px;
+	  overflow-y: auto;
+	  transition: opacity .8s, filter .8s;
+	  background: var(--bg);
+	}
+	.input-page.hidden {
+	  opacity: 0;
+	  filter: blur(8px);
+	  pointer-events: none;
+	}
+	#bgCanvas {
+	  position: fixed;
+	  inset: 0;
+	  z-index: 0;
+	  pointer-events: none;
+	}
+	.input-card {
+	  position: relative;
+	  z-index: 1;
+	  background: #fefcf8;
+	  border-radius: 20px 10px;
+	  padding: 36px 30px 28px;
+	  max-width: 440px;
+	  width: 100%;
+	  border: 3px solid #d4c4a8;
+	  box-shadow: 8px 8px 0 rgba(150, 120, 80, .2), 0 4px 24px rgba(0, 0, 0, .08);
+	  text-align: center;
+	  animation: cardIn .6s ease-out;
+	  flex-shrink: 0;
+	}
+	@keyframes cardIn {
+	  from {
+	    opacity: 0;
+	    transform: translateY(24px);
+	    filter: blur(4px);
+	  }
+	  to {
+	    opacity: 1;
+	    transform: none;
+	    filter: none;
+	  }
+	}
+	.input-card h1 {
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 2.2rem;
+	  color: var(--txt);
+	  margin-bottom: 4px;
+	  letter-spacing: .03em;
+	}
+	.input-card p {
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1rem;
+	  color: var(--txtL);
+	  margin-bottom: 20px;
+	}
+	.input-card label {
+	  display: block;
+	  text-align: left;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1.1rem;
+	  color: var(--txtL);
+	  margin: 10px 0 4px 4px;
+	}
+	body.rtl .input-card label {
+	  text-align: right;
+	}
+	.input-card input,
+	.input-card select {
+	  display: block;
+	  width: 100%;
+	  padding: 12px 16px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1.1rem;
+	  color: var(--txt);
+	  background: #fefcf8;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 12px 6px;
+	  outline: none;
+	  transition: border-color .2s;
+	  -webkit-appearance: none;
+	  appearance: none;
+	}
+	.input-card select {
+	  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23876b50' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+	  background-repeat: no-repeat;
+	  background-position: right 10px center;
+	  padding-right: 30px;
+	}
+	.input-card input:focus,
+	.input-card select:focus {
+	  border-color: #c4956b;
+	}
+	.life-row {
+	  display: flex;
+	  align-items: center;
+	  gap: 8px;
+	  flex-wrap: wrap;
+	}
+	.life-row input,
+	.life-row select {
+	  width: 100px;
+	  flex-shrink: 0;
+	}
+	.date-row {
+	  gap: 6px;
+	}
+	.date-row select {
+	  width: auto;
+	  flex: 1;
+	  min-width: 0;
+	}
+	.life-row span {
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  color: var(--txt);
+	  font-size: 1.1rem;
+	}
+	.age-hint {
+	  font-size: .78rem;
+	  min-height: 1.4em;
+	  color: #c0785a;
+	  flex-basis: 100%;
+	  margin-top: 2px;
+	  transition: opacity .3s;
+	}
+	body.rtl .age-hint {
+	  direction: rtl;
+	}
+	.btn-go {
+	  display: inline-block;
+	  margin-top: 22px;
+	  padding: 14px 36px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1.2rem;
+	  color: #5c3020;
+	  background: #fce8d5;
+	  border: 2.5px solid var(--accent);
+	  border-radius: 25px 12px;
+	  cursor: pointer;
+	  font-weight: 700;
+	  box-shadow: 4px 4px 0 rgba(180, 120, 70, .3);
+	  transition: all .25s;
+	  letter-spacing: .04em;
+	}
+	.btn-go:hover {
+	  background: #fffaf4;
+	  border-color: #c47d4e;
+	  transform: translateY(-2px);
+	  box-shadow: 6px 6px 0 rgba(180, 120, 70, .35);
+	}
+	#calCanvas {
+	  position: fixed;
+	  inset: 0;
+	  z-index: 1;
+	  cursor: grab;
+	}
+	#calCanvas.grabbing {
+	  cursor: grabbing;
+	}
+	.zoom-hint {
+	  position: fixed;
+	  top: 60px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  z-index: 150;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1.05rem;
+	  color: rgba(74, 55, 40, .3);
+	  pointer-events: none;
+	  transition: opacity 2s;
+	  letter-spacing: 2px;
+	  white-space: nowrap;
+	  background: rgba(254, 252, 247, .6);
+	  padding: 8px 20px;
+	  border-radius: 20px;
+	  backdrop-filter: blur(4px);
+	}
+	.zoom-hint.hidden {
+	  opacity: 0;
+	}
+	.controls {
+	  position: fixed;
+	  bottom: 20px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  z-index: 100;
+	  display: none;
+	  align-items: center;
+	  gap: 8px;
+	  background: rgba(254, 252, 247, .92);
+	  backdrop-filter: blur(10px);
+	  padding: 8px 16px;
+	  border-radius: 24px;
+	  border: 2px solid #d4c4a8;
+	  box-shadow: 0 4px 16px rgba(80, 50, 30, .1);
+	}
+	.controls.active {
+	  display: flex;
+	}
+	.ctrl-btn {
+	  padding: 6px 14px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1rem;
+	  background: #fefcf8;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 14px 7px;
+	  cursor: pointer;
+	  color: var(--txt);
+	  transition: all .2s;
+	  white-space: nowrap;
+	  font-weight: 700;
+	}
+	.ctrl-btn:hover {
+	  border-color: #c4956b;
+	  transform: translateY(-1px);
+	}
+	.ctrl-btn.accent {
+	  background: #fce8d5;
+	  border-color: var(--accent);
+	  font-weight: 700;
+	}
+	/* 缩放进度条 */
+	.zoom-slider-container {
+	  position: fixed;
+	  left: 20px;
+	  top: 50%;
+	  transform: translateY(-50%);
+	  z-index: 100;
+	  height: 35vh;
+	  width: 50px;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	}
+	.zoom-slider-container.active {
+	  display: flex;
+	}
+	.zoom-range {
+	  width: 35vh;
+	  transform: rotate(-90deg);
+	  -webkit-appearance: none;
+	  appearance: none;
+	  background: transparent;
+	  cursor: pointer;
+	  outline: none;
+	}
+	.zoom-range::-webkit-slider-runnable-track {
+	  width: 100%;
+	  height: 4px;
+	  background: #d8ccb8;
+	  border-radius: 2px;
+	}
+	.zoom-range::-webkit-slider-thumb {
+	  -webkit-appearance: none;
+	  appearance: none;
+	  width: 18px;
+	  height: 18px;
+	  background: #fefcf7;
+	  border: 2px solid #d4956b;
+	  border-radius: 50%;
+	  margin-top: -7px;
+	  cursor: grab;
+	  box-shadow: 1px 1px 0 rgba(100, 60, 20, .2);
+	}
+	.zoom-range::-moz-range-track {
+	  width: 100%;
+	  height: 4px;
+	  background: #d8ccb8;
+	  border-radius: 2px;
+	  border: none;
+	}
+	.zoom-range::-moz-range-thumb {
+	  width: 18px;
+	  height: 18px;
+	  background: #fefcf7;
+	  border: 2px solid #d4956b;
+	  border-radius: 50%;
+	  cursor: grab;
+	  box-shadow: 1px 1px 0 rgba(100, 60, 20, .2);
+	}
+	.zoom-label {
+	  display: none;
+	}
+	.modal-overlay {
+	  position: fixed;
+	  inset: 0;
+	  background: rgba(40, 25, 10, .55);
+	  z-index: 300;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	}
+	.modal-overlay.active {
+	  display: flex;
+	}
+	.modal-box {
+	  background: #fdf8f0;
+	  border-radius: 16px 8px;
+	  padding: 24px;
+	  max-width: 440px;
+	  width: 90%;
+	  border: 3px solid #d4c4a8;
+	  box-shadow: 8px 8px 0 rgba(100, 60, 20, 0.3);
+	  position: relative;
+	  max-height: 80vh;
+	  overflow-y: visible;
+	  animation: modalIn .3s ease-out;
+	}
+	@keyframes modalIn {
+	  from {
+	    opacity: 0;
+	    transform: scale(.92) translateY(16px);
+	  }
+	  to {
+	    opacity: 1;
+	    transform: none;
+	  }
+	}
+	.modal-close {
+	  position: absolute;
+	  top: 10px;
+	  right: 14px;
+	  font-size: 1.5rem;
+	  cursor: pointer;
+	  color: #a09080;
+	  background: none;
+	  border: none;
+	  transition: color .2s;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	body.rtl .modal-close {
+	  right: auto;
+	  left: 14px;
+	}
+	.modal-close:hover {
+	  color: #5c3020;
+	}
+	.modal-box input,
+	.modal-box select {
+	  display: block;
+	  width: 100%;
+	  margin: 8px 0;
+	  padding: 10px 14px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: .9rem;
+	  color: var(--txt);
+	  background: #fefcf8;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 10px 5px;
+	  outline: none;
+	}
+	.modal-box select {
+	  appearance: none;
+	  -webkit-appearance: none;
+	  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23876b50' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+	  background-repeat: no-repeat;
+	  background-position: right 14px center;
+	}
+	/* ===== 新建日程弹窗表单样式优化 ===== */
+	.form-row {
+	  display: flex;
+	  align-items: center;
+	  gap: 8px;
+	  margin: 8px 0;
+	  flex-wrap: wrap;
+	  justify-content: space-between;
+	}
+	.form-row label:first-child {
+	  width: 70px;
+	  font-size: .9rem;
+	  color: var(--txtL);
+	  flex-shrink: 0;
+	  text-align: left;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	body.rtl .form-row label:first-child {
+	  text-align: right;
+	}
+	/* 1. 覆盖 .modal-box input 的 width: 100%，防止同行元素被挤压 */
+	.form-row input,
+	.form-row select {
+	  width: auto;
+	}
+	/* 2. 通用输入框占满剩余空间 */
+	.form-row input:not([type="checkbox"]):not(.date-input):not(.time-input),
+	.form-row select:not(.date-input):not(.time-input),
+	.form-row .toggle-switch {
+	  flex: 1;
+	  min-width: 0;
+	}
+	/* 3. 日期输入框：弹性占满剩余空间，绝对禁止压缩 */
+	.form-row .date-input {
+	  flex: 1 1 auto;
+	  min-width: 130px;
+	  width: auto;
+	  padding: 10px 8px;
+	}
+	/* 4. 时间输入框：固定紧凑宽度，绝对禁止压缩 */
+	.form-row .time-input {
+	  flex: 0 0 100px;
+	  min-width: 100px;
+	  width: auto;
+	  padding: 10px 8px;
+	}
+	/* 全天开关行 - 特殊处理让开关右对齐 */
+	.all-day-row {
+	  justify-content: space-between;
+	}
+	.all-day-row label:first-child {
+	  width: auto;
+	}
+	.all-day-row .toggle-switch {
+	  margin-left: auto;
+	  flex: 0 0 auto;
+	}
+	/* 带 textarea 的行 - 顶部对齐 */
+	.form-row-textarea {
+	  align-items: flex-start;
+	}
+	.form-row-textarea label:first-child {
+	  padding-top: 10px;
+	}
+	/* textarea 多行输入框样式 */
+	.modal-textarea {
+	  flex: 1;
+	  min-width: 0;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: .9rem;
+	  color: var(--txt);
+	  background: #fefcf8;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 10px 5px;
+	  outline: none;
+	  padding: 10px 14px;
+	  resize: vertical;
+	  word-wrap: break-word;
+	  white-space: pre-wrap;
+	  overflow-wrap: break-word;
+	  line-height: 1.4;
+	}
+	/* toggle 开关样式 */
+	.toggle-switch {
+	  position: relative;
+	  display: inline-block;
+	  width: 46px;
+	  height: 24px;
+	  flex-shrink: 0;
+	}
+	.toggle-switch input {
+	  opacity: 0;
+	  width: 0;
+	  height: 0;
+	}
+	.toggle-slider {
+	  position: absolute;
+	  cursor: pointer;
+	  inset: 0;
+	  background: #e0d4c0;
+	  transition: .3s;
+	  border-radius: 24px;
+	}
+	.toggle-slider:before {
+	  position: absolute;
+	  content: "";
+	  height: 18px;
+	  width: 18px;
+	  left: 3px;
+	  bottom: 3px;
+	  background: white;
+	  transition: .3s;
+	  border-radius: 50%;
+	}
+	input:checked + .toggle-slider {
+	  background: var(--accent);
+	}
+	input:checked + .toggle-slider:before {
+	  transform: translateX(22px);
+	}
+	/* 全天开关开启时圆点靠到最右侧 */
+	.all-day-row input:checked + .toggle-slider:before {
+	  transform: translateX(22px);
+	}
+	.btn-row {
+	  display: flex;
+	  gap: 8px;
+	  margin-top: 16px;
+	  flex-wrap: wrap;
+	  justify-content: center;
+	}
+	.hand-btn {
+	  padding: 10px 22px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: .9rem;
+	  color: var(--txt);
+	  background: #fdf8f0;
+	  border: 2px solid #c4a882;
+	  border-radius: 20px 10px;
+	  cursor: pointer;
+	  transition: all .2s;
+	  box-shadow: 2px 2px 0 rgba(150, 120, 80, .2);
+	}
+	.hand-btn.primary {
+	  background: #fce8d5;
+	  border-color: var(--accent);
+	  color: #5c3020;
+	  font-weight: 700;
+	}
+	.hand-btn:hover {
+	  transform: translateY(-1px);
+	  box-shadow: 4px 4px 0 rgba(150, 120, 80, .25);
+	}
+	.type-tags {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 6px;
+	  margin: 10px 0;
+	  justify-content: center;
+	}
+	.type-tag {
+	  padding: 5px 12px;
+	  border-radius: 14px;
+	  font-size: .85rem;
+	  cursor: pointer;
+	  border: 2px solid transparent;
+	  transition: all .2s;
+	  display: flex;
+	  align-items: center;
+	  gap: 4px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	.type-tag.active {
+	  border-color: var(--txt);
+	  transform: scale(1.05);
+	}
+	.type-dot {
+	  width: 8px;
+	  height: 8px;
+	  border-radius: 50%;
+	}
+	.sidebar-overlay {
+	  position: fixed;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  width: 320px;
+	  background: #faf7f2;
+	  border-left: 3px solid #d4c4a8;
+	  box-shadow: -4px 0 16px rgba(80, 50, 30, .15);
+	  z-index: 250;
+	  transform: translateX(100%);
+	  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+	  display: flex;
+	  flex-direction: column;
+	}
+	.sidebar-overlay.active {
+	  transform: translateX(0);
+	}
+	body.rtl .sidebar-overlay {
+	  right: auto;
+	  left: 0;
+	  border-left: none;
+	  border-right: 3px solid #d4c4a8;
+	  transform: translateX(-100%);
+	}
+	body.rtl .sidebar-overlay.active {
+	  transform: translateX(0);
+	}
+	.sidebar-drag-handle {
+	  position: absolute;
+	  left: -16px;
+	  top: 50%;
+	  transform: translateY(-50%);
+	  width: 32px;
+	  height: 56px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  cursor: col-resize;
+	  z-index: 10;
+	  background: transparent;
+	  border: none;
+	  outline: none;
+	}
+	body.rtl .sidebar-drag-handle {
+	  left: auto;
+	  right: -16px;
+	  cursor: col-resize;
+	}
+	.sidebar-close {
+	  position: absolute;
+	  top: 12px;
+	  right: 14px;
+	  font-size: 1.2rem;
+	  cursor: pointer;
+	  color: #a09080;
+	  z-index: 10;
+	  transition: color .2s;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	body.rtl .sidebar-close {
+	  right: auto;
+	  left: 14px;
+	}
+	.sidebar-close:hover {
+	  color: #5c3020;
+	}
+	.sidebar-header {
+	  padding: 20px 16px 10px;
+	  text-align: center;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  border-bottom: 1px solid #e8dcc8;
+	  flex-shrink: 0;
+	}
+	.sidebar-header .sb-date {
+	  font-size: 2.4rem;
+	  color: var(--txt);
+	  line-height: 1.1;
+	  font-weight: 700;
+	}
+	.sidebar-header .sb-info {
+	  font-size: 1rem;
+	  color: #8b7d6b;
+	  font-weight: 700;
+	}
+	.sidebar-fixed-part {
+	  flex-shrink: 0;
+	  background: #faf7f2;
+	  z-index: 5;
+	  border-bottom: 1px solid #d4c4a8;
+	}
+	.sidebar-scroll-part {
+	  flex: 1;
+	  overflow-y: auto;
+	  position: relative;
+	  background: #f5f0e8;
+	}
+	.time-grid {
+	  position: relative;
+	  height: 1440px;
+	  background: linear-gradient(to bottom, #faf7f2 0%, #f5f0e8 100%);
+	}
+	.time-hour-row {
+	  height: 60px;
+	  border-top: 1px solid rgba(216, 204, 184, .4);
+	  position: relative;
+	  pointer-events: auto;
+	  cursor: pointer;
+	}
+	.time-hour-label {
+	  position: absolute;
+	  top: -8px;
+	  left: 0;
+	  width: 50px;
+	  text-align: right;
+	  font-size: .8rem;
+	  color: #8b7d6b;
+	  font-weight: 700;
+	  z-index: 1;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  pointer-events: none;
+	}
+	.time-hour-line {
+	  position: absolute;
+	  top: 0;
+	  left: 60px;
+	  right: 0;
+	  height: 1px;
+	  background: rgba(216, 204, 184, .4);
+	  pointer-events: none;
+	}
+	.all-day-slot {
+	  min-height: 40px;
+	  padding: 8px 12px;
+	}
+	.all-day-slot h4 {
+	  font-size: 1rem;
+	  color: var(--txt);
+	  margin-bottom: 6px;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-weight: 700;
+	  text-align: center;
+	}
+	.all-day-event {
+	  font-size: .85rem;
+	  padding: 4px 8px;
+	  border-radius: 4px;
+	  margin-bottom: 4px;
+	  color: var(--txt);
+	  cursor: pointer;
+	  transition: transform .1s;
+	  display: flex;
+	  align-items: center;
+	  gap: 4px;
+	}
+	.all-day-event:hover {
+	  transform: translateX(2px);
+	}
+	.time-event-block {
+	  position: absolute;
+	  left: 65px;
+	  right: 10px;
+	  border-radius: 6px;
+	  padding: 2px 6px;
+	  font-size: .8rem;
+	  overflow: hidden;
+	  cursor: grab;
+	  z-index: 2;
+	  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+	  user-select: none;
+	  border-left: 4px solid;
+	  background-clip: padding-box;
+	}
+	.time-event-block:hover {
+	  z-index: 3;
+	  box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+	}
+	.time-event-block .ev-title {
+	  font-weight: 600;
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+	.time-event-block .ev-time {
+	  font-size: .7rem;
+	  opacity: .8;
+	}
+	.resize-handle {
+	  position: absolute;
+	  left: 0;
+	  right: 0;
+	  height: 6px;
+	  cursor: ns-resize;
+	  z-index: 4;
+	  background: transparent;
+	}
+	.resize-handle.top {
+	  top: 0;
+	}
+	.resize-handle.bottom {
+	  bottom: 0;
+	}
+	/* ===== 信息弹窗 - 优化版 ===== */
+	#infoPopover {
+	  display: none;
+	  position: fixed;
+	  z-index: 400;
+	  background: #fdf8f0;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 20px 12px;
+	  padding: 18px 20px;
+	  min-width: 240px;
+	  max-width: 320px;
+	  box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
+	  pointer-events: auto;
+	  transition: all 0.2s ease;
+	}
+	/* 弹窗头部：标题 + 操作按钮 */
+	.popover-header {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: flex-start;
+	  gap: 12px;
+	  margin-bottom: 14px;
+	}
+	.popover-title {
+	  flex: 1;
+	  font-weight: 700;
+	  font-size: 1.2rem;
+	  color: var(--txt);
+	  line-height: 1.35;
+	  word-break: break-word;
+	  font-family: inherit;
+	  text-align: left;
+	}
+	.popover-actions {
+	  display: flex;
+	  gap: 10px;
+	  align-items: center;
+	  flex-shrink: 0;
+	}
+	.popover-actions span {
+	  cursor: pointer;
+	  opacity: 0.7;
+	  transition: opacity 0.2s, transform 0.1s;
+	  font-size: 1rem;
+	}
+	.popover-actions span:hover {
+	  opacity: 1;
+	  transform: scale(1.05);
+	}
+	/* 时间行 - 左对齐，实线分割线 */
+	.popover-time {
+	  font-size: 0.85rem;
+	  color: #8b7d6b;
+	  margin-bottom: 12px;
+	  padding-bottom: 10px;
+	  border-bottom: 1px solid #e8dcc8;
+	  word-break: break-word;
+	  line-height: 1.4;
+	  text-align: left;
+	}
+	/* 地点行 - 左对齐 */
+	.popover-location {
+	  font-size: 0.85rem;
+	  color: #8b7d6b;
+	  margin-bottom: 12px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: flex-start;
+	  gap: 6px;
+	  word-break: break-word;
+	  line-height: 1.4;
+	}
+	/* 描述区域 - 左对齐 */
+	.popover-description {
+	  font-size: 0.85rem;
+	  color: #4a3728;
+	  margin-bottom: 12px;
+	  padding: 0;
+	  line-height: 1.45;
+	  word-break: break-word;
+	  white-space: pre-wrap;
+	  text-align: left;
+	  display: block;
+	}
+	/* 底部区域 - 左对齐，实线上分割线 */
+	.popover-footer {
+	  margin-top: 6px;
+	  padding-top: 12px;
+	  border-top: 1px solid #e8dcc8;
+	  display: flex;
+	  justify-content: flex-start;
+	}
+	/* 类型徽章（放在底部） */
+	.popover-type {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 8px;
+	  font-size: 0.8rem;
+	  font-weight: 600;
+	  padding: 5px 12px;
+	  border-radius: 24px;
+	  background: #f5efe6;
+	  width: fit-content;
+	  color: var(--txtL);
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	/* 保留原有的其他样式不做修改 */
+	#infoPType {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 6px;
+	  font-weight: 700;
+	  font-size: 0.9rem;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	}
+	#infoPTitle {
+	  font-weight: 700;
+	  font-size: 1.1rem;
+	  margin-bottom: 6px;
+	  color: var(--txt);
+	}
+	#infoPTime {
+	  font-size: 0.85rem;
+	  color: #8b7d6b;
+	  margin-bottom: 4px;
+	}
+	#infoPLoc {
+	  font-size: 0.85rem;
+	  color: #8b7d6b;
+	  margin-bottom: 4px;
+	  display: none;
+	}
+	#infoPDesc {
+	  font-size: 0.85rem;
+	  color: #4a3728;
+	  margin-top: 6px;
+	  border-top: 1px solid #e8dcc8;
+	  padding-top: 6px;
+	  display: none;
+	  word-break: break-all;
+	}
+	#ctxMenu {
+	  display: none;
+	  position: fixed;
+	  z-index: 400;
+	  background: #fdf8f0;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 8px;
+	  box-shadow: 4px 4px 0 rgba(100, 60, 20, .3);
+	  padding: 4px 0;
+	  min-width: 120px;
+	}
+	.ctx-item {
+	  padding: 8px 16px;
+	  cursor: pointer;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: .95rem;
+	  color: var(--txt);
+	  transition: background .15s;
+	}
+	.ctx-item:hover {
+	  background: #fce8d5;
+	}
+	.ctx-item.danger {
+	  color: #c06060;
+	}
+	.confirm-overlay {
+	  position: fixed;
+	  inset: 0;
+	  background: rgba(40, 25, 10, .55);
+	  z-index: 350;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	}
+	.confirm-overlay.active {
+	  display: flex;
+	}
+	.confirm-box {
+	  background: #fdf8f0;
+	  border-radius: 16px 8px;
+	  padding: 24px;
+	  max-width: 320px;
+	  width: 85%;
+	  border: 3px solid #d4c4a8;
+	  box-shadow: 8px 8px 0 rgba(100, 60, 20, .3);
+	  text-align: center;
+	}
+	.confirm-box p {
+	  margin-bottom: 20px;
+	  color: #5c3020;
+	  font-weight: 700;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1.1rem;
+	}
+	@media(max-width: 600px) {
+	  .input-card {
+	    padding: 24px 16px 18px;
+	  }
+	  .input-card h1 {
+	    font-size: 1.8rem;
+	  }
+	  .controls {
+	    gap: 4px;
+	    padding: 6px 10px;
+	  }
+	  .ctrl-btn {
+	    padding: 5px 10px;
+	    font-size: .85rem;
+	  }
+	  .sidebar-overlay {
+	    width: 85vw;
+	  }
+	}
+
+/* ===== 工具箱按钮 (左下角浮动) ===== */
+.toolbox-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 圆形主按钮 */
+.toolbox-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fefcf8;
+  border: 2.5px solid #d4956b;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 rgba(180, 120, 70, 0.3);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: #d4956b;
+  background: #fefcf8;
+}
+
+.toolbox-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 rgba(180, 120, 70, 0.35);
+  background: #fce8d5;
+}
+
+/* 弹出菜单 */
+.toolbox-menu {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  background: #fdf8f0;
+  border: 2px solid #d4c4a8;
+  border-radius: 20px 12px;
+  box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
+  min-width: 160px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(4px);
+}
+
+.toolbox-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 菜单项 */
+.toolbox-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 0.95rem;
+  color: #4a3728;
+  border-bottom: 1px solid #e8dcc8;
+}
+
+.toolbox-item:last-child {
+  border-bottom: none;
+}
+
+.toolbox-item:hover {
+  background: #fce8d5;
+}
+
+.toolbox-item-danger:hover {
+  background: #fce8d5;
+  color: #c06060;
+}
+
+.toolbox-icon {
+  font-size: 1.2rem;
+  width: 28px;
+  text-align: center;
+}
+
+.toolbox-label {
+  flex: 1;
+  font-weight: 600;
+}
+
+/* RTL 适配 */
+body.rtl .toolbox-container {
+  left: auto;
+  right: 20px;
+}
+
+body.rtl .toolbox-menu {
+  left: auto;
+  right: 0;
+}
+
+/* 导入日程确认弹窗样式 (复用已有的 .confirm-box，但微调) */
+#importConfirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 25, 10, 0.55);
+  z-index: 360;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#importConfirmOverlay.active {
+  display: flex;
+}
+
+.import-confirm-box {
+  background: #fdf8f0;
+  border-radius: 16px 8px;
+  padding: 28px 24px;
+  max-width: 380px;
+  width: 85%;
+  border: 3px solid #d4c4a8;
+  box-shadow: 8px 8px 0 rgba(100, 60, 20, 0.3);
+  text-align: center;
+}
+
+.import-confirm-box p {
+  margin-bottom: 20px;
+  color: #5c3020;
+  font-weight: 600;
+  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.import-confirm-box .warning-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #c06060;
+}
+
+.import-confirm-box .btn-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Tooltip 样式 (用于导出日程) */
+.tooltip {
+  position: fixed;
+  z-index: 500;
+  background: #4a3728;
+  color: #fefcf8;
+  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 0.75rem;
+  padding: 8px 14px;
+  border-radius: 12px 8px;
+  max-width: 280px;
+  text-align: left;
+  line-height: 1.4;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+body.rtl .tooltip {
+  text-align: right;
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
