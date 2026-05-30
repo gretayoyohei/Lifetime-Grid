@@ -70,6 +70,7 @@
   </div>
 </div>
 
+<!-- 侧边栏：24小时视图 + 待办列表（可拖拽分割） -->
 <div class="sidebar-overlay" id="sidebarOverlay">
   <button class="sidebar-drag-handle" id="sidebarDragHandle">
     <span class="drag-arrows">
@@ -81,8 +82,30 @@
   </button>
   <span class="sidebar-close" id="sidebarClose">✕</span>
   <div class="sidebar-header" id="sidebarHeader"></div>
-  <div class="sidebar-fixed-part" id="sidebarFixedPart"></div>
-  <div class="sidebar-scroll-part" id="sidebarScrollPart"></div>
+  
+  <!-- 可调整大小的容器 -->
+  <div class="resizable-container" id="resizableContainer">
+    <!-- 上半部分：24小时视图 -->
+    <div class="timeline-container" id="timelineContainer">
+      <div class="sidebar-fixed-part" id="sidebarFixedPart"></div>
+      <div class="sidebar-scroll-part" id="sidebarScrollPart"></div>
+    </div>
+    
+    <!-- 拖拽分割条 -->
+    <div class="split-bar" id="splitBar">
+      <div class="split-handle"></div>
+    </div>
+    
+    <!-- 下半部分：待办列表 -->
+    <div class="todo-container" id="todoContainer">
+      <div class="todo-header">
+        <h4 id="todoTitle">📋</h4>
+      </div>
+      <div class="todo-list" id="todoList">
+        <!-- 动态生成待办项 -->
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- 优化后的日程信息弹窗结构：类型移到底部 -->
