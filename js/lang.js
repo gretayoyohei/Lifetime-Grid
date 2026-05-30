@@ -28,7 +28,9 @@ import_confirm:'确认导入',
 import_cancel:'取消',
 import_success:'导入成功！页面将刷新',
 import_format_error:'文件格式不正确，请选择正确的人生日历备份文件',
-import_parse_error:'解析失败：'
+import_parse_error:'解析失败：',
+todo_title:'待办日程',
+todo_empty:'暂无待办日程'
 });
 LC.defLang('en',{
 nm:'English',ct:'Customize My Life Calendar',cs:'Fill in your info, zoom to travel through your life',ln:'My Name',lb:'My Birth Date',ll:'I hope I can live to',
@@ -55,7 +57,9 @@ import_confirm:'Confirm Import',
 import_cancel:'Cancel',
 import_success:'Import successful! Page will refresh.',
 import_format_error:'Invalid file format. Please select a valid life calendar backup file.',
-import_parse_error:'Parse failed: '
+import_parse_error:'Parse failed: ',
+todo_title:'To-Do List',
+todo_empty:'No pending tasks'
 });
 LC.defLang('zh-TW',{
 nm:'中文（繁體）',ct:'定製我的人生日曆',cs:'填寫資訊，用滾輪縮放穿越你的一生',ln:'我的名字',lb:'我的出生日期',ll:'我希望我能活到',
@@ -81,7 +85,9 @@ import_confirm:'確認匯入',
 import_cancel:'取消',
 import_success:'匯入成功！頁面將刷新',
 import_format_error:'文件格式不正確，請選擇正確的人生日曆備份文件',
-import_parse_error:'解析失敗：'
+import_parse_error:'解析失敗：',
+todo_title:'待辦日程',
+todo_empty:'暫無待辦日程'
 });
 LC.defLang('es',{
 nm:'Español',ct:'Personaliza Mi Calendario de Vida',cs:'Completa tus datos, haz zoom para recorrer tu vida',ln:'Mi nombre',lb:'Mi fecha de nacimiento',ll:'Espero poder vivir hasta',
@@ -108,7 +114,9 @@ import_confirm:'Confirmar Importación',
 import_cancel:'Cancelar',
 import_success:'¡Importación exitosa! La página se actualizará',
 import_format_error:'Formato de archivo inválido. Selecciona un archivo de respaldo válido.',
-import_parse_error:'Error de análisis: '
+import_parse_error:'Error de análisis: ',
+todo_title:'Lista de tareas',
+todo_empty:'No hay tareas pendientes'
 });
 LC.defLang('ja',{
 nm:'日本語',ct:'人生カレンダーをカスタマイズ',cs:'情報を入力して、ズームで人生を旅しよう',ln:'私の名前',lb:'生年月日',ll:'生きたい年齢は',
@@ -136,7 +144,9 @@ import_confirm:'インポートを確認',
 import_cancel:'キャンセル',
 import_success:'インポート成功！ページを更新します',
 import_format_error:'ファイル形式が正しくありません。正しい人生カレンダーのバックアップファイルを選択してください。',
-import_parse_error:'解析失敗：'
+import_parse_error:'解析失敗：',
+todo_title:'やることリスト',
+todo_empty:'予定はありません'
 });
 LC.defLang('ko',{
 nm:'한국어',ct:'인생 달력 만들기',cs:'정보를 입력하고 줌으로 인생을 여행하세요',ln:'내 이름',lb:'생년월일',ll:'살고 싶은 나이는',
@@ -163,7 +173,9 @@ import_confirm:'가져오기 확인',
 import_cancel:'취소',
 import_success:'가져오기 성공! 페이지를 새로고침합니다',
 import_format_error:'파일 형식이 올바르지 않습니다. 올바른 인생 달력 백업 파일을 선택하세요.',
-import_parse_error:'분석 실패:'
+import_parse_error:'분석 실패:',
+todo_title:'할 일 목록',
+todo_empty:'예정된 일정 없음'
 });
 LC.defLang('fr',{
 nm:'Français',ct:'Personnaliser Mon Calendrier de Vie',cs:'Remplissez vos infos, zoomez pour voyager dans votre vie',ln:'Mon nom',lb:'Ma date de naissance',ll:'J\'espère pouvoir vivre jusqu\'à',uy:'ans',
@@ -190,7 +202,9 @@ import_confirm:'Confirmer l\'importation',
 import_cancel:'Annuler',
 import_success:'Importation réussie ! La page va se rafraîchir',
 import_format_error:'Format de fichier invalide. Veuillez sélectionner un fichier de sauvegarde valide.',
-import_parse_error:'Échec de l\'analyse : '
+import_parse_error:'Échec de l\'analyse : ',
+todo_title:'Liste de tâches',
+todo_empty:'Aucune tâche en attente'
 });
 LC.defLang('de',{
 nm:'Deutsch',ct:'Meinen Lebenskalender gestalten',cs:'Füllen Sie Ihre Daten aus, zoomen Sie durch Ihr Leben',ln:'Mein Name',lb:'Mein Geburtsdatum',ll:'Ich hoffe, ich kann leben bis',uy:'Jahre',
@@ -200,7 +214,7 @@ et:'Neues Ereignis',em:'Zeit',ed:'Beschreibung (optional)',sv:'Speichern',cn:'Ab
 mo:['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],wd:['So','Mo','Di','Mi','Do','Fr','Sa'],
 tp:{w:'Arbeit',p:'Persönlich',h:'Gesundheit',s:'Studium',i:'Wichtig',a:'Jahrestag',b:'Geburtstag',o:'Sonstiges'},ml:'{m} {y}',ym:'{m} {y}',
 ph_name:'Ihr Name',ph_smart:'Versuchen Sie "Abendessen um 19 Uhr morgen"',allday:'Ganztägig',start:'Start',end:'Ende',repeat:'Wiederholen',location:'Ort',notes:'Notizen',
-rp_n:'Einmalig',rp_d:'Täglich',rp_w:'Wöchentlich',rp_m:'Monatlich',rp_y:'Jährlich',sb:'Details',sbt:'Ganztägige Ereignisse',sbh:'{h}:00',
+rp_n:'Einmalig',rp_d:'Täglich',rp_w:'Wöchentlich',rp_m:'Mensual',rp_y:'Jährlich',sb:'Details',sbt:'Ganztägige Ereignisse',sbh:'{h}:00',
 yr:'Jahr', mn:'Monat', dy:'Tag', confirm_del:'Kann nach dem Löschen nicht wiederhergestellt werden. Löschen bestätigen?',yes:'Bestätigen',no:'Abbrechen',edit:'Ereignis bearbeiten',del:'Ereignis löschen',
 confirm_del_recurring:'Diesen wiederkehrenden Termin löschen?', del_all:'Alle löschen', del_single:'Nur diesen löschen',
 lifeWarn:'⚠️ Ereignisse ab {y} werden nicht angezeigt, gehen aber nicht verloren. Zurück zu {oldEnd} Jahren, um sie zu sehen.',
@@ -217,7 +231,9 @@ import_confirm:'Import bestätigen',
 import_cancel:'Abbrechen',
 import_success:'Import erfolgreich! Seite wird aktualisiert',
 import_format_error:'Ungültiges Dateiformat. Bitte wählen Sie eine gültige Lebenskalender-Backupdatei.',
-import_parse_error:'Parse fehlgeschlagen: '
+import_parse_error:'Parse fehlgeschlagen: ',
+todo_title:'Aufgabenliste',
+todo_empty:'Keine ausstehenden Aufgaben'
 });
 LC.defLang('it',{
 nm:'Italiano',ct:'Personalizza il Mio Calendario di Vita',cs:'Compila i tuoi dati, zoom per viaggiare nella tua vita',ln:'Il mio nome',lb:'La mia data di nascita',ll:'Spero di poter vivere fino a',uy:'anni',
@@ -244,7 +260,9 @@ import_confirm:'Conferma importazione',
 import_cancel:'Annulla',
 import_success:'Importazione riuscita! La pagina si aggiornerà',
 import_format_error:'Formato file non valido. Seleziona un file di backup valido.',
-import_parse_error:'Analisi fallita: '
+import_parse_error:'Analisi fallita: ',
+todo_title:'Lista delle cose da fare',
+todo_empty:'Nessuna attività in sospeso'
 });
 LC.defLang('pt',{
 nm:'Português',ct:'Personalize Meu Calendário de Vida',cs:'Preencha seus dados, zoom para viajar pela sua vida',ln:'Meu nome',lb:'Minha data de nascimento',ll:'Espero poder viver até',uy:'anos',
@@ -271,7 +289,9 @@ import_confirm:'Confirmar Importação',
 import_cancel:'Cancelar',
 import_success:'Importação bem-sucedida! A página será atualizada',
 import_format_error:'Formato de arquivo inválido. Selecione um arquivo de backup válido.',
-import_parse_error:'Falha na análise: '
+import_parse_error:'Falha na análise: ',
+todo_title:'Lista de tarefas',
+todo_empty:'Nenhuma tarefa pendente'
 });
 LC.defLang('ru',{
 nm:'Русский',ct:'Настроить Мой Календарь Жизни',cs:'Заполните данные, масштабируйте',ln:'Моё имя',lb:'Дата рождения',ll:'Я надеюсь дожить до',uy:'лет',
@@ -298,7 +318,9 @@ import_confirm:'Подтвердить импорт',
 import_cancel:'Отмена',
 import_success:'Импорт успешен! Страница обновится',
 import_format_error:'Неверный формат файла. Пожалуйста, выберите правильный файл резервной копии.',
-import_parse_error:'Ошибка анализа: '
+import_parse_error:'Ошибка анализа: ',
+todo_title:'Список дел',
+todo_empty:'Нет предстоящих задач'
 });
 LC.defLang('ar',{
 nm:'العربية',ct:'خصّص تقويم حياتي',cs:'أدخل بياناتك، كبّر للسفر عبر حياتك',ln:'اسمي',lb:'تاريخ ميلادي',ll:'آمل أن أعيش حتى',uy:'سنة',
@@ -325,7 +347,9 @@ import_confirm:'تأكيد الاستيراد',
 import_cancel:'إلغاء',
 import_success:'تم الاستيراد بنجاح! سيتم تحديث الصفحة',
 import_format_error:'تنسيق ملف غير صالح. يرجى تحديد ملف نسخ احتياطي صحيح.',
-import_parse_error:'فشل التحليل: '
+import_parse_error:'فشل التحليل: ',
+todo_title:'قائمة المهام',
+todo_empty:'لا توجد مهام معلقة'
 });
 LC.defLang('hi',{
 nm:'हिन्दी',ct:'मेरा जीवन कैलेंडर अनुकूलित करें',cs:'अपनी जानकारी भरें, ज़ूम करके अपने जीवन की यात्रा करें',ln:'मेरा नाम',lb:'मेरी जन्मतिथि',ll:'मुझे उम्मीद है कि मैं जी सकता हूँ',uy:'साल',
@@ -352,7 +376,9 @@ import_confirm:'आयात की पुष्टि करें',
 import_cancel:'रद्द करें',
 import_success:'आयात सफल! पृष्ठ ताज़ा हो जाएगा',
 import_format_error:'अमान्य फ़ाइल स्वरूप। कृपया एक मान्य जीवन कैलेंडर बैकअप फ़ाइल चुनें।',
-import_parse_error:'पार्स विफल: '
+import_parse_error:'पार्स विफल: ',
+todo_title:'कार्य सूची',
+todo_empty:'कोई लंबित कार्य नहीं'
 });
 LC.defLang('th',{
 nm:'ไทย',ct:'ปรับแต่งปฏิทินชีวิต',cs:'กรอกข้อมูล ซูมเพื่อเดินทางผ่านชีวิต',ln:'ชื่อของฉัน',lb:'วันเกิด',ll:'ฉันหวังว่าจะมีชีวิตถึง',uy:'ปี',
@@ -379,7 +405,9 @@ import_confirm:'ยืนยันการนำเข้า',
 import_cancel:'ยกเลิก',
 import_success:'นำเข้าสำเร็จ! หน้าจะรีเฟรช',
 import_format_error:'รูปแบบไฟล์ไม่ถูกต้อง กรุณาเลือกไฟล์สำรองปฏิทินชีวิตที่ถูกต้อง',
-import_parse_error:'การวิเคราะห์ล้มเหลว: '
+import_parse_error:'การวิเคราะห์ล้มเหลว: ',
+todo_title:'รายการสิ่งที่ต้องทำ',
+todo_empty:'ไม่มีกิจวัตรที่ต้องทำ'
 });
 
 /* ========= 语言系统 UI ========= */
@@ -439,6 +467,13 @@ LC.refreshText=function(){
     document.getElementById('confirmNo').textContent=LC.t('no','Cancel');
     document.getElementById('ctxEdit').textContent=LC.t('edit','Edit');
     document.getElementById('ctxDel').textContent=LC.t('del','Delete');
+    
+    // 更新待办标题多语言（如果侧边栏已打开）
+    var todoTitle = document.getElementById('todoTitle');
+    if (todoTitle && LC.currentSidebarDate) {
+      todoTitle.innerHTML = '📋 ' + LC.t('todo_title', '待办日程');
+      LC.renderTodoList(LC.currentSidebarDate);
+    }
     
     // 如果侧边栏是打开的，刷新侧边栏内容
     if(LC.currentSidebarDate) {
