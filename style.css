@@ -606,12 +606,14 @@
 	  height: 8px;
 	  border-radius: 50%;
 	}
+	
+	/* ===== 侧边栏新样式 ===== */
 	.sidebar-overlay {
 	  position: fixed;
 	  top: 0;
 	  right: 0;
 	  bottom: 0;
-	  width: 320px;
+	  width: 360px;
 	  background: #faf7f2;
 	  border-left: 3px solid #d4c4a8;
 	  box-shadow: -4px 0 16px rgba(80, 50, 30, .15);
@@ -691,6 +693,25 @@
 	  color: #8b7d6b;
 	  font-weight: 700;
 	}
+	
+	/* 可调整大小的容器 */
+	.resizable-container {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  min-height: 0;
+	  overflow: hidden;
+	}
+	
+	/* 24小时视图容器 */
+	.timeline-container {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  min-height: 100px;
+	  overflow: hidden;
+	}
+	
 	.sidebar-fixed-part {
 	  flex-shrink: 0;
 	  background: #faf7f2;
@@ -703,6 +724,150 @@
 	  position: relative;
 	  background: #f5f0e8;
 	}
+	
+	/* 拖拽分割条 */
+	.split-bar {
+	  height: 8px;
+	  background: #e0d4c0;
+	  cursor: row-resize;
+	  flex-shrink: 0;
+	  position: relative;
+	  transition: background 0.2s;
+	}
+	.split-bar:hover {
+	  background: #d4956b;
+	}
+	.split-handle {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  width: 60px;
+	  height: 4px;
+	  background: #b0a090;
+	  border-radius: 2px;
+	}
+	.split-bar:hover .split-handle {
+	  background: #fff;
+	}
+	
+	/* 待办列表容器 */
+	.todo-container {
+	  flex: 1;
+	  display: flex;
+	  flex-direction: column;
+	  min-height: 100px;
+	  background: #fefcf8;
+	  border-top: 2px solid #e8dcc8;
+	}
+	.todo-header {
+	  padding: 12px 16px;
+	  background: #faf7f2;
+	  border-bottom: 1px solid #e8dcc8;
+	  flex-shrink: 0;
+	}
+	.todo-header h4 {
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1rem;
+	  color: var(--txt);
+	  margin: 0;
+	  font-weight: 700;
+	  display: flex;
+	  align-items: center;
+	  gap: 6px;
+	}
+	
+	/* 待办列表滚动区域 */
+	.todo-list {
+	  flex: 1;
+	  overflow-y: auto;
+	  padding: 8px 12px;
+	}
+	
+	/* 待办项样式 - 不显示时间 */
+	.todo-item {
+	  display: flex;
+	  align-items: center;
+	  gap: 12px;
+	  padding: 10px 12px;
+	  margin-bottom: 6px;
+	  background: #fefcf8;
+	  border-radius: 12px 8px;
+	  border: 1px solid #e8dcc8;
+	  transition: all 0.2s;
+	  cursor: pointer;
+	}
+	.todo-item:hover {
+	  background: #fffaf4;
+	  border-color: #d4c4a8;
+	  transform: translateX(2px);
+	}
+	
+	/* 复选框样式 */
+	.todo-checkbox {
+	  width: 20px;
+	  height: 20px;
+	  cursor: pointer;
+	  flex-shrink: 0;
+	  accent-color: #d4956b;
+	}
+	
+	/* 待办内容 */
+	.todo-content {
+	  flex: 1;
+	  display: flex;
+	  align-items: center;
+	  gap: 8px;
+	}
+	
+	/* 时间标签 - 隐藏 */
+	.todo-time {
+	  display: none;
+	}
+	
+	/* 待办标题 */
+	.todo-title {
+	  font-size: 0.9rem;
+	  color: #4a3728;
+	  word-break: break-word;
+	  flex: 1;
+	}
+	
+	/* 已完成状态 */
+	.todo-item.completed {
+	  background: #f0ece4;
+	  border-color: #ddd4c4;
+	  opacity: 0.7;
+	}
+	.todo-item.completed .todo-title {
+	  text-decoration: line-through;
+	  color: #b0a090;
+	}
+	
+	/* 待办类型颜色点 */
+	.todo-type-dot {
+	  width: 8px;
+	  height: 8px;
+	  border-radius: 50%;
+	  flex-shrink: 0;
+	}
+	
+	/* 空状态提示 */
+	.todo-empty {
+	  text-align: center;
+	  padding: 30px 20px;
+	  color: #b0a090;
+	  font-size: 0.85rem;
+	}
+	
+	/* 侧边栏右拖拽宽度适配 */
+	@media(max-width: 600px) {
+	  .sidebar-overlay {
+	    width: 85vw;
+	  }
+	}
+	
+	/* ===== 24小时视图原有样式 ===== */
 	.time-grid {
 	  position: relative;
 	  height: 1440px;
@@ -808,7 +973,8 @@
 	.resize-handle.bottom {
 	  bottom: 0;
 	}
-	/* ===== 信息弹窗 - 优化版 ===== */
+	
+	/* 信息弹窗样式 */
 	#infoPopover {
 	  display: none;
 	  position: fixed;
@@ -823,7 +989,6 @@
 	  pointer-events: auto;
 	  transition: all 0.2s ease;
 	}
-	/* 弹窗头部：标题 + 操作按钮 */
 	.popover-header {
 	  display: flex;
 	  justify-content: space-between;
@@ -857,7 +1022,6 @@
 	  opacity: 1;
 	  transform: scale(1.05);
 	}
-	/* 时间行 - 左对齐，实线分割线 */
 	.popover-time {
 	  font-size: 0.85rem;
 	  color: #8b7d6b;
@@ -868,7 +1032,6 @@
 	  line-height: 1.4;
 	  text-align: left;
 	}
-	/* 地点行 - 左对齐 */
 	.popover-location {
 	  font-size: 0.85rem;
 	  color: #8b7d6b;
@@ -880,7 +1043,6 @@
 	  word-break: break-word;
 	  line-height: 1.4;
 	}
-	/* 描述区域 - 左对齐 */
 	.popover-description {
 	  font-size: 0.85rem;
 	  color: #4a3728;
@@ -892,7 +1054,6 @@
 	  text-align: left;
 	  display: block;
 	}
-	/* 底部区域 - 左对齐，实线上分割线 */
 	.popover-footer {
 	  margin-top: 6px;
 	  padding-top: 12px;
@@ -900,7 +1061,6 @@
 	  display: flex;
 	  justify-content: flex-start;
 	}
-	/* 类型徽章（放在底部） */
 	.popover-type {
 	  display: inline-flex;
 	  align-items: center;
@@ -914,41 +1074,7 @@
 	  color: var(--txtL);
 	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 	}
-	/* 保留原有的其他样式不做修改 */
-	#infoPType {
-	  display: inline-flex;
-	  align-items: center;
-	  gap: 6px;
-	  font-weight: 700;
-	  font-size: 0.9rem;
-	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-	}
-	#infoPTitle {
-	  font-weight: 700;
-	  font-size: 1.1rem;
-	  margin-bottom: 6px;
-	  color: var(--txt);
-	}
-	#infoPTime {
-	  font-size: 0.85rem;
-	  color: #8b7d6b;
-	  margin-bottom: 4px;
-	}
-	#infoPLoc {
-	  font-size: 0.85rem;
-	  color: #8b7d6b;
-	  margin-bottom: 4px;
-	  display: none;
-	}
-	#infoPDesc {
-	  font-size: 0.85rem;
-	  color: #4a3728;
-	  margin-top: 6px;
-	  border-top: 1px solid #e8dcc8;
-	  padding-top: 6px;
-	  display: none;
-	  word-break: break-all;
-	}
+	
 	#ctxMenu {
 	  display: none;
 	  position: fixed;
@@ -1003,209 +1129,167 @@
 	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 	  font-size: 1.1rem;
 	}
-	@media(max-width: 600px) {
-	  .input-card {
-	    padding: 24px 16px 18px;
-	  }
-	  .input-card h1 {
-	    font-size: 1.8rem;
-	  }
-	  .controls {
-	    gap: 4px;
-	    padding: 6px 10px;
-	  }
-	  .ctrl-btn {
-	    padding: 5px 10px;
-	    font-size: .85rem;
-	  }
-	  .sidebar-overlay {
-	    width: 85vw;
-	  }
+	
+	/* 工具箱按钮 */
+	.toolbox-container {
+	  position: fixed;
+	  bottom: 20px;
+	  left: 20px;
+	  z-index: 150;
+	  display: flex;
+	  flex-direction: column;
+	  align-items: flex-start;
 	}
-
-/* ===== 工具箱按钮 (左下角浮动) ===== */
-.toolbox-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 150;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-/* 圆形主按钮 */
-.toolbox-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #fefcf8;
-  border: 2.5px solid #d4956b;
-  font-size: 1.8rem;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 rgba(180, 120, 70, 0.3);
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  color: #d4956b;
-  background: #fefcf8;
-}
-
-.toolbox-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 6px 6px 0 rgba(180, 120, 70, 0.35);
-  background: #fce8d5;
-}
-
-/* 弹出菜单 */
-.toolbox-menu {
-  position: absolute;
-  bottom: 60px;
-  left: 0;
-  background: #fdf8f0;
-  border: 2px solid #d4c4a8;
-  border-radius: 20px 12px;
-  box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
-  min-width: 160px;
-  overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(4px);
-}
-
-.toolbox-menu.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* 菜单项 */
-.toolbox-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 0.95rem;
-  color: #4a3728;
-  border-bottom: 1px solid #e8dcc8;
-}
-
-.toolbox-item:last-child {
-  border-bottom: none;
-}
-
-.toolbox-item:hover {
-  background: #fce8d5;
-}
-
-.toolbox-item-danger:hover {
-  background: #fce8d5;
-  color: #c06060;
-}
-
-.toolbox-icon {
-  font-size: 1.2rem;
-  width: 28px;
-  text-align: center;
-}
-
-.toolbox-label {
-  flex: 1;
-  font-weight: 600;
-}
-
-/* RTL 适配 */
-body.rtl .toolbox-container {
-  left: auto;
-  right: 20px;
-}
-
-body.rtl .toolbox-menu {
-  left: auto;
-  right: 0;
-}
-
-/* 导入日程确认弹窗样式 (复用已有的 .confirm-box，但微调) */
-#importConfirmOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(40, 25, 10, 0.55);
-  z-index: 360;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-#importConfirmOverlay.active {
-  display: flex;
-}
-
-.import-confirm-box {
-  background: #fdf8f0;
-  border-radius: 16px 8px;
-  padding: 28px 24px;
-  max-width: 380px;
-  width: 85%;
-  border: 3px solid #d4c4a8;
-  box-shadow: 8px 8px 0 rgba(100, 60, 20, 0.3);
-  text-align: center;
-}
-
-.import-confirm-box p {
-  margin-bottom: 20px;
-  color: #5c3020;
-  font-weight: 600;
-  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.import-confirm-box .warning-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: #c06060;
-}
-
-.import-confirm-box .btn-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Tooltip 样式 (用于导出日程) */
-.tooltip {
-  position: fixed;
-  z-index: 500;
-  background: #4a3728;
-  color: #fefcf8;
-  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 0.75rem;
-  padding: 8px 14px;
-  border-radius: 12px 8px;
-  max-width: 280px;
-  text-align: left;
-  line-height: 1.4;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
-  pointer-events: none;
-  white-space: normal;
-  word-wrap: break-word;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-body.rtl .tooltip {
-  text-align: right;
-}
-
-.tooltip.visible {
-  opacity: 1;
-}
+	.toolbox-btn {
+	  width: 52px;
+	  height: 52px;
+	  border-radius: 50%;
+	  background: #fefcf8;
+	  border: 2.5px solid #d4956b;
+	  font-size: 1.8rem;
+	  cursor: pointer;
+	  box-shadow: 4px 4px 0 rgba(180, 120, 70, 0.3);
+	  transition: all 0.25s ease;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  color: #d4956b;
+	  background: #fefcf8;
+	}
+	.toolbox-btn:hover {
+	  transform: translateY(-2px);
+	  box-shadow: 6px 6px 0 rgba(180, 120, 70, 0.35);
+	  background: #fce8d5;
+	}
+	.toolbox-menu {
+	  position: absolute;
+	  bottom: 60px;
+	  left: 0;
+	  background: #fdf8f0;
+	  border: 2px solid #d4c4a8;
+	  border-radius: 20px 12px;
+	  box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
+	  min-width: 160px;
+	  overflow: hidden;
+	  opacity: 0;
+	  visibility: hidden;
+	  transform: translateY(10px);
+	  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	  backdrop-filter: blur(4px);
+	}
+	.toolbox-menu.active {
+	  opacity: 1;
+	  visibility: visible;
+	  transform: translateY(0);
+	}
+	.toolbox-item {
+	  display: flex;
+	  align-items: center;
+	  gap: 12px;
+	  padding: 12px 18px;
+	  cursor: pointer;
+	  transition: background 0.2s ease;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 0.95rem;
+	  color: #4a3728;
+	  border-bottom: 1px solid #e8dcc8;
+	}
+	.toolbox-item:last-child {
+	  border-bottom: none;
+	}
+	.toolbox-item:hover {
+	  background: #fce8d5;
+	}
+	.toolbox-item-danger:hover {
+	  background: #fce8d5;
+	  color: #c06060;
+	}
+	.toolbox-icon {
+	  font-size: 1.2rem;
+	  width: 28px;
+	  text-align: center;
+	}
+	.toolbox-label {
+	  flex: 1;
+	  font-weight: 600;
+	}
+	body.rtl .toolbox-container {
+	  left: auto;
+	  right: 20px;
+	}
+	body.rtl .toolbox-menu {
+	  left: auto;
+	  right: 0;
+	}
+	
+	/* 导入日程确认弹窗 */
+	#importConfirmOverlay {
+	  position: fixed;
+	  inset: 0;
+	  background: rgba(40, 25, 10, 0.55);
+	  z-index: 360;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	}
+	#importConfirmOverlay.active {
+	  display: flex;
+	}
+	.import-confirm-box {
+	  background: #fdf8f0;
+	  border-radius: 16px 8px;
+	  padding: 28px 24px;
+	  max-width: 380px;
+	  width: 85%;
+	  border: 3px solid #d4c4a8;
+	  box-shadow: 8px 8px 0 rgba(100, 60, 20, 0.3);
+	  text-align: center;
+	}
+	.import-confirm-box p {
+	  margin-bottom: 20px;
+	  color: #5c3020;
+	  font-weight: 600;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 1rem;
+	  line-height: 1.5;
+	}
+	.import-confirm-box .warning-title {
+	  font-size: 1.2rem;
+	  font-weight: 700;
+	  margin-bottom: 12px;
+	  color: #c06060;
+	}
+	.import-confirm-box .btn-row {
+	  display: flex;
+	  gap: 12px;
+	  justify-content: center;
+	  margin-top: 20px;
+	}
+	
+	/* Tooltip 样式 */
+	.tooltip {
+	  position: fixed;
+	  z-index: 500;
+	  background: #4a3728;
+	  color: #fefcf8;
+	  font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+	  font-size: 0.75rem;
+	  padding: 8px 14px;
+	  border-radius: 12px 8px;
+	  max-width: 280px;
+	  text-align: left;
+	  line-height: 1.4;
+	  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+	  pointer-events: none;
+	  white-space: normal;
+	  word-wrap: break-word;
+	  opacity: 0;
+	  transition: opacity 0.2s ease;
+	}
+	body.rtl .tooltip {
+	  text-align: right;
+	}
+	.tooltip.visible {
+	  opacity: 1;
+	}
