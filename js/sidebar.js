@@ -1,4 +1,4 @@
-/* ========= 侧边栏：24小时视图 ========= */
+/* ========= 侧边栏：24小时视图 + 待办列表 ========= */
 LC.openSidebar=function(ds){
   var sidebar = document.getElementById('sidebarOverlay');
   var header = document.getElementById('sidebarHeader');
@@ -53,14 +53,12 @@ LC.openSidebar=function(ds){
   // 全天日程左键点击弹出信息弹窗，右键弹出编辑/删除菜单
   var allDayEvEls = fixedPart.querySelectorAll('.all-day-event');
   allDayEvEls.forEach(function(el){
-    // 左键点击：弹出信息弹窗
     el.addEventListener('click', function(e){
       e.stopPropagation();
       var evId = el.dataset.id;
       var ev = LC.ud.events.find(function(ev){ return ev.id === evId; });
       if(ev) LC.showInfoPopover(e.clientX, e.clientY, ev, LC.currentSidebarDate);
     });
-    // 右键点击：弹出编辑/删除菜单
     el.addEventListener('contextmenu', function(e){
       e.preventDefault();
       e.stopPropagation();
@@ -134,6 +132,18 @@ LC.openSidebar=function(ds){
     row.addEventListener('click', LC.handleHourRowClick);
   });
   LC.currentSidebarDateForHourClick = ds;
+  
+  // 更新待办标题多语言
+  var todoTitle = document.getElementById('todoTitle');
+  if (todoTitle) {
+    todoTitle.innerHTML = '📋 ' + LC.t('todo_title', '待办日程');
+  }
+  
+  // 渲染待办列表
+  LC.renderTodoList(ds);
+  
+  // 恢复分割比例
+  LC.restoreSplitRatio();
 };
 
 // 处理时间行点击的函数
@@ -202,12 +212,198 @@ LC.layoutEvents=function(events) {
   return evLayouts;
 };
 
+/* ========= 待办列表渲染（不显示时间，支持多语言） ========= */
+LC.renderTodoList = function(ds) {
+  var todoList = document.getElementById('todoList');
+  if (!todoList) return;
+  
+  var evs = LC.getEv(ds);
+  if (!evs.length) {
+    todoList.innerHTML = '<div class="todo-empty">📭 ' + LC.t('todo_empty', '暂无待办日程') + '</div>';
+    return;
+  }
+  
+  // 构建待办项数组，包含完成状态
+  var todoItems = evs.map(function(ev) {
+    var completed = LC.getTodoCompleted(ev.id, ds);
+    return {
+      id: ev.id,
+      title: ev.title,
+      type: ev.type,
+      completed: completed,
+      startTime: ev.startTime || '23:59', // 用于排序
+      isAllDay: ev.isAllDay
+    };
+  });
+  
+  // 排序：未完成的在上方，已完成的在底部；未完成中按时间排序（全天日程用00:00）
+  todoItems.sort(function(a, b) {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+    // 未完成组：按开始时间排序，全天日程排最前
+    if (!a.completed) {
+      var timeA = a.isAllDay ? '00:00' : (a.startTime || '23:59');
+      var timeB = b.isAllDay ? '00:00' : (b.startTime || '23:59');
+      return timeA.localeCompare(timeB);
+    }
+    // 已完成组：按标题排序
+    return a.title.localeCompare(b.title);
+  });
+  
+  // 生成 HTML（不显示时间）
+  var html = '';
+  todoItems.forEach(function(item) {
+    var c = LC.EC[item.type] || LC.EC.o;
+    var completedClass = item.completed ? 'completed' : '';
+    var checkedAttr = item.completed ? 'checked' : '';
+    
+    html += `
+      <div class="todo-item ${completedClass}" data-id="${item.id}" data-date="${ds}">
+        <input type="checkbox" class="todo-checkbox" ${checkedAttr}>
+        <div class="todo-type-dot" style="background: ${c};"></div>
+        <div class="todo-content">
+          <span class="todo-title">${LC.escapeHtml(item.title)}</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  todoList.innerHTML = html;
+  
+  // 绑定复选框事件
+  var checkboxes = todoList.querySelectorAll('.todo-checkbox');
+  checkboxes.forEach(function(cb) {
+    cb.addEventListener('change', function(e) {
+      e.stopPropagation();
+      var todoItem = this.closest('.todo-item');
+      var eventId = todoItem.dataset.id;
+      var date = todoItem.dataset.date;
+      var completed = this.checked;
+      
+      LC.setTodoCompleted(eventId, date, completed);
+      // 重新渲染待办列表（保持排序）
+      LC.renderTodoList(date);
+    });
+  });
+  
+  // 绑定点击待办项打开编辑弹窗
+  var todoItemsDivs = todoList.querySelectorAll('.todo-item');
+  todoItemsDivs.forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      // 如果点击的是复选框，不触发编辑
+      if (e.target.classList.contains('todo-checkbox')) return;
+      e.stopPropagation();
+      var eventId = this.dataset.id;
+      var date = this.dataset.date;
+      LC.openModal(date, null, eventId);
+    });
+    
+    // 右键菜单
+    item.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var eventId = this.dataset.id;
+      var date = this.dataset.date;
+      document.getElementById('infoPopover').style.display = 'none';
+      LC.showCtxMenu(e.clientX, e.clientY, eventId, date);
+    });
+  });
+};
+
+// 添加防XSS的转义函数
+LC.escapeHtml = function(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+};
+
+/* ========= 分割条拖拽逻辑 ========= */
+LC.initSplitBar = function() {
+  var splitBar = document.getElementById('splitBar');
+  var timelineContainer = document.getElementById('timelineContainer');
+  var todoContainer = document.getElementById('todoContainer');
+  var resizableContainer = document.getElementById('resizableContainer');
+  
+  if (!splitBar || !timelineContainer || !todoContainer) return;
+  
+  var isDragging = false;
+  var startY = 0;
+  var startTimelineHeight = 0;
+  var containerHeight = 0;
+  
+  splitBar.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    isDragging = true;
+    startY = e.clientY;
+    containerHeight = resizableContainer.offsetHeight;
+    startTimelineHeight = timelineContainer.offsetHeight;
+    
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+  });
+  
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    
+    var deltaY = e.clientY - startY;
+    var newTimelineHeight = startTimelineHeight + deltaY;
+    
+    // 限制最小高度
+    var minTimelineHeight = 100;
+    var minTodoHeight = 100;
+    var maxTimelineHeight = containerHeight - minTodoHeight;
+    
+    newTimelineHeight = Math.max(minTimelineHeight, Math.min(maxTimelineHeight, newTimelineHeight));
+    
+    var timelinePercent = (newTimelineHeight / containerHeight) * 100;
+    var todoPercent = 100 - timelinePercent;
+    
+    timelineContainer.style.flex = '0 0 ' + timelinePercent + '%';
+    todoContainer.style.flex = '0 0 ' + todoPercent + '%';
+    
+    // 保存比例
+    localStorage.setItem(LC.SPLIT_RATIO_KEY, timelinePercent);
+  });
+  
+  document.addEventListener('mouseup', function() {
+    if (isDragging) {
+      isDragging = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+};
+
+LC.restoreSplitRatio = function() {
+  var timelineContainer = document.getElementById('timelineContainer');
+  var todoContainer = document.getElementById('todoContainer');
+  var resizableContainer = document.getElementById('resizableContainer');
+  
+  if (!timelineContainer || !todoContainer || !resizableContainer) return;
+  
+  var savedRatio = localStorage.getItem(LC.SPLIT_RATIO_KEY);
+  if (savedRatio !== null) {
+    var timelinePercent = parseFloat(savedRatio);
+    var todoPercent = 100 - timelinePercent;
+    timelineContainer.style.flex = '0 0 ' + timelinePercent + '%';
+    todoContainer.style.flex = '0 0 ' + todoPercent + '%';
+  } else {
+    // 默认 60% / 40%
+    timelineContainer.style.flex = '0 0 60%';
+    todoContainer.style.flex = '0 0 40%';
+  }
+};
+
 /* ========= 拖拽事件 ========= */
 LC.bindDragEvent=function(block, ds) {
   var isContextMenuTriggered = false;
   
   block.addEventListener('mousedown', function(e) {
-    // 如果是右键，不触发拖拽
     if(e.button === 2) return;
     
     e.preventDefault();
@@ -231,15 +427,12 @@ LC.bindDragEvent=function(block, ds) {
     document.addEventListener('mouseup', LC.handleDragEnd);
   });
 
-  // 非全日日程：右键直接弹出编辑/删除菜单，不弹出信息弹窗
   block.addEventListener('contextmenu', function(e){
     e.preventDefault();
     e.stopPropagation();
     isContextMenuTriggered = true;
-    // 延迟重置标志，避免与 mouseup 冲突
     setTimeout(function() { isContextMenuTriggered = false; }, 100);
     var evId = block.dataset.id;
-    // 关闭可能存在的 infoPopover
     document.getElementById('infoPopover').style.display = 'none';
     LC.showCtxMenu(e.clientX, e.clientY, evId, ds);
   });
@@ -271,19 +464,12 @@ LC.handleDragMove=function(e) {
 LC.handleDragEnd=function(e) {
   if(!LC.dragState) return;
   
-  // 获取当前事件块对应的日程
   var ev = LC.ud.events.find(function(ev){ return ev.id === LC.dragState.evId; });
   
-  // 如果没有移动，且不是右键触发的，当作左键点击，弹出信息弹窗（仅对非全日日程）
   if(!LC.dragState.moved) {
-    // 检查是否是右键触发的（右键触发的 dragState 不会有这个回调，但为了安全）
-    if(ev && !ev.isAllDay) {
-      // 非全日日程：左键点击弹出信息弹窗
-      // 确保没有右键菜单正在显示
-      var ctxMenu = document.getElementById('ctxMenu');
-      if(ctxMenu.style.display !== 'block') {
-        LC.showInfoPopover(e.clientX, e.clientY, ev, LC.dragState.ds);
-      }
+    var ctxMenu = document.getElementById('ctxMenu');
+    if(ev && !ev.isAllDay && ctxMenu.style.display !== 'block') {
+      LC.showInfoPopover(e.clientX, e.clientY, ev, LC.dragState.ds);
     }
     LC.dragState = null;
     document.removeEventListener('mousemove', LC.handleDragMove);
@@ -291,7 +477,6 @@ LC.handleDragEnd=function(e) {
     return;
   }
 
-  // 有拖拽移动，保存新位置
   if(ev) {
     var deltaY = e.clientY - LC.dragState.startY;
     var deltaMin = Math.round(deltaY);
@@ -324,7 +509,6 @@ LC.handleDragEnd=function(e) {
 
 /* ========= 右键菜单 ========= */
 LC.showCtxMenu=function(x, y, id, ds){
-  // 先关闭信息弹窗
   var pop = document.getElementById('infoPopover');
   if(pop) pop.style.display = 'none';
   
@@ -334,7 +518,6 @@ LC.showCtxMenu=function(x, y, id, ds){
   ctxMenu.style.display = 'block';
   LC.ctxEventId = {id: id, ds: ds};
   
-  // 移除旧的监听器，避免重复绑定
   var editBtn = document.getElementById('ctxEdit');
   var delBtn = document.getElementById('ctxDel');
   var newEditBtn = editBtn.cloneNode(true);
@@ -352,38 +535,31 @@ LC.showCtxMenu=function(x, y, id, ds){
   };
 };
 
-/* ========= 确认删除（支持重复日程的两种删除模式） ========= */
+/* ========= 确认删除 ========= */
 LC.showConfirmDel=function(id, ds){
-  // 查找要删除的日程
   var ev = LC.ud.events.find(function(e){ return e.id === id; });
   if(!ev) return;
   
   var isRecurring = ev.repeat && ev.repeat !== 'none';
   
   if(isRecurring) {
-    // 重复日程：显示三个选项的弹窗，垂直排列，每个按钮单独一行居中
     var confirmOverlay = document.getElementById('confirmOverlay');
     var confirmMsg = document.getElementById('confirmMsg');
     var confirmYes = document.getElementById('confirmYes');
     var confirmNo = document.getElementById('confirmNo');
     
-    // 获取按钮行容器
     var btnRow = confirmYes.parentNode;
     
-    // 保存原始按钮的类名
     var originalYesClass = confirmYes.className;
     var originalNoClass = confirmNo.className;
     
-    // 清空按钮行
     btnRow.innerHTML = '';
     
-    // 设置按钮行样式为垂直列布局
     btnRow.style.display = 'flex';
     btnRow.style.flexDirection = 'column';
     btnRow.style.alignItems = 'center';
     btnRow.style.gap = '10px';
     
-    // 创建"仅删除此日程"按钮
     var confirmSingle = document.createElement('button');
     confirmSingle.id = 'confirmDeleteSingle';
     confirmSingle.className = 'hand-btn danger-btn';
@@ -393,7 +569,6 @@ LC.showConfirmDel=function(id, ds){
     confirmSingle.style.minWidth = '160px';
     confirmSingle.style.width = 'auto';
     
-    // 创建"删除所有日程"按钮
     var confirmAll = document.createElement('button');
     confirmAll.id = 'confirmYes';
     confirmAll.className = originalYesClass;
@@ -401,7 +576,6 @@ LC.showConfirmDel=function(id, ds){
     confirmAll.style.minWidth = '160px';
     confirmAll.style.width = 'auto';
     
-    // 创建"取消"按钮
     var confirmCancel = document.createElement('button');
     confirmCancel.id = 'confirmNo';
     confirmCancel.className = originalNoClass;
@@ -409,22 +583,18 @@ LC.showConfirmDel=function(id, ds){
     confirmCancel.style.minWidth = '160px';
     confirmCancel.style.width = 'auto';
     
-    // 按顺序添加按钮：仅删除此日程 -> 删除所有日程 -> 取消
     btnRow.appendChild(confirmSingle);
     btnRow.appendChild(confirmAll);
     btnRow.appendChild(confirmCancel);
     
-    // 设置提示文字
     confirmMsg.textContent = LC.t('confirm_del_recurring', '确定删除此重复日程吗？');
     
     confirmOverlay.classList.add('active');
     
-    // 删除所有日程
     confirmAll.onclick = function(){
       LC.ud.events = LC.ud.events.filter(function(e){ return e.id !== id; });
       LC.save();
       confirmOverlay.classList.remove('active');
-      // 恢复按钮行原始结构
       LC.restoreConfirmButtons(btnRow);
       var scrollPart = document.getElementById('sidebarScrollPart');
       var prevScroll = scrollPart ? scrollPart.scrollTop : 0;
@@ -432,11 +602,9 @@ LC.showConfirmDel=function(id, ds){
       if(scrollPart) scrollPart.scrollTop = prevScroll;
     };
     
-    // 仅删除此日程
     confirmSingle.onclick = function(){
       LC.deleteSingleRecurrence(id, ds);
       confirmOverlay.classList.remove('active');
-      // 恢复按钮行原始结构
       LC.restoreConfirmButtons(btnRow);
       var scrollPart = document.getElementById('sidebarScrollPart');
       var prevScroll = scrollPart ? scrollPart.scrollTop : 0;
@@ -444,14 +612,11 @@ LC.showConfirmDel=function(id, ds){
       if(scrollPart) scrollPart.scrollTop = prevScroll;
     };
     
-    // 取消
     confirmCancel.onclick = function(){
       confirmOverlay.classList.remove('active');
-      // 恢复按钮行原始结构
       LC.restoreConfirmButtons(btnRow);
     };
   } else {
-    // 非重复日程：显示普通确认弹窗
     document.getElementById('confirmMsg').textContent = LC.t('confirm_del','Confirm delete?');
     document.getElementById('confirmOverlay').classList.add('active');
     document.getElementById('confirmYes').onclick = function(){
@@ -469,15 +634,12 @@ LC.showConfirmDel=function(id, ds){
   }
 };
 
-/* ========= 恢复确认弹窗按钮原始结构 ========= */
 LC.restoreConfirmButtons=function(btnRow){
-  // 恢复按钮行样式
   btnRow.style.display = '';
   btnRow.style.flexDirection = '';
   btnRow.style.alignItems = '';
   btnRow.style.gap = '';
   
-  // 清空并恢复原始按钮
   btnRow.innerHTML = '';
   var originalYes = document.createElement('button');
   originalYes.id = 'confirmYes';
@@ -491,15 +653,12 @@ LC.restoreConfirmButtons=function(btnRow){
   btnRow.appendChild(originalNo);
 };
 
-/* ========= 仅删除单次重复日程 ========= */
 LC.deleteSingleRecurrence=function(id, targetDate){
   var ev = LC.ud.events.find(function(e){ return e.id === id; });
   if(!ev) return;
   
-  // 初始化例外数组
   if(!ev.exceptions) ev.exceptions = [];
   
-  // 将目标日期加入例外列表
   if(ev.exceptions.indexOf(targetDate) === -1) {
     ev.exceptions.push(targetDate);
   }
@@ -508,7 +667,10 @@ LC.deleteSingleRecurrence=function(id, targetDate){
 };
 
 /* ========= 侧边栏关闭 ========= */
-document.getElementById('sidebarClose').onclick = function(){ document.getElementById('sidebarOverlay').classList.remove('active'); LC.currentSidebarDate = null; };
+document.getElementById('sidebarClose').onclick = function(){ 
+  document.getElementById('sidebarOverlay').classList.remove('active'); 
+  LC.currentSidebarDate = null; 
+};
 
 /* ========= 侧边栏拖动调整宽度 ========= */
 document.getElementById('sidebarDragHandle').addEventListener('mousedown', function(e){
@@ -520,7 +682,12 @@ document.getElementById('sidebarDragHandle').addEventListener('mousedown', funct
 addEventListener('mousemove', function(e){
   if(!LC.isResizingSidebar) return;
   var newW = LC.sidebarStartW - (e.clientX - LC.sidebarStartX);
-  newW = Math.max(250, Math.min(800, newW));
+  newW = Math.max(280, Math.min(800, newW));
   document.getElementById('sidebarOverlay').style.width = newW + 'px';
 });
 addEventListener('mouseup', function(){ LC.isResizingSidebar = false; });
+
+/* ========= 初始化分割条 ========= */
+setTimeout(function() {
+  LC.initSplitBar();
+}, 100);
