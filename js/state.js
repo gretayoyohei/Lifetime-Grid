@@ -20,6 +20,7 @@ LC.EC = { p:'#ffe693', h:'#6cc6b8', i:'#ff7369', w:'#57baf1', s:'#fcb25f', a:'#6
 
 /* ========= 存储 key ========= */
 LC.STORE='lifeCalV5';LC.LANG_KEY='lifeCalLang5';
+LC.SPLIT_RATIO_KEY='sidebarSplitRatio';  // 保存分割比例
 
 /* ========= 共享状态 ========= */
 LC.curLang=localStorage.getItem(LC.LANG_KEY)||'en';
@@ -38,6 +39,30 @@ LC.dragState=null;
 LC.isResizingSidebar=false;LC.sidebarStartX=0;LC.sidebarStartW=0;
 LC.TODAY='';
 LC.originalLifeExp=null;  // 用于记录原始寿命值，检测用户是否改小寿命
+
+/* ========= 待办完成状态存储 ========= */
+// 存储结构: { "eventId_date": true } 或 { "eventId_date": false }
+LC.getTodoKey = function(eventId, dateStr) {
+  return eventId + '_' + dateStr;
+};
+
+LC.getTodoCompleted = function(eventId, dateStr) {
+  if (!LC.ud || !LC.ud.todoCompleted) return false;
+  var key = LC.getTodoKey(eventId, dateStr);
+  return LC.ud.todoCompleted[key] === true;
+};
+
+LC.setTodoCompleted = function(eventId, dateStr, completed) {
+  if (!LC.ud) return;
+  if (!LC.ud.todoCompleted) LC.ud.todoCompleted = {};
+  var key = LC.getTodoKey(eventId, dateStr);
+  if (completed) {
+    LC.ud.todoCompleted[key] = true;
+  } else {
+    delete LC.ud.todoCompleted[key];
+  }
+  LC.save();
+};
 
 /* ========= Canvas 引用 ========= */
 LC.cvs=null;LC.ctx=null;LC.bgCvs=null;LC.bgCtx=null;
