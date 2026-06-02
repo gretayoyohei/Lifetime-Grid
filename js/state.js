@@ -20,7 +20,7 @@ LC.EC = { p:'#ffe693', h:'#6cc6b8', i:'#ff7369', w:'#57baf1', s:'#fcb25f', a:'#6
 
 /* ========= 存储 key ========= */
 LC.STORE='lifeCalV5';LC.LANG_KEY='lifeCalLang5';
-LC.SPLIT_RATIO_KEY='sidebarSplitRatio';  // 保存分割比例
+LC.SPLIT_RATIO_KEY='sidebarSplitRatio';
 
 /* ========= 共享状态 ========= */
 LC.curLang=localStorage.getItem(LC.LANG_KEY)||'en';
@@ -38,10 +38,9 @@ LC.dayEventRects=[];
 LC.dragState=null;
 LC.isResizingSidebar=false;LC.sidebarStartX=0;LC.sidebarStartW=0;
 LC.TODAY='';
-LC.originalLifeExp=null;  // 用于记录原始寿命值，检测用户是否改小寿命
+LC.originalLifeExp=null;
 
 /* ========= 待办完成状态存储 ========= */
-// 存储结构: { "eventId_date": true } 或 { "eventId_date": false }
 LC.getTodoKey = function(eventId, dateStr) {
   return eventId + '_' + dateStr;
 };
@@ -60,6 +59,17 @@ LC.setTodoCompleted = function(eventId, dateStr, completed) {
     LC.ud.todoCompleted[key] = true;
   } else {
     delete LC.ud.todoCompleted[key];
+  }
+  LC.save();
+};
+
+/* ========= 删除事件时清理所有关联的待办状态 ========= */
+LC.clearTodoCompletedByEventId = function(eventId) {
+  if (!LC.ud || !LC.ud.todoCompleted) return;
+  for (var key in LC.ud.todoCompleted) {
+    if (key.startsWith(eventId + '_')) {
+      delete LC.ud.todoCompleted[key];
+    }
   }
   LC.save();
 };
@@ -84,89 +94,86 @@ LC.dayPos=function(dow,wr){return{x:LC.DPAD+dow*(LC.DW+LC.DGAP),y:LC.HDR+LC.DPAD
 LC.rRect=function(x,y,w,h,r){r=Math.min(r,Math.max(.1,w/2),Math.max(.1,h/2));LC.ctx.beginPath();LC.ctx.moveTo(x+r,y);LC.ctx.arcTo(x+w,y,x+w,y+h,r);LC.ctx.arcTo(x+w,y+h,x,y+h,r);LC.ctx.arcTo(x,y+h,x,y,r);LC.ctx.arcTo(x,y,x+w,y,r);LC.ctx.closePath()};
 LC.monthInfo=function(y,m){return{days:new Date(y,m+1,0).getDate(),dow1:new Date(y,m,1).getDay()}};
 
-/* ========= 检查日程是否在指定日期显示（支持重复和例外） ========= */
+/* ========= 检查日程是否在指定日期显示 ========= */
 LC.shouldShowEventOnDate=function(ev, ds){
-  // 检查是否在例外列表中
-  if(ev.exceptions && ev.exceptions.indexOf(ds) !== -1) {
-    return false;
-  }
-  
+  if(ev.exceptions && ev.exceptions.indexOf(ds) !== -1) return false;
   var sD = ev.startDate || ev.date;
   var eD = ev.endDate || ev.date;
-  
-  // 首先检查是否在原始日期范围内
   if(ds >= sD && ds <= eD) return true;
-  
-  // 如果没有重复规则，不再扩展
   if(!ev.repeat || ev.repeat === 'none') return false;
-  
   var targetDate = new Date(ds + 'T00:00:00');
   var startDate = new Date(sD + 'T00:00:00');
   var repeat = ev.repeat;
-  
-  // 根据重复类型计算
   switch(repeat) {
-    case 'daily': {
-      return targetDate >= startDate;
-    }
-    case 'weekly': {
-      if(targetDate < startDate) return false;
-      var daysDiff = Math.floor((targetDate - startDate) / (24 * 60 * 60 * 1000));
-      return daysDiff % 7 === 0;
-    }
-    case 'monthly': {
-      if(targetDate < startDate) return false;
-      var targetYear = targetDate.getFullYear();
-      var targetMonth = targetDate.getMonth();
-      var targetDay = targetDate.getDate();
-      var startDay = startDate.getDate();
-      
-      var daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
-      var actualDay = Math.min(startDay, daysInTargetMonth);
-      
-      if(targetDay !== actualDay) return false;
-      
-      var monthDiff = (targetYear - startDate.getFullYear()) * 12 + (targetMonth - startDate.getMonth());
-      return monthDiff > 0 && monthDiff % 1 === 0;
-    }
-    case 'yearly': {
-      if(targetDate < startDate) return false;
-      var targetYear = targetDate.getFullYear();
-      var startYear = startDate.getFullYear();
-      var targetMonth = targetDate.getMonth();
-      var startMonth = startDate.getMonth();
-      var targetDay = targetDate.getDate();
-      var startDay = startDate.getDate();
-      
-      if(targetMonth !== startMonth || targetDay !== startDay) return false;
-      
-      var yearDiff = targetYear - startYear;
-      return yearDiff > 0;
-    }
-    default:
-      return false;
+    case 'daily': return targetDate >= startDate;
+    case 'weekly': if(targetDate < startDate) return false; var daysDiff = Math.floor((targetDate - startDate) / (24 * 60 * 60 * 1000)); return daysDiff % 7 === 0;
+    case 'monthly': if(targetDate < startDate) return false; var targetYear = targetDate.getFullYear(), targetMonth = targetDate.getMonth(), targetDay = targetDate.getDate(), startDay = startDate.getDate(); var daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate(); var actualDay = Math.min(startDay, daysInTargetMonth); if(targetDay !== actualDay) return false; var monthDiff = (targetYear - startDate.getFullYear()) * 12 + (targetMonth - startDate.getMonth()); return monthDiff > 0 && monthDiff % 1 === 0;
+    case 'yearly': if(targetDate < startDate) return false; if(targetDate.getMonth() !== startDate.getMonth() || targetDate.getDate() !== startDate.getDate()) return false; return (targetDate.getFullYear() - startDate.getFullYear()) > 0;
+    default: return false;
   }
 };
 
-/* ========= 获取日程（支持重复日程和例外） ========= */
 LC.getEv=function(ds){
   if(!LC.ud||!LC.ud.events)return[];
-  return LC.ud.events.filter(function(e){
-    return LC.shouldShowEventOnDate(e, ds);
-  });
+  return LC.ud.events.filter(function(e){ return LC.shouldShowEventOnDate(e, ds); });
 };
 LC.seededRand=function(s){var x=Math.sin(s*9301+49297)*233280;return x-Math.floor(x)};
 LC.genId=function(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)};
 
-/* ========= 存储 ========= */
 LC.load=function(){try{var r=localStorage.getItem(LC.STORE);if(r){LC.ud=JSON.parse(r);return true}}catch(e){}return false};
 LC.save=function(){if(LC.ud)localStorage.setItem(LC.STORE,JSON.stringify(LC.ud))};
 
-/* ========= 画布尺寸 ========= */
+/* ========= 画布尺寸（兼容 Retina 屏幕，防止模糊） ========= */
 LC.resize=function(){
-  LC.dpr=window.devicePixelRatio||1;LC.W=innerWidth;LC.H=innerHeight;
-  LC.cvs.width=LC.W*LC.dpr;LC.cvs.height=LC.H*LC.dpr;LC.cvs.style.width=LC.W+'px';LC.cvs.style.height=LC.H+'px';
-  LC.bgCvs.width=LC.W*LC.dpr;LC.bgCvs.height=LC.H*LC.dpr;LC.bgCvs.style.width=LC.W+'px';LC.bgCvs.style.height=LC.H+'px';
+  LC.dpr = window.devicePixelRatio || 1;
+  LC.W = window.innerWidth;
+  LC.H = window.innerHeight;
+  LC.cvs.width = LC.W * LC.dpr;
+  LC.cvs.height = LC.H * LC.dpr;
+  LC.cvs.style.width = LC.W + 'px';
+  LC.cvs.style.height = LC.H + 'px';
+  LC.bgCvs.width = LC.W * LC.dpr;
+  LC.bgCvs.height = LC.H * LC.dpr;
+  LC.bgCvs.style.width = LC.W + 'px';
+  LC.bgCvs.style.height = LC.H + 'px';
+  LC.ctx.setTransform(LC.dpr, 0, 0, LC.dpr, 0, 0);
+  LC.bgCtx.setTransform(LC.dpr, 0, 0, LC.dpr, 0, 0);
+  if (LC.render) LC.render();
+  // 如果背景动画应该显示，则重新绘制静态背景
+  if (LC.showBgAnim) {
+    LC.drawStaticBg();
+  }
+};
+
+/* ========= 静态背景绘制（替代原来的无限动画循环） ========= */
+LC.drawStaticBg = function() {
+  if (!LC.showBgAnim) return;
+  if (!LC.bgCtx) return;
+  var w = LC.W, h = LC.H;
+  if (w === 0 || h === 0) return;
+  LC.bgCtx.setTransform(LC.dpr,0,0,LC.dpr,0,0);
+  LC.bgCtx.clearRect(0,0,w,h);
+  LC.bgCtx.fillStyle='#f5f0e8';
+  LC.bgCtx.fillRect(0,0,w,h);
+  LC.bgCtx.strokeStyle='rgba(200,190,175,0.22)';
+  LC.bgCtx.lineWidth=.5;
+  for(var x=0;x<w;x+=18){
+    LC.bgCtx.beginPath();
+    LC.bgCtx.moveTo(x,0);
+    LC.bgCtx.lineTo(x,h);
+    LC.bgCtx.stroke();
+  }
+  for(var y=0;y<h;y+=18){
+    LC.bgCtx.beginPath();
+    LC.bgCtx.moveTo(0,y);
+    LC.bgCtx.lineTo(w,y);
+    LC.bgCtx.stroke();
+  }
+};
+
+/* ========= 背景动画（兼容旧调用，现改为仅绘制一次） ========= */
+LC.animBg = function() {
+  LC.drawStaticBg();
 };
 
 /* ========= 初始化 Canvas DOM 引用 ========= */
@@ -175,4 +182,4 @@ LC.ctx=LC.cvs.getContext('2d');
 LC.bgCvs=document.getElementById('bgCanvas');
 LC.bgCtx=LC.bgCvs.getContext('2d');
 LC.resize();
-addEventListener('resize',LC.resize);
+window.addEventListener('resize', LC.resize);
