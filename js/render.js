@@ -1,29 +1,50 @@
-/* ========= 背景动画 ========= */
+/* ========= 背景动画（修复：使用画布实际尺寸绘制，确保全屏） ========= */
 LC.animBg=function(time){
   if(!LC.showBgAnim)return;
   var t2=time*.001;
-  var w2=LC.W/LC.dpr,h2=LC.H/LC.dpr;
+  // 获取画布逻辑尺寸（设备独立像素）
+  var w = LC.W, h = LC.H;
+  if (w === 0 || h === 0) {
+    requestAnimationFrame(LC.animBg);
+    return;
+  }
+  // 重置变换矩阵：将逻辑坐标映射到物理像素
   LC.bgCtx.setTransform(LC.dpr,0,0,LC.dpr,0,0);
-  LC.bgCtx.clearRect(0,0,w2,h2);
-  LC.bgCtx.fillStyle='#f5f0e8';LC.bgCtx.fillRect(0,0,w2,h2);
-  LC.bgCtx.strokeStyle='rgba(200,190,175,0.22)';LC.bgCtx.lineWidth=.5;
-  for(var x=0;x<w2;x+=18){LC.bgCtx.beginPath();LC.bgCtx.moveTo(x,0);LC.bgCtx.lineTo(x,h2);LC.bgCtx.stroke()}
-  for(var y=0;y<h2;y+=18){LC.bgCtx.beginPath();LC.bgCtx.moveTo(0,y);LC.bgCtx.lineTo(w2,y);LC.bgCtx.stroke()}
+  // 清除并填充背景色
+  LC.bgCtx.clearRect(0,0,w,h);
+  LC.bgCtx.fillStyle='#f5f0e8';
+  LC.bgCtx.fillRect(0,0,w,h);
+  // 绘制网格线
+  LC.bgCtx.strokeStyle='rgba(200,190,175,0.22)';
+  LC.bgCtx.lineWidth=.5;
+  for(var x=0;x<w;x+=18){
+    LC.bgCtx.beginPath();
+    LC.bgCtx.moveTo(x,0);
+    LC.bgCtx.lineTo(x,h);
+    LC.bgCtx.stroke();
+  }
+  for(var y=0;y<h;y+=18){
+    LC.bgCtx.beginPath();
+    LC.bgCtx.moveTo(0,y);
+    LC.bgCtx.lineTo(w,y);
+    LC.bgCtx.stroke();
+  }
   requestAnimationFrame(LC.animBg);
 };
 
 /* ========= 日历渲染 ========= */
 LC.render=function(){
+  if (!LC.ctx) return;
   LC.dayEventRects = [];
-  LC.ctx.setTransform(LC.dpr,0,0,LC.dpr,0,0);LC.ctx.clearRect(0,0,LC.W,LC.H);LC.drawCalBg();LC.drawGrid();
-
-  // 同步缩放滑块与比例文字
-  if(!LC.zoomSlider.isDragging) {
-      LC.zoomSlider.value = LC.zoomToSlider(LC.zoom);
-  }
-  var zoomLabel = document.getElementById('zoomLabel');
-  if(zoomLabel) zoomLabel.textContent = Math.round(LC.zoom * 100) + '%';
+  LC.ctx.setTransform(LC.dpr,0,0,LC.dpr,0,0);
+  LC.ctx.clearRect(0,0,LC.W,LC.H);
+  // 优化文本和图形渲染清晰度
+  LC.ctx.imageSmoothingEnabled = true;
+  LC.ctx.textRendering = 'geometricPrecision';
+  LC.drawCalBg();
+  LC.drawGrid();
 };
+
 LC.drawCalBg=function(){
   var t2=LC.clamp((LC.zoom-.3)/40,0,1);
   var r2=Math.round(LC.lerp(245,252,t2)),g=Math.round(LC.lerp(240,248,t2)),b=Math.round(LC.lerp(232,240,t2));
@@ -32,6 +53,7 @@ LC.drawCalBg=function(){
   for(var x=0;x<LC.W;x+=18){LC.ctx.beginPath();LC.ctx.moveTo(x,0);LC.ctx.lineTo(x,LC.H);LC.ctx.stroke()}
   for(var y=0;y<LC.H;y+=18){LC.ctx.beginPath();LC.ctx.moveTo(0,y);LC.ctx.lineTo(LC.W,y);LC.ctx.stroke()}
 };
+
 LC.drawGrid=function(){
   if(!LC.ud)return;
   var tl=LC.s2w(0,0),br=LC.s2w(LC.W,LC.H);
@@ -47,6 +69,7 @@ LC.drawGrid=function(){
   var dA=LC.fadeI(LC.zoom,LC.ZD_SHOW,LC.ZD_FULL);
   for(var row=r0;row<=r1;row++){for(var col=c0;col<=c1;col++){var i=row*LC.YPR+col;if(i>=LC.totalYrs)continue;LC.drawYear(LC.birthYr+i,LC.yrPos(i),yA,mA,mlA,ymA,dA)}}
 };
+
 LC.drawYear=function(year,wp,yA,mA,mlA,ymA,dA){
   var s=LC.w2s(wp.x,wp.y);var sw=LC.YW*LC.zoom,sh=LC.YH*LC.zoom;if(sw<1)return;
   var now=new Date(),isPast=year<now.getFullYear(),isCur=year===now.getFullYear();
@@ -62,6 +85,7 @@ LC.drawYear=function(year,wp,yA,mA,mlA,ymA,dA){
   if(mA>0.01){LC.ctx.globalAlpha=mA;for(var m=0;m<12;m++){var mp=LC.moPos(m);var ms=LC.w2s(wp.x+mp.x,wp.y+mp.y);var msw=LC.MW*LC.zoom,msh=LC.MH*LC.zoom;if(msw<2)continue;LC.drawMonth(year,m,ms.x,ms.y,msw,msh,mlA,ymA,dA)}LC.ctx.globalAlpha=1}
   LC.ctx.restore();
 };
+
 LC.drawMonth=function(year,m,sx,sy,sw,sh,mlA,ymA,dA){
   var mStr=String(m+1).padStart(2,'0');
   var isPast=LC.fmtDate(year,m+1,1)<LC.TODAY;
@@ -78,6 +102,7 @@ LC.drawMonth=function(year,m,sx,sy,sw,sh,mlA,ymA,dA){
   if(dA>0.01){LC.ctx.save();LC.ctx.globalAlpha=dA;var mi=LC.monthInfo(year,m);if(sw>35){var wfs=Math.max(7, Math.min(15, sw*.032));LC.ctx.font='400 '+wfs+'px "Playpen Sans","Zen Maru Gothic","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';LC.ctx.fillStyle='#b0a090';LC.ctx.textAlign='center';LC.ctx.textBaseline='top';for(var d=0;d<7;d++){var dp2=LC.dayPos(d,0);LC.ctx.fillText(wd[d],sx+dp2.x*LC.zoom+LC.DW*LC.zoom/2,sy+LC.HDR*.55*LC.zoom)}}
   for(var day=1;day<=mi.days;day++){var dow=(mi.dow1+day-1)%7,wr=Math.floor((mi.dow1+day-1)/7);var dpp=LC.dayPos(dow,wr);var dsx=sx+dpp.x*LC.zoom,dsy=sy+dpp.y*LC.zoom;var dsw=LC.DW*LC.zoom,dsh=LC.DH*LC.zoom;if(dsw<1)continue;LC.drawDay(LC.fmtDate(year,m,day),day,dsx,dsy,dsw,dsh)}LC.ctx.restore()}
 };
+
 LC.drawDay=function(ds,day,sx,sy,sw,sh){
   var isPast=ds<LC.TODAY,isToday=ds===LC.TODAY;
   var rad=Math.max(.5,Math.min(4,sw*.1));
