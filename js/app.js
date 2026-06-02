@@ -113,11 +113,10 @@ LC.optimizeMobileButtonText = function() {
   }
 };
 
-/* ========= 手机端将工具箱移动到控制栏内（可重复调用，确保创建） ========= */
+/* ========= 手机端将工具箱移动到控制栏内 ========= */
 LC.moveToolboxToControls = function() {
   if (window.innerWidth > 768) return;
   
-  // 如果已经存在移动端工具箱按钮，先移除旧的，重新创建（避免状态不一致）
   var existingBtn = document.getElementById('mobileToolboxBtn');
   var existingMenu = document.getElementById('mobileToolboxMenu');
   if (existingBtn) existingBtn.remove();
@@ -129,11 +128,9 @@ LC.moveToolboxToControls = function() {
   
   if (!toolboxContainer || !controls || !btnToday) return;
   
-  // 隐藏原始工具箱容器
   toolboxContainer.style.display = 'none';
   toolboxContainer.classList.add('moved-to-controls');
   
-  // 创建新按钮和菜单
   var newToolboxBtn = document.createElement('button');
   newToolboxBtn.id = 'mobileToolboxBtn';
   newToolboxBtn.className = 'ctrl-btn toolbox-ctrl-btn';
@@ -179,7 +176,6 @@ LC.moveToolboxToControls = function() {
     }
   };
   
-  // 外部点击关闭菜单
   function closeMenuOnOutsideClick(e) {
     if (!newMenu.classList.contains('active')) return;
     if (newMenu.contains(e.target) || newToolboxBtn.contains(e.target)) return;
@@ -421,6 +417,15 @@ LC.enterCalendar=function(){
   setTimeout(function(){ zoomHint.classList.add('hidden'); }, 4500);
   LC.zoom=Math.min(LC.W/(LC.gridW+80),LC.H/(LC.gridH+80))*.85;LC.tZoom=LC.zoom;
   LC.cx=LC.gridW/2;LC.cy=LC.gridH/2;LC.targetCx=LC.cx;LC.targetCy=LC.cy;
+  
+  // 请求通知权限（仅一次）
+  if (!LC.notificationPermissionGranted) {
+    LC.requestNotificationPermission();
+  }
+  // 启动提醒定时器
+  if (!LC.remindIntervals) {
+    LC.startReminderTimer();
+  }
 };
 
 /* ========= 初始化 ========= */
@@ -441,6 +446,7 @@ function init(){
         if(!e.type) e.type = 'p';
         if(e.isAllDay === undefined) e.isAllDay = false;
         if(!e.repeat) e.repeat = 'none';
+        if(e.remindBefore === undefined) e.remindBefore = 'none';
         if(!e.startTime && e.start) {
           var parts = e.start.split('T');
           e.startTime = parts[1] ? parts[1].substring(0,5) : '09:00';
@@ -466,18 +472,17 @@ function init(){
   }
   LC.refreshText();
   LC.optimizeMobileButtonText();
-  LC.moveToolboxToControls();   // 手机端创建工具箱
+  LC.moveToolboxToControls();
   LC.initMobileLangPicker();
   LC.animate();
 }
 init();
 
-/* ========= 响应窗口大小变化，修复移动/桌面切换残留，并确保工具箱重建 ========= */
+/* ========= 响应窗口大小变化 ========= */
 window.addEventListener('resize', function() {
   LC.optimizeMobileButtonText();
   
   if (window.innerWidth > 768) {
-    // 切换到桌面模式：移除所有移动端特有元素
     var mobileLangBtn = document.getElementById('mobileLangBtn');
     var mobileLangMenu = document.getElementById('mobileLangMenu');
     var mobileToolboxBtn = document.getElementById('mobileToolboxBtn');
@@ -488,14 +493,12 @@ window.addEventListener('resize', function() {
     if (mobileToolboxBtn) mobileToolboxBtn.remove();
     if (mobileToolboxMenu) mobileToolboxMenu.remove();
     
-    // 恢复桌面端工具箱容器显示
     var toolboxContainer = document.getElementById('toolboxContainer');
     if (toolboxContainer) {
       toolboxContainer.style.display = 'flex';
       toolboxContainer.classList.remove('moved-to-controls');
     }
   } else {
-    // 切换到移动模式：先清理可能残留的旧元素，再重新创建
     var oldLangBtn = document.getElementById('mobileLangBtn');
     var oldLangMenu = document.getElementById('mobileLangMenu');
     var oldToolboxBtn = document.getElementById('mobileToolboxBtn');
@@ -505,12 +508,10 @@ window.addEventListener('resize', function() {
     if (oldToolboxBtn) oldToolboxBtn.remove();
     if (oldToolboxMenu) oldToolboxMenu.remove();
     
-    // 重新初始化移动端组件
     LC.moveToolboxToControls();
     LC.initMobileLangPicker();
   }
   
-  // 如果当前在输入页面且需要背景，重绘背景
   var inputPage = document.getElementById('inputPage');
   if (inputPage && !inputPage.classList.contains('hidden') && LC.showBgAnim) {
     LC.drawStaticBg();
@@ -532,7 +533,7 @@ document.addEventListener('click', function(e) {
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
-    a.download = 'life_calendar_backup.json';
+    a.download = LC.getExportFileName();
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -674,7 +675,7 @@ document.addEventListener('click', function(e) {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'life_calendar_backup.json';
+      a.download = LC.getExportFileName();
       a.click();
       URL.revokeObjectURL(url);
     });
