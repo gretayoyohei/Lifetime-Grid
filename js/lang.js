@@ -22,6 +22,7 @@ LC.langOrder = [
 ];
 
 /* ========= 语言包 ========= */
+
 // 英语
 LC.defLang('en', {
   nm: 'English', ct: 'Customize My Life Calendar', cs: 'Fill in your info, zoom to travel through your life',
@@ -51,7 +52,22 @@ LC.defLang('en', {
   import_suggestion: 'It is recommended to export current events as backup before importing.',
   import_confirm: 'Confirm Import', import_cancel: 'Cancel', import_success: 'Import successful! Page will refresh.',
   import_format_error: 'Invalid file format. Please select a valid life calendar backup file.',
-  import_parse_error: 'Parse failed: ', todo_title: 'To-Do List', todo_empty: 'No pending tasks'
+  import_parse_error: 'Parse failed: ', todo_title: 'To-Do List', todo_empty: 'No pending tasks',
+  // 提醒相关
+  remind: 'Remind',
+  remind_none: 'No reminder',
+  remind_on_time: 'On time',
+  remind_5m: '5 minutes before',
+  remind_15m: '15 minutes before',
+  remind_30m: '30 minutes before',
+  remind_1h: '1 hour before',
+  remind_2h: '2 hours before',
+  remind_1d: '1 day before',
+  remind_2d: '2 days before',
+  remind_3d: '3 days before',
+  remind_1w: '1 week before',
+  remind_body: '"{title}" will start at {time} on {date}',
+  remind_body_all_day: '"{title}" is an all-day event on {date}'
 });
 
 // 简体中文
@@ -82,7 +98,22 @@ LC.defLang('zh-CN', {
   import_suggestion: '建议在导入前先「导出日程」备份现有数据。',
   import_confirm: '确认导入', import_cancel: '取消', import_success: '导入成功！页面将刷新',
   import_format_error: '文件格式不正确，请选择正确的人生日历备份文件',
-  import_parse_error: '解析失败：', todo_title: '待办日程', todo_empty: '暂无待办日程'
+  import_parse_error: '解析失败：', todo_title: '待办日程', todo_empty: '暂无待办日程',
+  // 提醒相关
+  remind: '提醒',
+  remind_none: '无提醒',
+  remind_on_time: '准时',
+  remind_5m: '5分钟前',
+  remind_15m: '15分钟前',
+  remind_30m: '30分钟前',
+  remind_1h: '1小时前',
+  remind_2h: '2小时前',
+  remind_1d: '1天前',
+  remind_2d: '2天前',
+  remind_3d: '3天前',
+  remind_1w: '1周前',
+  remind_body: '“{title}” 将于 {date} {time} 开始',
+  remind_body_all_day: '“{title}” 是 {date} 的全天日程'
 });
 
 // 繁体中文
@@ -113,7 +144,22 @@ LC.defLang('zh-TW', {
   import_suggestion: '建議在匯入前先「匯出日程」備份現有數據。',
   import_confirm: '確認匯入', import_cancel: '取消', import_success: '匯入成功！頁面將刷新',
   import_format_error: '文件格式不正確，請選擇正確的人生日曆備份文件',
-  import_parse_error: '解析失敗：', todo_title: '待辦日程', todo_empty: '暫無待辦日程'
+  import_parse_error: '解析失敗：', todo_title: '待辦日程', todo_empty: '暫無待辦日程',
+  // 提醒相关
+  remind: '提醒',
+  remind_none: '無提醒',
+  remind_on_time: '準時',
+  remind_5m: '5分鐘前',
+  remind_15m: '15分鐘前',
+  remind_30m: '30分鐘前',
+  remind_1h: '1小時前',
+  remind_2h: '2小時前',
+  remind_1d: '1天前',
+  remind_2d: '2天前',
+  remind_3d: '3天前',
+  remind_1w: '1週前',
+  remind_body: '「{title}」 將於 {date} {time} 開始',
+  remind_body_all_day: '「{title}」 是 {date} 的全天日程'
 });
 
 // 西班牙语
@@ -145,7 +191,22 @@ LC.defLang('es', {
   import_suggestion: 'Se recomienda exportar los eventos actuales como respaldo antes de importar.',
   import_confirm: 'Confirmar Importación', import_cancel: 'Cancelar', import_success: '¡Importación exitosa! La página se actualizará',
   import_format_error: 'Formato de archivo inválido. Selecciona un archivo de respaldo válido.',
-  import_parse_error: 'Error de análisis: ', todo_title: 'Lista de Tareas', todo_empty: 'No hay tareas pendientes'
+  import_parse_error: 'Error de análisis: ', todo_title: 'Lista de Tareas', todo_empty: 'No hay tareas pendientes',
+  // 提醒相关
+  remind: 'Recordar',
+  remind_none: 'Sin recordatorio',
+  remind_on_time: 'En punto',
+  remind_5m: '5 minutos antes',
+  remind_15m: '15 minutos antes',
+  remind_30m: '30 minutos antes',
+  remind_1h: '1 hora antes',
+  remind_2h: '2 horas antes',
+  remind_1d: '1 día antes',
+  remind_2d: '2 días antes',
+  remind_3d: '3 días antes',
+  remind_1w: '1 semana antes',
+  remind_body: '"{title}" comenzará a las {time} del {date}',
+  remind_body_all_day: '"{title}" es un evento de día completo el {date}'
 });
 
 // 日语
@@ -177,7 +238,22 @@ LC.defLang('ja', {
   import_suggestion: 'インポートする前に、現在の予定をエクスポートしてバックアップすることをお勧めします。',
   import_confirm: 'インポートを確認', import_cancel: 'キャンセル', import_success: 'インポート成功！ページをリフレッシュします',
   import_format_error: 'ファイル形式が正しくありません。有効なバックアップファイルを選択してください。',
-  import_parse_error: '解析失敗：', todo_title: 'ToDoリスト', todo_empty: '未完了のタスクはありません'
+  import_parse_error: '解析失敗：', todo_title: 'ToDoリスト', todo_empty: '未完了のタスクはありません',
+  // 提醒相关
+  remind: 'リマインダー',
+  remind_none: 'リマインダーなし',
+  remind_on_time: 'ちょうど',
+  remind_5m: '5分前',
+  remind_15m: '15分前',
+  remind_30m: '30分前',
+  remind_1h: '1時間前',
+  remind_2h: '2時間前',
+  remind_1d: '1日前',
+  remind_2d: '2日前',
+  remind_3d: '3日前',
+  remind_1w: '1週間前',
+  remind_body: '「{title}」は{date}の{time}に開始します',
+  remind_body_all_day: '「{title}」は{date}の終日イベントです'
 });
 
 // 韩语
@@ -209,7 +285,22 @@ LC.defLang('ko', {
   import_suggestion: '가져오기 전에 현재 일정을 내보내기하여 백업하는 것이 좋습니다.',
   import_confirm: '가져오기 확인', import_cancel: '취소', import_success: '가져오기 성공! 페이지가 새로고침됩니다',
   import_format_error: '파일 형식이 올바르지 않습니다. 유효한 백업 파일을 선택하세요.',
-  import_parse_error: '분석 실패: ', todo_title: '할 일 목록', todo_empty: '대기 중인 작업 없음'
+  import_parse_error: '분석 실패: ', todo_title: '할 일 목록', todo_empty: '대기 중인 작업 없음',
+  // 提醒相关
+  remind: '알림',
+  remind_none: '알림 없음',
+  remind_on_time: '정시',
+  remind_5m: '5분 전',
+  remind_15m: '15분 전',
+  remind_30m: '30분 전',
+  remind_1h: '1시간 전',
+  remind_2h: '2시간 전',
+  remind_1d: '1일 전',
+  remind_2d: '2일 전',
+  remind_3d: '3일 전',
+  remind_1w: '1주일 전',
+  remind_body: '"{title}"이(가) {date} {time}에 시작합니다',
+  remind_body_all_day: '"{title}"은(는) {date}의 종일 일정입니다'
 });
 
 // 法语
@@ -241,7 +332,22 @@ LC.defLang('fr', {
   import_suggestion: 'Il est recommandé d\'exporter les événements actuels comme sauvegarde avant d\'importer.',
   import_confirm: 'Confirmer l\'importation', import_cancel: 'Annuler', import_success: 'Importation réussie ! La page va être actualisée',
   import_format_error: 'Format de fichier invalide. Veuillez sélectionner un fichier de sauvegarde valide.',
-  import_parse_error: 'Échec de l\'analyse : ', todo_title: 'Liste de tâches', todo_empty: 'Aucune tâche en attente'
+  import_parse_error: 'Échec de l\'analyse : ', todo_title: 'Liste de tâches', todo_empty: 'Aucune tâche en attente',
+  // 提醒相关
+  remind: 'Rappeler',
+  remind_none: 'Pas de rappel',
+  remind_on_time: 'À l\'heure',
+  remind_5m: '5 minutes avant',
+  remind_15m: '15 minutes avant',
+  remind_30m: '30 minutes avant',
+  remind_1h: '1 heure avant',
+  remind_2h: '2 heures avant',
+  remind_1d: '1 jour avant',
+  remind_2d: '2 jours avant',
+  remind_3d: '3 jours avant',
+  remind_1w: '1 semaine avant',
+  remind_body: '"{title}" commence à {time} le {date}',
+  remind_body_all_day: '"{title}" est un événement toute la journée le {date}'
 });
 
 // 德语
@@ -273,7 +379,22 @@ LC.defLang('de', {
   import_suggestion: 'Es wird empfohlen, vor dem Import die aktuellen Ereignisse zu exportieren.',
   import_confirm: 'Import bestätigen', import_cancel: 'Abbrechen', import_success: 'Import erfolgreich! Seite wird neu geladen',
   import_format_error: 'Ungültiges Dateiformat. Bitte wählen Sie eine gültige Backup-Datei.',
-  import_parse_error: 'Parse-Fehler: ', todo_title: 'Aufgabenliste', todo_empty: 'Keine ausstehenden Aufgaben'
+  import_parse_error: 'Parse-Fehler: ', todo_title: 'Aufgabenliste', todo_empty: 'Keine ausstehenden Aufgaben',
+  // 提醒相关
+  remind: 'Erinnern',
+  remind_none: 'Keine Erinnerung',
+  remind_on_time: 'Pünktlich',
+  remind_5m: '5 Minuten vorher',
+  remind_15m: '15 Minuten vorher',
+  remind_30m: '30 Minuten vorher',
+  remind_1h: '1 Stunde vorher',
+  remind_2h: '2 Stunden vorher',
+  remind_1d: '1 Tag vorher',
+  remind_2d: '2 Tage vorher',
+  remind_3d: '3 Tage vorher',
+  remind_1w: '1 Woche vorher',
+  remind_body: '"{title}" beginnt am {date} um {time}',
+  remind_body_all_day: '"{title}" ist eine ganztägige Veranstaltung am {date}'
 });
 
 // 意大利语
@@ -305,7 +426,22 @@ LC.defLang('it', {
   import_suggestion: 'Si consiglia di esportare gli eventi attuali come backup prima di importare.',
   import_confirm: 'Conferma importazione', import_cancel: 'Annulla', import_success: 'Importazione riuscita! La pagina verrà aggiornata',
   import_format_error: 'Formato file non valido. Seleziona un file di backup valido.',
-  import_parse_error: 'Errore di analisi: ', todo_title: 'Elenco delle cose da fare', todo_empty: 'Nessuna attività in sospeso'
+  import_parse_error: 'Errore di analisi: ', todo_title: 'Elenco delle cose da fare', todo_empty: 'Nessuna attività in sospeso',
+  // 提醒相关
+  remind: 'Promemoria',
+  remind_none: 'Nessun promemoria',
+  remind_on_time: 'In orario',
+  remind_5m: '5 minuti prima',
+  remind_15m: '15 minuti prima',
+  remind_30m: '30 minuti prima',
+  remind_1h: '1 ora prima',
+  remind_2h: '2 ore prima',
+  remind_1d: '1 giorno prima',
+  remind_2d: '2 giorni prima',
+  remind_3d: '3 giorni prima',
+  remind_1w: '1 settimana prima',
+  remind_body: '"{title}" inizierà alle {time} del {date}',
+  remind_body_all_day: '"{title}" è un evento di giornata intera il {date}'
 });
 
 // 葡萄牙语
@@ -337,7 +473,22 @@ LC.defLang('pt', {
   import_suggestion: 'Recomenda-se exportar os eventos atuais como backup antes de importar.',
   import_confirm: 'Confirmar Importação', import_cancel: 'Cancelar', import_success: 'Importação bem-sucedida! A página será atualizada',
   import_format_error: 'Formato de arquivo inválido. Selecione um arquivo de backup válido.',
-  import_parse_error: 'Falha na análise: ', todo_title: 'Lista de Tarefas', todo_empty: 'Nenhuma tarefa pendente'
+  import_parse_error: 'Falha na análise: ', todo_title: 'Lista de Tarefas', todo_empty: 'Nenhuma tarefa pendente',
+  // 提醒相关
+  remind: 'Lembrar',
+  remind_none: 'Sem lembrete',
+  remind_on_time: 'Na hora',
+  remind_5m: '5 minutos antes',
+  remind_15m: '15 minutos antes',
+  remind_30m: '30 minutos antes',
+  remind_1h: '1 hora antes',
+  remind_2h: '2 horas antes',
+  remind_1d: '1 dia antes',
+  remind_2d: '2 dias antes',
+  remind_3d: '3 dias antes',
+  remind_1w: '1 semana antes',
+  remind_body: '"{title}" começará às {time} do dia {date}',
+  remind_body_all_day: '"{title}" é um evento de dia inteiro em {date}'
 });
 
 // 俄语
@@ -369,7 +520,22 @@ LC.defLang('ru', {
   import_suggestion: 'Рекомендуется экспортировать текущие события в качестве резервной копии перед импортом.',
   import_confirm: 'Подтвердить импорт', import_cancel: 'Отмена', import_success: 'Импорт успешен! Страница будет обновлена',
   import_format_error: 'Неверный формат файла. Пожалуйста, выберите действительный файл резервной копии.',
-  import_parse_error: 'Ошибка анализа: ', todo_title: 'Список дел', todo_empty: 'Нет незавершённых задач'
+  import_parse_error: 'Ошибка анализа: ', todo_title: 'Список дел', todo_empty: 'Нет незавершённых задач',
+  // 提醒相关
+  remind: 'Напоминание',
+  remind_none: 'Нет напоминания',
+  remind_on_time: 'Точно вовремя',
+  remind_5m: 'За 5 минут',
+  remind_15m: 'За 15 минут',
+  remind_30m: 'За 30 минут',
+  remind_1h: 'За 1 час',
+  remind_2h: 'За 2 часа',
+  remind_1d: 'За 1 день',
+  remind_2d: 'За 2 дня',
+  remind_3d: 'За 3 дня',
+  remind_1w: 'За 1 неделю',
+  remind_body: '"{title}" начнётся в {time} {date}',
+  remind_body_all_day: '"{title}" — это событие на весь день {date}'
 });
 
 // 阿拉伯语
@@ -401,7 +567,22 @@ LC.defLang('ar', {
   import_suggestion: 'يوصى بتصدير الأحداث الحالية كنسخة احتياطية قبل الاستيراد.',
   import_confirm: 'تأكيد الاستيراد', import_cancel: 'إلغاء', import_success: 'تم الاستيراد بنجاح! سيتم تحديث الصفحة',
   import_format_error: 'تنسيق ملف غير صالح. يرجى تحديد ملف نسخ احتياطي صالح.',
-  import_parse_error: 'فشل التحليل: ', todo_title: 'قائمة المهام', todo_empty: 'لا توجد مهام معلقة'
+  import_parse_error: 'فشل التحليل: ', todo_title: 'قائمة المهام', todo_empty: 'لا توجد مهام معلقة',
+  // 提醒相关
+  remind: 'تذكير',
+  remind_none: 'لا تذكير',
+  remind_on_time: 'في الموعد',
+  remind_5m: 'قبل 5 دقائق',
+  remind_15m: 'قبل 15 دقيقة',
+  remind_30m: 'قبل 30 دقيقة',
+  remind_1h: 'قبل ساعة',
+  remind_2h: 'قبل ساعتين',
+  remind_1d: 'قبل يوم',
+  remind_2d: 'قبل يومين',
+  remind_3d: 'قبل 3 أيام',
+  remind_1w: 'قبل أسبوع',
+  remind_body: 'سيبدأ "{title}" في {time} بتاريخ {date}',
+  remind_body_all_day: '"{title}" هو حدث ليوم كامل في {date}'
 });
 
 // 印地语
@@ -433,7 +614,22 @@ LC.defLang('hi', {
   import_suggestion: 'आयात करने से पहले वर्तमान घटनाओं को बैकअप के रूप में निर्यात करने की सलाह दी जाती है।',
   import_confirm: 'आयात की पुष्टि करें', import_cancel: 'रद्द करें', import_success: 'आयात सफल! पृष्ठ ताज़ा हो जाएगा',
   import_format_error: 'अमान्य फ़ाइल स्वरूप। कृपया एक मान्य बैकअप फ़ाइल चुनें।',
-  import_parse_error: 'पार्स विफल: ', todo_title: 'कार्य सूची', todo_empty: 'कोई लंबित कार्य नहीं'
+  import_parse_error: 'पार्स विफल: ', todo_title: 'कार्य सूची', todo_empty: 'कोई लंबित कार्य नहीं',
+  // 提醒相关
+  remind: 'याद दिलाएं',
+  remind_none: 'कोई याद दिलाना नहीं',
+  remind_on_time: 'सही समय पर',
+  remind_5m: '5 मिनट पहले',
+  remind_15m: '15 मिनट पहले',
+  remind_30m: '30 मिनट पहले',
+  remind_1h: '1 घंटा पहले',
+  remind_2h: '2 घंटे पहले',
+  remind_1d: '1 दिन पहले',
+  remind_2d: '2 दिन पहले',
+  remind_3d: '3 दिन पहले',
+  remind_1w: '1 सप्ताह पहले',
+  remind_body: '"{title}" {date} को {time} पर शुरू होगा',
+  remind_body_all_day: '"{title}" {date} को पूरे दिन का आयोजन है'
 });
 
 // 泰语
@@ -465,7 +661,22 @@ LC.defLang('th', {
   import_suggestion: 'แนะนำให้ส่งออกกิจกรรมปัจจุบันเป็นข้อมูลสำรองก่อนนำเข้า',
   import_confirm: 'ยืนยันการนำเข้า', import_cancel: 'ยกเลิก', import_success: 'นำเข้าสำเร็จ! หน้านี้จะรีเฟรช',
   import_format_error: 'รูปแบบไฟล์ไม่ถูกต้อง กรุณาเลือกไฟล์สำรองที่ถูกต้อง',
-  import_parse_error: 'การวิเคราะห์ล้มเหลว: ', todo_title: 'รายการสิ่งที่ต้องทำ', todo_empty: 'ไม่มีงานค้าง'
+  import_parse_error: 'การวิเคราะห์ล้มเหลว: ', todo_title: 'รายการสิ่งที่ต้องทำ', todo_empty: 'ไม่มีงานค้าง',
+  // 提醒相关
+  remind: 'เตือน',
+  remind_none: 'ไม่ต้องเตือน',
+  remind_on_time: 'ตรงเวลา',
+  remind_5m: '5 นาทีก่อน',
+  remind_15m: '15 นาทีก่อน',
+  remind_30m: '30 นาทีก่อน',
+  remind_1h: '1 ชั่วโมงก่อน',
+  remind_2h: '2 ชั่วโมงก่อน',
+  remind_1d: '1 วันก่อน',
+  remind_2d: '2 วันก่อน',
+  remind_3d: '3 วันก่อน',
+  remind_1w: '1 สัปดาห์ก่อน',
+  remind_body: '"{title}" จะเริ่มในเวลา {time} วันที่ {date}',
+  remind_body_all_day: '"{title}" เป็นกิจกรรมทั้งวันในวันที่ {date}'
 });
 
 /* ========= 语言系统 UI ========= */
