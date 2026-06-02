@@ -14,7 +14,7 @@ LC.openSidebar=function(ds){
   var dateLabel = parts[0] + '/' + parts[1];
   var dayLabel = parseInt(parts[2]);
   
-  // 计算星期几（支持多语言）
+  // ===== 硬编码星期映射（未使用统一函数）=====
   var weekdaysMap = {
     'zh-CN': ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
     'zh-TW': ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
@@ -34,6 +34,7 @@ LC.openSidebar=function(ds){
   var wdList = weekdaysMap[LC.curLang] || weekdaysMap['zh-CN'];
   var targetDate = new Date(ds + 'T00:00:00');
   var weekdayName = wdList[targetDate.getDay()];
+  // ========================================
   
   header.innerHTML = '<div class="sb-info" style="text-align:center;">'+dateLabel+'</div><div class="sb-date" style="text-align:center; display:flex; align-items:baseline; justify-content:center; gap:8px;">'+dayLabel+'<span style="font-size:0.9rem; font-weight:normal; color:#b0a090;">'+weekdayName+'</span></div>';
 
@@ -42,7 +43,9 @@ LC.openSidebar=function(ds){
   if(allDayEvs.length){
     allDayEvs.forEach(function(e){
       var c = LC.EC[e.type]||LC.EC.o;
-      fixedHtml += '<div class="all-day-event" data-id="'+e.id+'" style="background:'+c+'44; border-left:3px solid '+c+'">'+e.title+'</div>';
+      // 转义标题
+      var safeTitle = LC.escapeHtml(e.title);
+      fixedHtml += '<div class="all-day-event" data-id="'+e.id+'" style="background:'+c+'44; border-left:3px solid '+c+'">'+safeTitle+'</div>';
     });
   } else {
     fixedHtml += '<div style="font-size:.78rem;color:#b0a090;text-align:center;padding:4px 0" onclick="openModal(\''+ds+'\')">+'+LC.t('et','New Event')+'</div>';
@@ -96,10 +99,14 @@ LC.openSidebar=function(ds){
     var widthPercent = 100 / layout.totalCols;
     var leftPercent = layout.col * widthPercent;
 
+    // 转义标题和时间
+    var safeTitle = LC.escapeHtml(ev.title);
+    var safeStartTime = LC.escapeHtml(ev.startTime || '');
+    
     gridHtml += '<div class="time-event-block" data-id="'+ev.id+'" data-startdate="'+ev.startDate+'" style="top:'+top+'px; height:'+height+'px; left:calc(65px + (100% - 75px) * '+leftPercent/100+'); width:calc((100% - 75px) * '+widthPercent/100+' - 4px); background:'+c+'33; border-color:'+c+';">';
     gridHtml += '<div class="resize-handle top"></div>';
-    gridHtml += '<div class="ev-title">'+ev.title+'</div>';
-    gridHtml += '<div class="ev-time">'+ev.startTime+'</div>';
+    gridHtml += '<div class="ev-title">'+safeTitle+'</div>';
+    gridHtml += '<div class="ev-time">'+safeStartTime+'</div>';
     gridHtml += '<div class="resize-handle bottom"></div>';
     gridHtml += '</div>';
   });
@@ -212,7 +219,7 @@ LC.layoutEvents=function(events) {
   return evLayouts;
 };
 
-/* ========= 待办列表渲染（不显示时间，支持多语言） ========= */
+/* ========= 待办列表渲染 ========= */
 LC.renderTodoList = function(ds) {
   var todoList = document.getElementById('todoList');
   if (!todoList) return;
@@ -223,7 +230,6 @@ LC.renderTodoList = function(ds) {
     return;
   }
   
-  // 构建待办项数组，包含完成状态
   var todoItems = evs.map(function(ev) {
     var completed = LC.getTodoCompleted(ev.id, ds);
     return {
@@ -231,39 +237,36 @@ LC.renderTodoList = function(ds) {
       title: ev.title,
       type: ev.type,
       completed: completed,
-      startTime: ev.startTime || '23:59', // 用于排序
+      startTime: ev.startTime || '23:59',
       isAllDay: ev.isAllDay
     };
   });
   
-  // 排序：未完成的在上方，已完成的在底部；未完成中按时间排序（全天日程用00:00）
   todoItems.sort(function(a, b) {
     if (a.completed !== b.completed) {
       return a.completed ? 1 : -1;
     }
-    // 未完成组：按开始时间排序，全天日程排最前
     if (!a.completed) {
       var timeA = a.isAllDay ? '00:00' : (a.startTime || '23:59');
       var timeB = b.isAllDay ? '00:00' : (b.startTime || '23:59');
       return timeA.localeCompare(timeB);
     }
-    // 已完成组：按标题排序
     return a.title.localeCompare(b.title);
   });
   
-  // 生成 HTML（不显示时间）
   var html = '';
   todoItems.forEach(function(item) {
     var c = LC.EC[item.type] || LC.EC.o;
     var completedClass = item.completed ? 'completed' : '';
     var checkedAttr = item.completed ? 'checked' : '';
+    var safeTitle = LC.escapeHtml(item.title);
     
     html += `
       <div class="todo-item ${completedClass}" data-id="${item.id}" data-date="${ds}">
         <input type="checkbox" class="todo-checkbox" ${checkedAttr}>
         <div class="todo-type-dot" style="background: ${c};"></div>
         <div class="todo-content">
-          <span class="todo-title">${LC.escapeHtml(item.title)}</span>
+          <span class="todo-title">${safeTitle}</span>
         </div>
       </div>
     `;
@@ -271,7 +274,6 @@ LC.renderTodoList = function(ds) {
   
   todoList.innerHTML = html;
   
-  // 绑定复选框事件
   var checkboxes = todoList.querySelectorAll('.todo-checkbox');
   checkboxes.forEach(function(cb) {
     cb.addEventListener('change', function(e) {
@@ -280,26 +282,20 @@ LC.renderTodoList = function(ds) {
       var eventId = todoItem.dataset.id;
       var date = todoItem.dataset.date;
       var completed = this.checked;
-      
       LC.setTodoCompleted(eventId, date, completed);
-      // 重新渲染待办列表（保持排序）
       LC.renderTodoList(date);
     });
   });
   
-  // 绑定点击待办项打开编辑弹窗
   var todoItemsDivs = todoList.querySelectorAll('.todo-item');
   todoItemsDivs.forEach(function(item) {
     item.addEventListener('click', function(e) {
-      // 如果点击的是复选框，不触发编辑
       if (e.target.classList.contains('todo-checkbox')) return;
       e.stopPropagation();
       var eventId = this.dataset.id;
       var date = this.dataset.date;
       LC.openModal(date, null, eventId);
     });
-    
-    // 右键菜单
     item.addEventListener('contextmenu', function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -311,7 +307,6 @@ LC.renderTodoList = function(ds) {
   });
 };
 
-// 添加防XSS的转义函数
 LC.escapeHtml = function(str) {
   if (!str) return '';
   return str.replace(/[&<>]/g, function(m) {
@@ -322,7 +317,7 @@ LC.escapeHtml = function(str) {
   });
 };
 
-/* ========= 分割条拖拽逻辑 ========= */
+/* ========= 分割条拖拽逻辑（优化 localStorage 写入） ========= */
 LC.initSplitBar = function() {
   var splitBar = document.getElementById('splitBar');
   var timelineContainer = document.getElementById('timelineContainer');
@@ -335,65 +330,69 @@ LC.initSplitBar = function() {
   var startY = 0;
   var startTimelineHeight = 0;
   var containerHeight = 0;
+  var pendingPercent = null;
   
-  splitBar.addEventListener('mousedown', function(e) {
+  function startDrag(e) {
     e.preventDefault();
     isDragging = true;
-    startY = e.clientY;
+    startY = e.clientY !== undefined ? e.clientY : (e.touches ? e.touches[0].clientY : 0);
     containerHeight = resizableContainer.offsetHeight;
     startTimelineHeight = timelineContainer.offsetHeight;
-    
+    pendingPercent = null;
     document.body.style.cursor = 'row-resize';
     document.body.style.userSelect = 'none';
-  });
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+    document.addEventListener('touchmove', onDragMove, { passive: false });
+    document.addEventListener('touchend', onDragEnd);
+  }
   
-  document.addEventListener('mousemove', function(e) {
+  function onDragMove(e) {
     if (!isDragging) return;
-    
-    var deltaY = e.clientY - startY;
+    e.preventDefault();
+    var currentY = e.clientY !== undefined ? e.clientY : (e.touches ? e.touches[0].clientY : 0);
+    var deltaY = currentY - startY;
     var newTimelineHeight = startTimelineHeight + deltaY;
-    
-    // 限制最小高度
     var minTimelineHeight = 100;
     var minTodoHeight = 100;
     var maxTimelineHeight = containerHeight - minTodoHeight;
-    
     newTimelineHeight = Math.max(minTimelineHeight, Math.min(maxTimelineHeight, newTimelineHeight));
-    
     var timelinePercent = (newTimelineHeight / containerHeight) * 100;
-    var todoPercent = 100 - timelinePercent;
-    
     timelineContainer.style.flex = '0 0 ' + timelinePercent + '%';
-    todoContainer.style.flex = '0 0 ' + todoPercent + '%';
-    
-    // 保存比例
-    localStorage.setItem(LC.SPLIT_RATIO_KEY, timelinePercent);
-  });
+    todoContainer.style.flex = '0 0 ' + (100 - timelinePercent) + '%';
+    pendingPercent = timelinePercent;
+  }
   
-  document.addEventListener('mouseup', function() {
+  function onDragEnd() {
     if (isDragging) {
+      if (pendingPercent !== null) {
+        localStorage.setItem(LC.SPLIT_RATIO_KEY, pendingPercent);
+      }
       isDragging = false;
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('touchend', onDragEnd);
     }
-  });
+  }
+  
+  splitBar.addEventListener('mousedown', startDrag);
+  splitBar.addEventListener('touchstart', startDrag, { passive: false });
 };
 
 LC.restoreSplitRatio = function() {
   var timelineContainer = document.getElementById('timelineContainer');
   var todoContainer = document.getElementById('todoContainer');
   var resizableContainer = document.getElementById('resizableContainer');
-  
   if (!timelineContainer || !todoContainer || !resizableContainer) return;
-  
   var savedRatio = localStorage.getItem(LC.SPLIT_RATIO_KEY);
   if (savedRatio !== null) {
     var timelinePercent = parseFloat(savedRatio);
-    var todoPercent = 100 - timelinePercent;
     timelineContainer.style.flex = '0 0 ' + timelinePercent + '%';
-    todoContainer.style.flex = '0 0 ' + todoPercent + '%';
+    todoContainer.style.flex = '0 0 ' + (100 - timelinePercent) + '%';
   } else {
-    // 默认 60% / 40%
     timelineContainer.style.flex = '0 0 60%';
     todoContainer.style.flex = '0 0 40%';
   }
@@ -401,16 +400,12 @@ LC.restoreSplitRatio = function() {
 
 /* ========= 拖拽事件 ========= */
 LC.bindDragEvent=function(block, ds) {
-  var isContextMenuTriggered = false;
-  
   block.addEventListener('mousedown', function(e) {
     if(e.button === 2) return;
-    
     e.preventDefault();
     e.stopPropagation();
     var isTopHandle = e.target.classList.contains('top');
     var isBottomHandle = e.target.classList.contains('bottom');
-
     LC.dragState = {
       type: isTopHandle ? 'resize-top' : (isBottomHandle ? 'resize-bottom' : 'move'),
       evId: block.dataset.id,
@@ -422,16 +417,12 @@ LC.bindDragEvent=function(block, ds) {
       ds: ds,
       moved: false
     };
-
     document.addEventListener('mousemove', LC.handleDragMove);
     document.addEventListener('mouseup', LC.handleDragEnd);
   });
-
   block.addEventListener('contextmenu', function(e){
     e.preventDefault();
     e.stopPropagation();
-    isContextMenuTriggered = true;
-    setTimeout(function() { isContextMenuTriggered = false; }, 100);
     var evId = block.dataset.id;
     document.getElementById('infoPopover').style.display = 'none';
     LC.showCtxMenu(e.clientX, e.clientY, evId, ds);
@@ -443,7 +434,6 @@ LC.handleDragMove=function(e) {
   var deltaY = e.clientY - LC.dragState.startY;
   var deltaX = Math.abs(e.clientX - LC.dragState.startX);
   if(Math.abs(deltaY) > 2 || deltaX > 2) LC.dragState.moved = true;
-
   if(LC.dragState.type === 'move') {
     var newTop = LC.dragState.origTop + deltaY;
     LC.dragState.block.style.top = newTop + 'px';
@@ -463,9 +453,7 @@ LC.handleDragMove=function(e) {
 
 LC.handleDragEnd=function(e) {
   if(!LC.dragState) return;
-  
   var ev = LC.ud.events.find(function(ev){ return ev.id === LC.dragState.evId; });
-  
   if(!LC.dragState.moved) {
     var ctxMenu = document.getElementById('ctxMenu');
     if(ev && !ev.isAllDay && ctxMenu.style.display !== 'block') {
@@ -476,11 +464,9 @@ LC.handleDragEnd=function(e) {
     document.removeEventListener('mouseup', LC.handleDragEnd);
     return;
   }
-
   if(ev) {
     var deltaY = e.clientY - LC.dragState.startY;
     var deltaMin = Math.round(deltaY);
-    
     if(LC.dragState.type === 'move') {
       var duration = LC.dragState.origHeight;
       ev.startMin = LC.clamp(LC.dragState.origTop + deltaMin, 0, 1440 - duration);
@@ -491,17 +477,14 @@ LC.handleDragEnd=function(e) {
     } else if(LC.dragState.type === 'resize-bottom') {
       ev.endMin = LC.clamp(LC.dragState.origTop + LC.dragState.origHeight + deltaMin, ev.startMin + 15, 1440);
     }
-
     ev.startTime = String(Math.floor(ev.startMin / 60)).padStart(2,'0') + ':' + String(ev.startMin % 60).padStart(2,'0');
     ev.endTime = String(Math.floor(ev.endMin / 60)).padStart(2,'0') + ':' + String(ev.endMin % 60).padStart(2,'0');
-
     LC.save();
     var scrollPart = document.getElementById('sidebarScrollPart');
     var prevScroll = scrollPart.scrollTop;
     LC.openSidebar(LC.dragState.ds);
     scrollPart.scrollTop = prevScroll;
   }
-
   LC.dragState = null;
   document.removeEventListener('mousemove', LC.handleDragMove);
   document.removeEventListener('mouseup', LC.handleDragEnd);
@@ -511,20 +494,17 @@ LC.handleDragEnd=function(e) {
 LC.showCtxMenu=function(x, y, id, ds){
   var pop = document.getElementById('infoPopover');
   if(pop) pop.style.display = 'none';
-  
   var ctxMenu = document.getElementById('ctxMenu');
   ctxMenu.style.left = x+'px';
   ctxMenu.style.top = y+'px';
   ctxMenu.style.display = 'block';
   LC.ctxEventId = {id: id, ds: ds};
-  
   var editBtn = document.getElementById('ctxEdit');
   var delBtn = document.getElementById('ctxDel');
   var newEditBtn = editBtn.cloneNode(true);
   var newDelBtn = delBtn.cloneNode(true);
   editBtn.parentNode.replaceChild(newEditBtn, editBtn);
   delBtn.parentNode.replaceChild(newDelBtn, delBtn);
-  
   newEditBtn.onclick = function(){
     ctxMenu.style.display='none';
     if(LC.ctxEventId) LC.openModal(LC.ctxEventId.ds, null, LC.ctxEventId.id);
@@ -535,159 +515,132 @@ LC.showCtxMenu=function(x, y, id, ds){
   };
 };
 
-/* ========= 确认删除 ========= */
-LC.showConfirmDel=function(id, ds){
-  var ev = LC.ud.events.find(function(e){ return e.id === id; });
-  if(!ev) return;
-  
+/* ========= 确认删除 - 彻底修复按钮重复问题 ========= */
+LC.showConfirmDel = function(id, ds) {
+  var ev = LC.ud.events.find(function(e) { return e.id === id; });
+  if (!ev) return;
+
   var isRecurring = ev.repeat && ev.repeat !== 'none';
+  var confirmOverlay = document.getElementById('confirmOverlay');
   
-  if(isRecurring) {
-    var confirmOverlay = document.getElementById('confirmOverlay');
-    var confirmMsg = document.getElementById('confirmMsg');
-    var confirmYes = document.getElementById('confirmYes');
-    var confirmNo = document.getElementById('confirmNo');
-    
-    var btnRow = confirmYes.parentNode;
-    
-    var originalYesClass = confirmYes.className;
-    var originalNoClass = confirmNo.className;
-    
-    btnRow.innerHTML = '';
-    
-    btnRow.style.display = 'flex';
-    btnRow.style.flexDirection = 'column';
-    btnRow.style.alignItems = 'center';
-    btnRow.style.gap = '10px';
+  // 确保 confirmOverlay 内有正确的结构，且每次打开前完全重置内容
+  confirmOverlay.innerHTML = `
+    <div class="confirm-box">
+      <p id="confirmMsg"></p>
+      <div class="btn-row" id="confirmBtnRow"></div>
+    </div>
+  `;
+  
+  var msgEl = document.getElementById('confirmMsg');
+  var btnRow = document.getElementById('confirmBtnRow');
+  
+  if (isRecurring) {
+    msgEl.textContent = LC.t('confirm_del_recurring', '确定删除此重复日程吗？');
     
     var confirmSingle = document.createElement('button');
-    confirmSingle.id = 'confirmDeleteSingle';
     confirmSingle.className = 'hand-btn danger-btn';
     confirmSingle.textContent = LC.t('del_single', '仅删除此日程');
     confirmSingle.style.borderColor = '#c06060';
     confirmSingle.style.color = '#c06060';
-    confirmSingle.style.minWidth = '160px';
-    confirmSingle.style.width = 'auto';
     
     var confirmAll = document.createElement('button');
-    confirmAll.id = 'confirmYes';
-    confirmAll.className = originalYesClass;
+    confirmAll.className = 'hand-btn primary';
     confirmAll.textContent = LC.t('del_all', '删除所有日程');
-    confirmAll.style.minWidth = '160px';
-    confirmAll.style.width = 'auto';
     
     var confirmCancel = document.createElement('button');
-    confirmCancel.id = 'confirmNo';
-    confirmCancel.className = originalNoClass;
+    confirmCancel.className = 'hand-btn';
     confirmCancel.textContent = LC.t('no', '取消');
-    confirmCancel.style.minWidth = '160px';
-    confirmCancel.style.width = 'auto';
     
     btnRow.appendChild(confirmSingle);
     btnRow.appendChild(confirmAll);
     btnRow.appendChild(confirmCancel);
     
-    confirmMsg.textContent = LC.t('confirm_del_recurring', '确定删除此重复日程吗？');
-    
-    confirmOverlay.classList.add('active');
-    
-    confirmAll.onclick = function(){
-      LC.ud.events = LC.ud.events.filter(function(e){ return e.id !== id; });
+    confirmAll.onclick = function() {
+      LC.clearTodoCompletedByEventId(id);
+      LC.ud.events = LC.ud.events.filter(function(e) { return e.id !== id; });
       LC.save();
       confirmOverlay.classList.remove('active');
-      LC.restoreConfirmButtons(btnRow);
       var scrollPart = document.getElementById('sidebarScrollPart');
       var prevScroll = scrollPart ? scrollPart.scrollTop : 0;
       LC.openSidebar(ds);
-      if(scrollPart) scrollPart.scrollTop = prevScroll;
+      if (scrollPart) scrollPart.scrollTop = prevScroll;
     };
     
-    confirmSingle.onclick = function(){
+    confirmSingle.onclick = function() {
       LC.deleteSingleRecurrence(id, ds);
       confirmOverlay.classList.remove('active');
-      LC.restoreConfirmButtons(btnRow);
       var scrollPart = document.getElementById('sidebarScrollPart');
       var prevScroll = scrollPart ? scrollPart.scrollTop : 0;
       LC.openSidebar(ds);
-      if(scrollPart) scrollPart.scrollTop = prevScroll;
+      if (scrollPart) scrollPart.scrollTop = prevScroll;
     };
     
-    confirmCancel.onclick = function(){
+    confirmCancel.onclick = function() {
       confirmOverlay.classList.remove('active');
-      LC.restoreConfirmButtons(btnRow);
     };
   } else {
-    document.getElementById('confirmMsg').textContent = LC.t('confirm_del','Confirm delete?');
-    document.getElementById('confirmOverlay').classList.add('active');
-    document.getElementById('confirmYes').onclick = function(){
-      LC.ud.events = LC.ud.events.filter(function(e){ return e.id !== id; });
+    msgEl.textContent = LC.t('confirm_del', '删除后无法恢复，确认删除该日程吗？');
+    
+    var confirmYes = document.createElement('button');
+    confirmYes.className = 'hand-btn primary';
+    confirmYes.textContent = LC.t('yes', '确认');
+    
+    var confirmNo = document.createElement('button');
+    confirmNo.className = 'hand-btn';
+    confirmNo.textContent = LC.t('no', '取消');
+    
+    btnRow.appendChild(confirmYes);
+    btnRow.appendChild(confirmNo);
+    
+    confirmYes.onclick = function() {
+      LC.clearTodoCompletedByEventId(id);
+      LC.ud.events = LC.ud.events.filter(function(e) { return e.id !== id; });
       LC.save();
-      document.getElementById('confirmOverlay').classList.remove('active');
+      confirmOverlay.classList.remove('active');
       var scrollPart = document.getElementById('sidebarScrollPart');
       var prevScroll = scrollPart ? scrollPart.scrollTop : 0;
       LC.openSidebar(ds);
-      if(scrollPart) scrollPart.scrollTop = prevScroll;
+      if (scrollPart) scrollPart.scrollTop = prevScroll;
     };
-    document.getElementById('confirmNo').onclick = function(){
-      document.getElementById('confirmOverlay').classList.remove('active');
+    
+    confirmNo.onclick = function() {
+      confirmOverlay.classList.remove('active');
     };
   }
+  
+  confirmOverlay.classList.add('active');
 };
 
-LC.restoreConfirmButtons=function(btnRow){
-  btnRow.style.display = '';
-  btnRow.style.flexDirection = '';
-  btnRow.style.alignItems = '';
-  btnRow.style.gap = '';
-  
-  btnRow.innerHTML = '';
-  var originalYes = document.createElement('button');
-  originalYes.id = 'confirmYes';
-  originalYes.className = 'hand-btn primary';
-  originalYes.textContent = LC.t('yes', '确认');
-  var originalNo = document.createElement('button');
-  originalNo.id = 'confirmNo';
-  originalNo.className = 'hand-btn';
-  originalNo.textContent = LC.t('no', '取消');
-  btnRow.appendChild(originalYes);
-  btnRow.appendChild(originalNo);
-};
-
-LC.deleteSingleRecurrence=function(id, targetDate){
-  var ev = LC.ud.events.find(function(e){ return e.id === id; });
-  if(!ev) return;
-  
-  if(!ev.exceptions) ev.exceptions = [];
-  
-  if(ev.exceptions.indexOf(targetDate) === -1) {
+LC.deleteSingleRecurrence = function(id, targetDate) {
+  var ev = LC.ud.events.find(function(e) { return e.id === id; });
+  if (!ev) return;
+  if (!ev.exceptions) ev.exceptions = [];
+  if (ev.exceptions.indexOf(targetDate) === -1) {
     ev.exceptions.push(targetDate);
   }
-  
   LC.save();
 };
 
-/* ========= 侧边栏关闭 ========= */
-document.getElementById('sidebarClose').onclick = function(){ 
-  document.getElementById('sidebarOverlay').classList.remove('active'); 
-  LC.currentSidebarDate = null; 
+/* ========= 侧边栏关闭与宽度调整 ========= */
+document.getElementById('sidebarClose').onclick = function() {
+  document.getElementById('sidebarOverlay').classList.remove('active');
+  LC.currentSidebarDate = null;
 };
 
-/* ========= 侧边栏拖动调整宽度 ========= */
-document.getElementById('sidebarDragHandle').addEventListener('mousedown', function(e){
+document.getElementById('sidebarDragHandle').addEventListener('mousedown', function(e) {
   LC.isResizingSidebar = true;
   LC.sidebarStartX = e.clientX;
   LC.sidebarStartW = document.getElementById('sidebarOverlay').offsetWidth;
   e.preventDefault();
 });
-addEventListener('mousemove', function(e){
-  if(!LC.isResizingSidebar) return;
+addEventListener('mousemove', function(e) {
+  if (!LC.isResizingSidebar) return;
   var newW = LC.sidebarStartW - (e.clientX - LC.sidebarStartX);
   newW = Math.max(280, Math.min(800, newW));
   document.getElementById('sidebarOverlay').style.width = newW + 'px';
 });
-addEventListener('mouseup', function(){ LC.isResizingSidebar = false; });
+addEventListener('mouseup', function() { LC.isResizingSidebar = false; });
 
-/* ========= 初始化分割条 ========= */
 setTimeout(function() {
   LC.initSplitBar();
 }, 100);
