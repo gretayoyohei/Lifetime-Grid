@@ -30,6 +30,7 @@
 	body.rtl {
 	  direction: rtl;
 	}
+	/* 电脑端语言选择器样式 */
 	.lang-sel {
 	  position: fixed;
 	  top: 14px;
@@ -217,11 +218,20 @@
 	  transform: translateY(-2px);
 	  box-shadow: 6px 6px 0 rgba(180, 120, 70, .35);
 	}
-	#calCanvas {
+	#calCanvas,
+	#bgCanvas {
 	  position: fixed;
 	  inset: 0;
 	  z-index: 1;
 	  cursor: grab;
+	  -webkit-transform: translateZ(0);
+	  transform: translateZ(0);
+	  image-rendering: crisp-edges;
+	  image-rendering: -webkit-optimize-contrast;
+	}
+	#bgCanvas {
+	  z-index: 0;
+	  pointer-events: none;
 	}
 	#calCanvas.grabbing {
 	  cursor: grabbing;
@@ -288,68 +298,6 @@
 	  border-color: var(--accent);
 	  font-weight: 700;
 	}
-	/* 缩放进度条 */
-	.zoom-slider-container {
-	  position: fixed;
-	  left: 20px;
-	  top: 50%;
-	  transform: translateY(-50%);
-	  z-index: 100;
-	  height: 35vh;
-	  width: 50px;
-	  display: none;
-	  align-items: center;
-	  justify-content: center;
-	}
-	.zoom-slider-container.active {
-	  display: flex;
-	}
-	.zoom-range {
-	  width: 35vh;
-	  transform: rotate(-90deg);
-	  -webkit-appearance: none;
-	  appearance: none;
-	  background: transparent;
-	  cursor: pointer;
-	  outline: none;
-	}
-	.zoom-range::-webkit-slider-runnable-track {
-	  width: 100%;
-	  height: 4px;
-	  background: #d8ccb8;
-	  border-radius: 2px;
-	}
-	.zoom-range::-webkit-slider-thumb {
-	  -webkit-appearance: none;
-	  appearance: none;
-	  width: 18px;
-	  height: 18px;
-	  background: #fefcf7;
-	  border: 2px solid #d4956b;
-	  border-radius: 50%;
-	  margin-top: -7px;
-	  cursor: grab;
-	  box-shadow: 1px 1px 0 rgba(100, 60, 20, .2);
-	}
-	.zoom-range::-moz-range-track {
-	  width: 100%;
-	  height: 4px;
-	  background: #d8ccb8;
-	  border-radius: 2px;
-	  border: none;
-	}
-	.zoom-range::-moz-range-thumb {
-	  width: 18px;
-	  height: 18px;
-	  background: #fefcf7;
-	  border: 2px solid #d4956b;
-	  border-radius: 50%;
-	  cursor: grab;
-	  box-shadow: 1px 1px 0 rgba(100, 60, 20, .2);
-	}
-	.zoom-label {
-	  display: none;
-	}
 	.modal-overlay {
 	  position: fixed;
 	  inset: 0;
@@ -372,8 +320,19 @@
 	  box-shadow: 8px 8px 0 rgba(100, 60, 20, 0.3);
 	  position: relative;
 	  max-height: 80vh;
-	  overflow-y: visible;
+	  overflow-y: auto;
 	  animation: modalIn .3s ease-out;
+	}
+	.modal-box::-webkit-scrollbar {
+	  width: 4px;
+	}
+	.modal-box::-webkit-scrollbar-track {
+	  background: #e8dcc8;
+	  border-radius: 4px;
+	}
+	.modal-box::-webkit-scrollbar-thumb {
+	  background: #d4956b;
+	  border-radius: 4px;
 	}
 	@keyframes modalIn {
 	  from {
@@ -727,12 +686,15 @@
 	
 	/* 拖拽分割条 */
 	.split-bar {
-	  height: 8px;
+	  height: 16px;
 	  background: #e0d4c0;
 	  cursor: row-resize;
 	  flex-shrink: 0;
 	  position: relative;
 	  transition: background 0.2s;
+	  touch-action: none;
+	  user-select: none;
+	  z-index: 10;
 	}
 	.split-bar:hover {
 	  background: #d4956b;
@@ -742,13 +704,11 @@
 	  top: 50%;
 	  left: 50%;
 	  transform: translate(-50%, -50%);
-	  width: 60px;
+	  width: 80px;
 	  height: 4px;
 	  background: #b0a090;
 	  border-radius: 2px;
-	}
-	.split-bar:hover .split-handle {
-	  background: #fff;
+	  pointer-events: none;
 	}
 	
 	/* 待办列表容器 */
@@ -1130,7 +1090,7 @@
 	  font-size: 1.1rem;
 	}
 	
-	/* 工具箱按钮 */
+	/* 工具箱按钮 - 电脑端在左下角 */
 	.toolbox-container {
 	  position: fixed;
 	  bottom: 20px;
@@ -1293,3 +1253,483 @@
 	.tooltip.visible {
 	  opacity: 1;
 	}
+
+/* ========= 手机端全面优化 (仅 ≤768px) ========= */
+@media (max-width: 768px) {
+  /* 1. 个人信息输入页面优化 */
+  .input-card {
+    padding: 24px 20px;
+    max-width: 90%;
+  }
+  
+  .input-card h1 {
+    font-size: 1.6rem;
+  }
+  
+  .input-card p {
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+  
+  .input-card label {
+    font-size: 0.9rem;
+    margin: 8px 0 2px 2px;
+  }
+  
+  .input-card input,
+  .input-card select {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+  
+  /* 出生日期行：强制同一行，不换行，并增加内边距避免拥挤 */
+  .date-row {
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .date-row select {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: auto !important;
+    font-size: 0.85rem;
+    padding: 8px 10px;   /* 增加左右内边距，避免文字贴边 */
+    text-align: left;
+  }
+  
+  /* 寿命行 */
+  .life-row {
+    flex-wrap: wrap;
+  }
+  
+  .life-row input {
+    flex: 2;
+    min-width: 100px;
+  }
+  
+  .life-row span {
+    flex: 0;
+  }
+  
+  /* 按钮：占满整行，文字不换行 */
+  .btn-go {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    margin-top: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* 2. 弹窗优化 - 缩小面积 */
+  .modal-box {
+    padding: 14px 12px;
+    width: 92%;
+    max-width: 360px;
+    max-height: 75vh;
+  }
+  
+  .modal-box h3 {
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .type-tags {
+    gap: 4px;
+    margin: 8px 0;
+  }
+  
+  .type-tag {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    margin: 8px 0;
+  }
+  
+  .form-row label:first-child {
+    width: auto;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+  
+  .all-day-row {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .all-day-row label:first-child {
+    width: auto;
+  }
+  
+  .form-row input,
+  .form-row select,
+  .form-row .date-input,
+  .form-row .time-input {
+    width: 100% !important;
+    flex: none !important;
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .modal-textarea {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .hand-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+  
+  .btn-row {
+    gap: 6px;
+    margin-top: 10px;
+  }
+  
+  /* toggle 开关缩小 */
+  .toggle-switch {
+    width: 40px;
+    height: 20px;
+  }
+  
+  .toggle-slider:before {
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+  }
+  
+  input:checked + .toggle-slider:before {
+    transform: translateX(20px);
+  }
+  
+  /* 3. 侧边栏优化 */
+  .sidebar-overlay {
+    width: 85vw !important;
+  }
+  
+  .sidebar-header .sb-date {
+    font-size: 1.5rem;
+  }
+  
+  .time-hour-label {
+    width: 36px;
+    font-size: 0.65rem;
+  }
+  
+  .time-hour-line {
+    left: 44px;
+  }
+  
+  .time-event-block {
+    left: 48px;
+    font-size: 0.65rem;
+    padding: 2px 3px;
+  }
+  
+  .todo-item {
+    padding: 6px 8px;
+  }
+  
+  .todo-title {
+    font-size: 0.75rem;
+  }
+  
+  .todo-checkbox {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* 4. 控制栏优化 - 居中 */
+  .controls {
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    gap: 6px;
+  }
+  
+  .ctrl-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+  
+  /* 手机端原工具箱隐藏 */
+  .toolbox-container {
+    display: none;
+  }
+  
+  /* 控制栏内的工具箱按钮样式 */
+  .ctrl-btn.toolbox-ctrl-btn {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+  
+  /* 手机端菜单定位样式 */
+  #mobileToolboxMenu {
+    position: fixed;
+    z-index: 1000;
+    background: #fdf8f0;
+    border: 2px solid #d4c4a8;
+    border-radius: 20px 12px;
+    box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
+    min-width: 140px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  #mobileToolboxMenu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  #mobileToolboxMenu .toolbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 0.8rem;
+    color: #4a3728;
+    border-bottom: 1px solid #e8dcc8;
+  }
+  
+  #mobileToolboxMenu .toolbox-item:last-child {
+    border-bottom: none;
+  }
+  
+  #mobileToolboxMenu .toolbox-item:hover {
+    background: #fce8d5;
+  }
+  
+  #mobileToolboxMenu .toolbox-icon {
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+  }
+  
+  #mobileToolboxMenu .toolbox-label {
+    flex: 1;
+    font-weight: 500;
+  }
+  
+  /* ===== 手机端语言切换按钮（左上角） ===== */
+  /* 隐藏原有的 select */
+  .lang-sel {
+    display: none !important;
+  }
+  
+  /* 独立的地球图标按钮 - 左上角 */
+  .mobile-lang-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fefcf8;
+    border: 2px solid #d4c4a8;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0 rgba(150, 120, 80, .15);
+    transition: all 0.2s;
+    color: #d4956b;
+    z-index: 10000;
+    pointer-events: auto;
+  }
+  
+  .mobile-lang-btn:hover {
+    transform: scale(1.05);
+    border-color: var(--accent);
+  }
+  
+  body.rtl .mobile-lang-btn {
+    left: auto;
+    right: 14px;
+  }
+  
+  /* 语言选择菜单 */
+  .mobile-lang-menu {
+    position: fixed;
+    top: 60px;
+    left: 14px;
+    z-index: 10000;
+    background: #fdf8f0;
+    border: 2px solid #d4c4a8;
+    border-radius: 16px 8px;
+    box-shadow: 6px 6px 0 rgba(100, 60, 20, 0.25);
+    min-width: 150px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+  }
+  
+  body.rtl .mobile-lang-menu {
+    left: auto;
+    right: 14px;
+  }
+  
+  .mobile-lang-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .mobile-lang-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #4a3728;
+    transition: background 0.2s;
+    font-family: 'Playpen Sans', 'Zen Maru Gothic', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    border-bottom: 1px solid #e8dcc8;
+    white-space: nowrap;
+  }
+  
+  .mobile-lang-item:last-child {
+    border-bottom: none;
+  }
+  
+  .mobile-lang-item:hover {
+    background: #fce8d5;
+  }
+  
+  /* 缩放提示手势优化 */
+  .zoom-hint {
+    top: 70px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ========= 电脑端保持原有语言选择器可见 ========= */
+@media (min-width: 769px) {
+  .lang-sel {
+    display: block !important;
+  }
+  
+  .mobile-lang-btn,
+  .mobile-lang-menu {
+    display: none !important;
+  }
+}
+
+/* ========= 超小手机额外优化 ========= */
+@media (max-width: 480px) {
+  .input-card {
+    padding: 16px 12px;
+  }
+  
+  .input-card h1 {
+    font-size: 1.3rem;
+  }
+  
+  .date-row {
+    gap: 4px;
+  }
+  
+  .date-row select {
+    font-size: 0.75rem;
+    padding: 6px 8px;
+  }
+  
+  .btn-go {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .modal-box {
+    padding: 10px 10px;
+    width: 95%;
+    max-width: 320px;
+  }
+  
+  .ctrl-btn {
+    padding: 3px 8px;
+    font-size: 0.65rem;
+  }
+  
+  .hand-btn {
+    padding: 5px 10px;
+    font-size: 0.7rem;
+  }
+  
+  .ctrl-btn.toolbox-ctrl-btn {
+    padding: 3px 6px;
+    font-size: 0.8rem;
+  }
+  
+  .mobile-lang-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+    top: 10px;
+    left: 10px;
+  }
+  
+  body.rtl .mobile-lang-btn {
+    left: auto;
+    right: 10px;
+  }
+}
+
+/* ========= 手势动画样式 ========= */
+.zoom-hint.gesture-hint {
+  background: rgba(254, 252, 247, 0.85);
+  border-radius: 40px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  backdrop-filter: blur(8px);
+}
+
+.gesture-icon {
+  display: inline-block;
+  animation: pinchGesture 1.2s ease-in-out infinite;
+  transform-origin: center;
+  font-size: 1.5rem;
+}
+
+@keyframes pinchGesture {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.7); }
+  100% { transform: scale(1); }
+}
+
+.gesture-arrow {
+  display: inline-block;
+  animation: arrowPulse 1.2s ease-in-out infinite;
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+@keyframes arrowPulse {
+  0% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(4px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.6; }
+}
