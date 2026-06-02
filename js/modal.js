@@ -7,6 +7,7 @@ LC.openModal=function(ds, hourOrAll, editId){
   var defaultType = 'p';
   var defaultAllDay = false;
   var defaultRepeat = 'none';
+  var defaultRemind = 'none';
   var defaultLoc = '';
   var defaultDesc = '';
   var defaultTitle = '';
@@ -36,6 +37,7 @@ LC.openModal=function(ds, hourOrAll, editId){
       defaultStartTime = editEvent.startTime || '09:00';
       defaultEndTime = editEvent.endTime || '10:00';
       defaultRepeat = editEvent.repeat || 'none';
+      defaultRemind = editEvent.remindBefore || 'none';
       defaultLoc = editEvent.location || '';
       defaultDesc = editEvent.description || '';
     }
@@ -57,6 +59,26 @@ LC.openModal=function(ds, hourOrAll, editId){
   var repeatHtml = '<select id="evRepeat">';
   repeatOpts.forEach(function(o){ repeatHtml += '<option value="'+o.v+'"'+(o.v===defaultRepeat?' selected':'')+'>'+LC.t(o.l,o.v)+'</option>'; });
   repeatHtml += '</select>';
+  
+  // 提醒选项
+  var remindOptions = [
+    { val: 'none', label: LC.t('remind_none', '无提醒') },
+    { val: 'on_time', label: LC.t('remind_on_time', '准时') },
+    { val: '5m', label: LC.t('remind_5m', '5分钟前') },
+    { val: '15m', label: LC.t('remind_15m', '15分钟前') },
+    { val: '30m', label: LC.t('remind_30m', '30分钟前') },
+    { val: '1h', label: LC.t('remind_1h', '1小时前') },
+    { val: '2h', label: LC.t('remind_2h', '2小时前') },
+    { val: '1d', label: LC.t('remind_1d', '1天前') },
+    { val: '2d', label: LC.t('remind_2d', '2天前') },
+    { val: '3d', label: LC.t('remind_3d', '3天前') },
+    { val: '1w', label: LC.t('remind_1w', '1周前') }
+  ];
+  var remindHtml = '<select id="evRemindBefore">';
+  remindOptions.forEach(function(o) {
+    remindHtml += '<option value="'+o.val+'"'+(o.val===defaultRemind?' selected':'')+'>'+o.label+'</option>';
+  });
+  remindHtml += '</select>';
   
   // 转义特殊字符，防止XSS和HTML注入
   var safeTitle = defaultTitle.replace(/[&<>]/g, function(m) {
@@ -87,6 +109,7 @@ LC.openModal=function(ds, hourOrAll, editId){
     '<div class="form-row"><label>'+LC.t('start','Start')+'</label><input type="date" class="date-input" id="evStartDate" value="'+(editEvent?defaultStart:ds)+'"><input type="time" class="time-input" id="evStartTime" value="'+defaultStartTime+'"></div>'+
     '<div class="form-row"><label>'+LC.t('end','End')+'</label><input type="date" class="date-input" id="evEndDate" value="'+(editEvent?defaultEnd:ds)+'"><input type="time" class="time-input" id="evEndTime" value="'+defaultEndTime+'"></div>'+
     '<div class="form-row"><label>'+LC.t('repeat','Repeat')+'</label>'+repeatHtml+'</div>'+
+    '<div class="form-row"><label>'+LC.t('remind','提醒')+'</label>'+remindHtml+'</div>'+
     '<div class="form-row form-row-textarea"><label>'+LC.t('location','Loc')+'</label><textarea id="evLoc" rows="2" placeholder="'+LC.t('location','Loc')+'" class="modal-textarea">'+safeLoc+'</textarea></div>'+
     '<div class="form-row form-row-textarea"><label>'+LC.t('notes','Notes')+'</label><textarea id="evDesc" rows="3" placeholder="'+LC.t('notes','Notes')+'" class="modal-textarea">'+safeDesc+'</textarea></div>'+
     '<div class="btn-row"><button class="hand-btn primary" id="btnSaveEv">'+LC.t('sv','Save')+'</button>'+(editId?'<button class="hand-btn danger-btn" id="btnDelEv" style="border-color:#c06060;color:#c06060">'+LC.t('dl','Del')+'</button>':'')+'<button class="hand-btn" id="btnCancelEv">'+LC.t('cn','Cancel')+'</button></div>';
@@ -94,7 +117,6 @@ LC.openModal=function(ds, hourOrAll, editId){
   document.getElementById('mClose').onclick=LC.closeModal;
   document.getElementById('btnCancelEv').onclick=LC.closeModal;
   
-  // 直接在这里执行，不依赖LC.toggleAllDay
   var chk = document.getElementById('evAllDay');
   var timeInputs = document.querySelectorAll('.time-input');
   if(chk){
@@ -122,6 +144,7 @@ LC.openModal=function(ds, hourOrAll, editId){
       var startTime = isAllDay ? '00:00' : document.getElementById('evStartTime').value;
       var endTime = isAllDay ? '23:59' : document.getElementById('evEndTime').value;
       var repeat = document.getElementById('evRepeat').value;
+      var remindBefore = document.getElementById('evRemindBefore').value;
       var loc = document.getElementById('evLoc').value;
       var desc = document.getElementById('evDesc').value;
 
@@ -134,6 +157,7 @@ LC.openModal=function(ds, hourOrAll, editId){
         editEvent.startTime = startTime;
         editEvent.endTime = endTime;
         editEvent.repeat = repeat;
+        editEvent.remindBefore = remindBefore;
         editEvent.location = loc;
         editEvent.description = desc;
       } else {
@@ -142,7 +166,8 @@ LC.openModal=function(ds, hourOrAll, editId){
           title:title, type:type, isAllDay:isAllDay,
           startDate:startDate, endDate:endDate,
           startTime:startTime, endTime:endTime,
-          repeat:repeat, location:loc, description:desc
+          repeat:repeat, remindBefore:remindBefore,
+          location:loc, description:desc
         });
       }
 
