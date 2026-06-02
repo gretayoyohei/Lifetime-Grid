@@ -4,16 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>人生日历</title>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LJ7JWER07V"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-LJ7JWER07V');
-</script>
-
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -44,11 +34,6 @@
 </div>
 <canvas id="calCanvas"></canvas>
 <div class="zoom-hint" id="zoomHint"></div>
-
-<div class="zoom-slider-container" id="zoomSliderContainer">
-  <input type="range" id="zoomSlider" min="0" max="1000" value="0" class="zoom-range">
-  <span class="zoom-label" id="zoomLabel">1.0x</span>
-</div>
 
 <div class="controls" id="controls">
   <button class="ctrl-btn" id="btnReset"></button>
