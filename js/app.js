@@ -61,7 +61,265 @@ LC.zoomToThisMonth=function(){
   LC.hasAnch = false;
 };
 
-/* ========= 启动按钮（使用自定义弹窗，支持多语言） ========= */
+/* ========= 移动端控制栏文字优化 ========= */
+LC.optimizeMobileButtonText = function() {
+  if (window.innerWidth <= 768) {
+    var btnThisYearEl = document.getElementById('btnThisYear');
+    var btnThisMonthEl = document.getElementById('btnThisMonth');
+    var btnResetEl = document.getElementById('btnReset');
+    var btnTodayEl = document.getElementById('btnToday');
+    
+    if (LC.curLang === 'en') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'This Year') btnThisYearEl.textContent = 'Year';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'This Month') btnThisMonthEl.textContent = 'Month';
+      if (btnResetEl && btnResetEl.textContent === 'Overview') btnResetEl.textContent = 'All';
+    } else if (LC.curLang === 'es') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Este Año') btnThisYearEl.textContent = 'Año';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Este Mes') btnThisMonthEl.textContent = 'Mes';
+      if (btnResetEl && btnResetEl.textContent === 'Vista general') btnResetEl.textContent = 'Todo';
+    } else if (LC.curLang === 'fr') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Cette Année') btnThisYearEl.textContent = 'Année';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Ce Mois') btnThisMonthEl.textContent = 'Mois';
+      if (btnResetEl && btnResetEl.textContent === "Vue d'ensemble") btnResetEl.textContent = 'Tout';
+    } else if (LC.curLang === 'de') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Dieses Jahr') btnThisYearEl.textContent = 'Jahr';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Dieser Monat') btnThisMonthEl.textContent = 'Monat';
+      if (btnResetEl && btnResetEl.textContent === 'Gesamtübersicht') btnResetEl.textContent = 'Alle';
+    } else if (LC.curLang === 'it') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Quest\'Anno') btnThisYearEl.textContent = 'Anno';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Questo Mese') btnThisMonthEl.textContent = 'Mese';
+      if (btnResetEl && btnResetEl.textContent === 'Panoramica') btnResetEl.textContent = 'Tutto';
+    } else if (LC.curLang === 'pt') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Este Ano') btnThisYearEl.textContent = 'Ano';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Este Mês') btnThisMonthEl.textContent = 'Mês';
+      if (btnResetEl && btnResetEl.textContent === 'Visão geral') btnResetEl.textContent = 'Tudo';
+    } else if (LC.curLang === 'ru') {
+      if (btnThisYearEl && btnThisYearEl.textContent === 'Этот Год') btnThisYearEl.textContent = 'Год';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === 'Этот Месяц') btnThisMonthEl.textContent = 'Месяц';
+      if (btnResetEl && btnResetEl.textContent === 'Общий вид') btnResetEl.textContent = 'Все';
+    } else if (LC.curLang === 'ja') {
+      if (btnThisYearEl && btnThisYearEl.textContent === '今年') btnThisYearEl.textContent = '年';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === '今月') btnThisMonthEl.textContent = '月';
+      if (btnResetEl && btnResetEl.textContent === '全体表示') btnResetEl.textContent = '全体';
+    } else if (LC.curLang === 'ko') {
+      if (btnThisYearEl && btnThisYearEl.textContent === '올해') btnThisYearEl.textContent = '년';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === '이번 달') btnThisMonthEl.textContent = '월';
+      if (btnResetEl && btnResetEl.textContent === '전체보기') btnResetEl.textContent = '전체';
+    } else if (LC.curLang === 'zh-CN' || LC.curLang === 'zh-TW') {
+      if (btnThisYearEl && btnThisYearEl.textContent === '今年') btnThisYearEl.textContent = '年';
+      if (btnThisMonthEl && btnThisMonthEl.textContent === '本月') btnThisMonthEl.textContent = '月';
+      if (btnResetEl && btnResetEl.textContent === '全局') btnResetEl.textContent = '全部';
+    }
+  }
+};
+
+/* ========= 手机端将工具箱移动到控制栏内（可重复调用，确保创建） ========= */
+LC.moveToolboxToControls = function() {
+  if (window.innerWidth > 768) return;
+  
+  // 如果已经存在移动端工具箱按钮，先移除旧的，重新创建（避免状态不一致）
+  var existingBtn = document.getElementById('mobileToolboxBtn');
+  var existingMenu = document.getElementById('mobileToolboxMenu');
+  if (existingBtn) existingBtn.remove();
+  if (existingMenu) existingMenu.remove();
+  
+  var toolboxContainer = document.getElementById('toolboxContainer');
+  var controls = document.getElementById('controls');
+  var btnToday = document.getElementById('btnToday');
+  
+  if (!toolboxContainer || !controls || !btnToday) return;
+  
+  // 隐藏原始工具箱容器
+  toolboxContainer.style.display = 'none';
+  toolboxContainer.classList.add('moved-to-controls');
+  
+  // 创建新按钮和菜单
+  var newToolboxBtn = document.createElement('button');
+  newToolboxBtn.id = 'mobileToolboxBtn';
+  newToolboxBtn.className = 'ctrl-btn toolbox-ctrl-btn';
+  newToolboxBtn.innerHTML = '🛠️';
+  newToolboxBtn.title = LC.t('toolbox_title', '工具箱');
+  
+  var newMenu = document.createElement('div');
+  newMenu.id = 'mobileToolboxMenu';
+  newMenu.className = 'toolbox-menu';
+  
+  var exportItem = document.createElement('div');
+  exportItem.className = 'toolbox-item';
+  exportItem.setAttribute('data-action', 'export');
+  exportItem.innerHTML = '<span class="toolbox-icon">📤</span><span class="toolbox-label">' + LC.t('toolbox_export', '导出日程') + '</span>';
+  
+  var importItem = document.createElement('div');
+  importItem.className = 'toolbox-item';
+  importItem.setAttribute('data-action', 'import');
+  importItem.innerHTML = '<span class="toolbox-icon">📥</span><span class="toolbox-label">' + LC.t('toolbox_import', '导入日程') + '</span>';
+  
+  var logoutItem = document.createElement('div');
+  logoutItem.className = 'toolbox-item toolbox-item-danger';
+  logoutItem.setAttribute('data-action', 'logout');
+  logoutItem.innerHTML = '<span class="toolbox-icon">🚪</span><span class="toolbox-label">' + LC.t('toolbox_logout', '登出') + '</span>';
+  
+  newMenu.appendChild(exportItem);
+  newMenu.appendChild(importItem);
+  newMenu.appendChild(logoutItem);
+  document.body.appendChild(newMenu);
+  
+  newToolboxBtn.onclick = function(e) {
+    e.stopPropagation();
+    if (newMenu.classList.contains('active')) {
+      newMenu.classList.remove('active');
+    } else {
+      var allMenus = document.querySelectorAll('.toolbox-menu');
+      allMenus.forEach(function(m) { m.classList.remove('active'); });
+      newMenu.classList.add('active');
+      var rect = newToolboxBtn.getBoundingClientRect();
+      newMenu.style.position = 'fixed';
+      newMenu.style.bottom = (window.innerHeight - rect.top + 5) + 'px';
+      newMenu.style.left = (rect.left + rect.width/2 - 80) + 'px';
+    }
+  };
+  
+  // 外部点击关闭菜单
+  function closeMenuOnOutsideClick(e) {
+    if (!newMenu.classList.contains('active')) return;
+    if (newMenu.contains(e.target) || newToolboxBtn.contains(e.target)) return;
+    newMenu.classList.remove('active');
+  }
+  document.addEventListener('click', closeMenuOnOutsideClick);
+  document.addEventListener('touchstart', closeMenuOnOutsideClick);
+  
+  controls.insertBefore(newToolboxBtn, btnToday.nextSibling);
+};
+
+/* ========= 登出函数 ========= */
+LC.logoutToInput = function() {
+  var controls = document.getElementById('controls');
+  if (controls) controls.classList.remove('active');
+  var inputPage = document.getElementById('inputPage');
+  if (inputPage) inputPage.classList.remove('hidden');
+  LC.showBgAnim = true;
+  LC.drawStaticBg();
+  var sidebar = document.getElementById('sidebarOverlay');
+  if (sidebar) sidebar.classList.remove('active');
+  LC.currentSidebarDate = null;
+  if (LC.ud) {
+    document.getElementById('inName').value = LC.ud.name || '';
+    var birthParts = LC.ud.birthDate.split('-');
+    if (birthParts.length === 3) {
+      document.getElementById('inBirthY').value = parseInt(birthParts[0]);
+      document.getElementById('inBirthM').value = parseInt(birthParts[1]);
+      document.getElementById('inBirthD').value = parseInt(birthParts[2]);
+      LC.populateBirthSelects();
+      document.getElementById('inBirthY').value = parseInt(birthParts[0]);
+      document.getElementById('inBirthM').value = parseInt(birthParts[1]);
+      document.getElementById('inBirthD').value = parseInt(birthParts[2]);
+    }
+    document.getElementById('inLife').value = LC.ud.lifeExp;
+    LC.validateAge();
+  } else {
+    document.getElementById('inName').value = '';
+    document.getElementById('inBirthY').value = '';
+    document.getElementById('inBirthM').value = '';
+    document.getElementById('inBirthD').value = '';
+    document.getElementById('inLife').value = 80;
+    LC.populateBirthSelects();
+    LC.validateAge();
+  }
+  if (LC.ctx) {
+    LC.ctx.clearRect(0, 0, LC.W, LC.H);
+  }
+};
+
+/* ========= 手机端语言切换按钮 ========= */
+LC.initMobileLangPicker = function() {
+  if (window.innerWidth > 768) return;
+  if (document.getElementById('mobileLangBtn')) return;
+  
+  var btn = document.createElement('div');
+  btn.id = 'mobileLangBtn';
+  btn.className = 'mobile-lang-btn';
+  btn.innerHTML = '🌐';
+  btn.title = 'Language';
+  
+  var menu = document.createElement('div');
+  menu.id = 'mobileLangMenu';
+  menu.className = 'mobile-lang-menu';
+  
+  for (var i = 0; i < LC.langOrder.length; i++) {
+    var code = LC.langOrder[i];
+    if (!LC.D[code]) continue;
+    var item = document.createElement('div');
+    item.className = 'mobile-lang-item';
+    item.textContent = LC.D[code].nm;
+    item.setAttribute('data-lang', code);
+    item.onclick = (function(c) {
+      return function() {
+        LC.curLang = c;
+        localStorage.setItem(LC.LANG_KEY, LC.curLang);
+        document.body.classList.toggle('rtl', LC.curLang === 'ar');
+        LC.refreshText();
+        LC.populateBirthSelects();
+        menu.classList.remove('active');
+        LC.refreshMobileLangMenu();
+      };
+    })(code);
+    menu.appendChild(item);
+  }
+  for (var k in LC.D) {
+    if (LC.langOrder.indexOf(k) === -1) {
+      var item = document.createElement('div');
+      item.className = 'mobile-lang-item';
+      item.textContent = LC.D[k].nm;
+      item.setAttribute('data-lang', k);
+      item.onclick = (function(c) {
+        return function() {
+          LC.curLang = c;
+          localStorage.setItem(LC.LANG_KEY, LC.curLang);
+          document.body.classList.toggle('rtl', LC.curLang === 'ar');
+          LC.refreshText();
+          LC.populateBirthSelects();
+          menu.classList.remove('active');
+          LC.refreshMobileLangMenu();
+        };
+      })(k);
+      menu.appendChild(item);
+    }
+  }
+  
+  document.body.appendChild(btn);
+  document.body.appendChild(menu);
+  
+  btn.onclick = function(e) {
+    e.stopPropagation();
+    if (menu.classList.contains('active')) {
+      menu.classList.remove('active');
+    } else {
+      LC.refreshMobileLangMenu();
+      menu.classList.add('active');
+    }
+  };
+  
+  document.addEventListener('click', function(e) {
+    if (menu.classList.contains('active') && !btn.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove('active');
+    }
+  });
+};
+
+LC.refreshMobileLangMenu = function() {
+  var menu = document.getElementById('mobileLangMenu');
+  if (!menu) return;
+  var items = menu.querySelectorAll('.mobile-lang-item');
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var code = item.getAttribute('data-lang');
+    if (code && LC.D[code]) {
+      item.textContent = LC.D[code].nm;
+    }
+  }
+};
+
+/* ========= 启动按钮 ========= */
 document.getElementById('btnGo').onclick=function(){
   var name=document.getElementById('inName').value.trim();
   var y=document.getElementById('inBirthY').value, m=document.getElementById('inBirthM').value, d=document.getElementById('inBirthD').value;
@@ -74,7 +332,6 @@ document.getElementById('btnGo').onclick=function(){
   if(life<=age){hint.textContent=LC.tf('al',{a:age},'Age must be > '+age);return}
   var bd=new Date(birth+'T00:00:00');if(bd>new Date()){hint.textContent=LC.t('bf','Invalid date');return}
   
-  // 检测寿命是否被改小
   var oldLifeExp = LC.ud ? LC.ud.lifeExp : null;
   var oldBirthDate = LC.ud ? LC.ud.birthDate : null;
   
@@ -82,81 +339,57 @@ document.getElementById('btnGo').onclick=function(){
     var birthYear = new Date(birth+'T00:00:00').getFullYear();
     var oldEndYear = birthYear + oldLifeExp - 1;
     var newEndYear = birthYear + life - 1;
-    
     if(newEndYear < oldEndYear) {
       var firstHiddenYear = newEndYear + 1;
-      
-      // 使用自定义弹窗
       var confirmOverlay = document.getElementById('confirmOverlay');
       var confirmMsg = document.getElementById('confirmMsg');
       var btnRow = document.getElementById('confirmYes').parentNode;
-      
-      // 保存原始按钮的类名
       var originalYesClass = document.getElementById('confirmYes').className;
       var originalNoClass = document.getElementById('confirmNo').className;
-      
-      // 清空并重新设置按钮行
       btnRow.innerHTML = '';
       btnRow.style.display = 'flex';
       btnRow.style.flexDirection = 'row';
       btnRow.style.gap = '12px';
       btnRow.style.justifyContent = 'center';
-      
-      // 创建确定按钮
       var confirmYesBtn = document.createElement('button');
       confirmYesBtn.id = 'confirmYes';
       confirmYesBtn.className = originalYesClass;
       confirmYesBtn.textContent = LC.t('yes', '确定');
-      
-      // 创建取消按钮
       var confirmNoBtn = document.createElement('button');
       confirmNoBtn.id = 'confirmNo';
       confirmNoBtn.className = originalNoClass;
       confirmNoBtn.textContent = LC.t('no', '取消');
-      
       btnRow.appendChild(confirmYesBtn);
       btnRow.appendChild(confirmNoBtn);
-      
-      // 使用国际化系统显示警告信息
       confirmMsg.textContent = LC.tf('lifeWarnShort', {
         old: oldLifeExp,
         new: life,
         year: firstHiddenYear
       });
-      
       confirmOverlay.classList.add('active');
-      
-      // 确定按钮逻辑
       confirmYesBtn.onclick = function() {
         confirmOverlay.classList.remove('active');
-        // 恢复按钮行
         if(typeof LC.restoreConfirmButtons === 'function') {
           LC.restoreConfirmButtons(btnRow);
         }
-        // 保存新数据并进入日历
         var oldEv = (LC.ud && LC.ud.birthDate===birth) ? (LC.ud.events||[]) : [];
         LC.ud={name:name,birthDate:birth,lifeExp:life,events:oldEv};
         LC.originalLifeExp = life;
         LC.save();
         LC.enterCalendar();
       };
-      
-      // 取消按钮逻辑
       confirmNoBtn.onclick = function() {
         confirmOverlay.classList.remove('active');
         if(typeof LC.restoreConfirmButtons === 'function') {
           LC.restoreConfirmButtons(btnRow);
         }
-        // 恢复输入框的值
         document.getElementById('inLife').value = oldLifeExp;
         LC.validateAge();
       };
-      
       return;
     }
   }
   
-  // 没有警告，直接进入
   var oldEv = (LC.ud && LC.ud.birthDate===birth) ? (LC.ud.events||[]) : [];
   LC.ud={name:name,birthDate:birth,lifeExp:life,events:oldEv};
   LC.originalLifeExp = life;
@@ -176,10 +409,16 @@ LC.enterCalendar=function(){
   LC.gridW=LC.YPR*(LC.YW+LC.YGAP)-LC.YGAP;LC.gridH=Math.ceil(LC.totalYrs/LC.YPR)*(LC.YH+LC.YGAP)-LC.YGAP;
   document.getElementById('inputPage').classList.add('hidden');LC.showBgAnim=false;
   document.getElementById('controls').classList.add('active');
-  document.getElementById('zoomSliderContainer').classList.add('active');
-  document.getElementById('zoomHint').classList.remove('hidden');
-  document.getElementById('zoomHint').textContent=LC.t('zh','Scroll to zoom');
-  setTimeout(function(){document.getElementById('zoomHint').classList.add('hidden')},4500);
+  var zoomHint = document.getElementById('zoomHint');
+  zoomHint.classList.remove('hidden');
+  if (window.innerWidth <= 768) {
+    zoomHint.innerHTML = '<span class="gesture-arrow">⇅</span><span class="gesture-icon">🤏</span>';
+    zoomHint.classList.add('gesture-hint');
+  } else {
+    zoomHint.textContent = LC.t('zh','Scroll to zoom');
+    zoomHint.classList.remove('gesture-hint');
+  }
+  setTimeout(function(){ zoomHint.classList.add('hidden'); }, 4500);
   LC.zoom=Math.min(LC.W/(LC.gridW+80),LC.H/(LC.gridH+80))*.85;LC.tZoom=LC.zoom;
   LC.cx=LC.gridW/2;LC.cy=LC.gridH/2;LC.targetCx=LC.cx;LC.targetCy=LC.cy;
 };
@@ -189,7 +428,7 @@ function init(){
   LC.buildLangSel();
   document.body.classList.toggle('rtl',LC.curLang==='ar');
   LC.populateBirthSelects();
-  requestAnimationFrame(LC.animBg);
+  LC.animBg();
   if(LC.load()){
     if(LC.ud.events && LC.ud.events.length){
       LC.ud.events.forEach(function(e){
@@ -218,7 +457,6 @@ function init(){
       });
       LC.save();
     }
-    // 加载后保存原始寿命值
     if(LC.ud && LC.ud.lifeExp) {
       LC.originalLifeExp = LC.ud.lifeExp;
     }
@@ -226,11 +464,113 @@ function init(){
   }else{
     document.getElementById('inputPage').classList.remove('hidden');
   }
-  LC.refreshText();LC.animate();
+  LC.refreshText();
+  LC.optimizeMobileButtonText();
+  LC.moveToolboxToControls();   // 手机端创建工具箱
+  LC.initMobileLangPicker();
+  LC.animate();
 }
 init();
 
-/* ========= 工具箱按钮交互（支持多语言） ========= */
+/* ========= 响应窗口大小变化，修复移动/桌面切换残留，并确保工具箱重建 ========= */
+window.addEventListener('resize', function() {
+  LC.optimizeMobileButtonText();
+  
+  if (window.innerWidth > 768) {
+    // 切换到桌面模式：移除所有移动端特有元素
+    var mobileLangBtn = document.getElementById('mobileLangBtn');
+    var mobileLangMenu = document.getElementById('mobileLangMenu');
+    var mobileToolboxBtn = document.getElementById('mobileToolboxBtn');
+    var mobileToolboxMenu = document.getElementById('mobileToolboxMenu');
+    
+    if (mobileLangBtn) mobileLangBtn.remove();
+    if (mobileLangMenu) mobileLangMenu.remove();
+    if (mobileToolboxBtn) mobileToolboxBtn.remove();
+    if (mobileToolboxMenu) mobileToolboxMenu.remove();
+    
+    // 恢复桌面端工具箱容器显示
+    var toolboxContainer = document.getElementById('toolboxContainer');
+    if (toolboxContainer) {
+      toolboxContainer.style.display = 'flex';
+      toolboxContainer.classList.remove('moved-to-controls');
+    }
+  } else {
+    // 切换到移动模式：先清理可能残留的旧元素，再重新创建
+    var oldLangBtn = document.getElementById('mobileLangBtn');
+    var oldLangMenu = document.getElementById('mobileLangMenu');
+    var oldToolboxBtn = document.getElementById('mobileToolboxBtn');
+    var oldToolboxMenu = document.getElementById('mobileToolboxMenu');
+    if (oldLangBtn) oldLangBtn.remove();
+    if (oldLangMenu) oldLangMenu.remove();
+    if (oldToolboxBtn) oldToolboxBtn.remove();
+    if (oldToolboxMenu) oldToolboxMenu.remove();
+    
+    // 重新初始化移动端组件
+    LC.moveToolboxToControls();
+    LC.initMobileLangPicker();
+  }
+  
+  // 如果当前在输入页面且需要背景，重绘背景
+  var inputPage = document.getElementById('inputPage');
+  if (inputPage && !inputPage.classList.contains('hidden') && LC.showBgAnim) {
+    LC.drawStaticBg();
+  }
+});
+
+/* ========= 全局监听手机端工具箱菜单点击 ========= */
+document.addEventListener('click', function(e) {
+  if (window.innerWidth > 768) return;
+  var target = e.target.closest('.toolbox-item');
+  if (!target) return;
+  var menu = document.getElementById('mobileToolboxMenu');
+  if (menu) menu.classList.remove('active');
+  var action = target.getAttribute('data-action');
+  if (action === 'export') {
+    if(!LC.ud) return;
+    var dataStr = JSON.stringify(LC.ud, null, 2);
+    var blob = new Blob([dataStr], {type: 'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'life_calendar_backup.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  else if (action === 'import') {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.onchange = function(e) {
+      var file = e.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          var imported = JSON.parse(evt.target.result);
+          if(imported && imported.birthDate && imported.lifeExp !== undefined) {
+            LC.ud = imported;
+            if(!LC.ud.events) LC.ud.events = [];
+            LC.save();
+            LC.originalLifeExp = LC.ud.lifeExp;
+            alert(LC.t('import_success', '导入成功！页面将刷新'));
+            location.reload();
+          } else {
+            alert(LC.t('import_format_error', '文件格式不正确，请选择正确的人生日历备份文件'));
+          }
+        } catch(err) {
+          alert(LC.t('import_parse_error', '解析失败：') + err.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  }
+  else if (action === 'logout') {
+    LC.logoutToInput();
+  }
+});
+
+/* ========= 电脑端工具箱交互 ========= */
 (function initToolbox() {
   var toolboxBtn = document.getElementById('toolboxBtn');
   var toolboxMenu = document.getElementById('toolboxMenu');
@@ -238,7 +578,6 @@ init();
   var toolboxImport = document.getElementById('toolboxImport');
   var toolboxLogout = document.getElementById('toolboxLogout');
   
-  // 更新工具箱菜单文本（支持多语言）
   function updateToolboxText() {
     if (toolboxBtn) toolboxBtn.title = LC.t('toolbox_title', '工具箱');
     if (toolboxExport) {
@@ -255,7 +594,6 @@ init();
     }
   }
   
-  // 菜单展开/收起
   function toggleMenu(e) {
     e.stopPropagation();
     toolboxMenu.classList.toggle('active');
@@ -269,7 +607,6 @@ init();
     toolboxBtn.addEventListener('click', toggleMenu);
   }
   
-  // 点击页面其他地方关闭菜单
   document.addEventListener('click', function(e) {
     var container = document.getElementById('toolboxContainer');
     if (container && !container.contains(e.target)) {
@@ -277,7 +614,6 @@ init();
     }
   });
   
-  // 导出日程的 Tooltip
   var exportTooltip = null;
   var exportTimeout = null;
   
@@ -291,26 +627,21 @@ init();
       exportTooltip = null;
     }
     if (exportTimeout) clearTimeout(exportTimeout);
-    
     exportTooltip = document.createElement('div');
     exportTooltip.className = 'tooltip';
     exportTooltip.textContent = getExportTooltipText();
     document.body.appendChild(exportTooltip);
-    
     var rect = target.getBoundingClientRect();
     var left = rect.left;
     var top = rect.top - exportTooltip.offsetHeight - 8;
-    
     if (top < 8) top = rect.bottom + 8;
     if (left + exportTooltip.offsetWidth > window.innerWidth - 8) {
       left = window.innerWidth - exportTooltip.offsetWidth - 8;
     }
     if (left < 8) left = 8;
-    
     exportTooltip.style.left = left + 'px';
     exportTooltip.style.top = top + 'px';
     exportTooltip.classList.add('visible');
-    
     exportTimeout = setTimeout(function() {
       if (exportTooltip) {
         exportTooltip.classList.remove('visible');
@@ -333,7 +664,6 @@ init();
     }
   }
   
-  // 导出日程功能
   if (toolboxExport) {
     toolboxExport.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -348,20 +678,17 @@ init();
       a.click();
       URL.revokeObjectURL(url);
     });
-    
     toolboxExport.addEventListener('mouseenter', function(e) {
       showExportTooltip(e.target.closest('.toolbox-item'));
     });
     toolboxExport.addEventListener('mouseleave', hideExportTooltip);
   }
   
-  // 导入日程确认弹窗（支持多语言）
   var importConfirmOverlay = null;
   
   function createImportConfirmDialog() {
     var oldOverlay = document.getElementById('importConfirmOverlay');
     if (oldOverlay) oldOverlay.remove();
-    
     var overlay = document.createElement('div');
     overlay.id = 'importConfirmOverlay';
     overlay.innerHTML = `
@@ -395,13 +722,11 @@ init();
   function rebindImportButtons() {
     var cancelBtn = document.getElementById('importCancelBtn');
     var confirmBtn = document.getElementById('importConfirmBtn');
-    
     if (cancelBtn) {
       cancelBtn.onclick = function() {
         if (importConfirmOverlay) importConfirmOverlay.classList.remove('active');
       };
     }
-    
     if (confirmBtn) {
       confirmBtn.onclick = function() {
         if (importConfirmOverlay) importConfirmOverlay.classList.remove('active');
@@ -434,7 +759,6 @@ init();
         input.click();
       };
     }
-    
     if (importConfirmOverlay) {
       importConfirmOverlay.onclick = function(e) {
         if(e.target === importConfirmOverlay) {
@@ -458,28 +782,26 @@ init();
     });
   }
   
-  // 登出
   if (toolboxLogout) {
     toolboxLogout.addEventListener('click', function(e) {
       e.stopPropagation();
       closeMenu();
-      document.getElementById('controls').classList.remove('active');
-      document.getElementById('zoomSliderContainer').classList.remove('active');
-      document.getElementById('inputPage').classList.remove('hidden');
-      document.getElementById('sidebarOverlay').classList.remove('active');
-      LC.currentSidebarDate = null;
-      LC.showBgAnim = true;
+      LC.logoutToInput();
     });
   }
   
-  // 初始化文本
   updateToolboxText();
   
-  // 监听语言切换，更新工具箱文本和导入弹窗
   var originalRefreshText = LC.refreshText;
   LC.refreshText = function() {
     if (originalRefreshText) originalRefreshText();
     updateToolboxText();
     refreshImportDialog();
+    LC.optimizeMobileButtonText();
+    LC.refreshMobileLangMenu();
+    var mobileBtn = document.getElementById('mobileToolboxBtn');
+    if (mobileBtn && window.innerWidth <= 768) {
+      mobileBtn.title = LC.t('toolbox_title', '工具箱');
+    }
   };
 })();
