@@ -1,25 +1,3 @@
-/* ========= 缩放滑块映射 ========= */
-var zoomMin = 0.12, zoomMax = 30;
-var logMin = Math.log(zoomMin), logMax = Math.log(zoomMax);
-LC.zoomSlider = document.getElementById('zoomSlider');
-LC.zoomSlider.isDragging = false;
-
-LC.zoomToSlider = function(z) {
-    return ((Math.log(LC.clamp(z, zoomMin, zoomMax)) - logMin) / (logMax - logMin)) * 1000;
-};
-LC.sliderToZoom = function(v) {
-    return Math.exp(logMin + (v / 1000) * (logMax - logMin));
-};
-
-LC.zoomSlider.addEventListener('mousedown', function() { LC.zoomSlider.isDragging = true; });
-LC.zoomSlider.addEventListener('touchstart', function() { LC.zoomSlider.isDragging = true; });
-addEventListener('mouseup', function() { LC.zoomSlider.isDragging = false; });
-addEventListener('touchend', function() { LC.zoomSlider.isDragging = false; });
-LC.zoomSlider.addEventListener('input', function() {
-    LC.tZoom = LC.sliderToZoom(this.value);
-    LC.hasAnch = false;
-});
-
 /* ========= 获取星期名称（支持多语言） ========= */
 LC.getWeekdayName = function(dateStr, lang) {
   var weekdays = {
@@ -157,10 +135,6 @@ addEventListener('keydown',function(e){
   if(!LC.ud)return;
   if(e.key==='='||e.key==='+')LC.tZoom=LC.clamp(LC.tZoom*1.2,0.12,30);
   if(e.key==='-')LC.tZoom=LC.clamp(LC.tZoom*.83,0.12,30);
-  // 已禁用：按0不再重置到overview视图
-  // if(e.key==='0')LC.resetView();
-  // 已禁用：按T不再跳转到今天
-  // if(e.key==='t'||e.key==='T')LC.zoomToToday()
 });
 
 /* ========= 右键菜单 ========= */
