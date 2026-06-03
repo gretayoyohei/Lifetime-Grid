@@ -25,7 +25,7 @@ LC.langOrder = [
 
 // 英语
 LC.defLang('en', {
-  nm: 'English', ct: 'Customize My Life Calendar', cs: 'Fill in your info, zoom to travel through your life',
+  nm: 'English', ct: 'Lifetime Grid-Customize My Life Calendar', cs: 'Fill in your info, zoom to travel through your life',
   ln: 'My Name', lb: 'My Birth Date', ll: 'I hope I can live to', uy: 'years old',
   bg: '✦ Start My Life Journey ✦', am: 'Dear, expected age cannot exceed 120 💗',
   al: 'Dear 💗, stop teasing~ You are already {a}. Please enter an age greater than your actual age.',
@@ -72,7 +72,7 @@ LC.defLang('en', {
 
 // 简体中文
 LC.defLang('zh-CN', {
-  nm: '中文（简体）', ct: '定制我的人生日历', cs: '填写信息，用滚轮缩放穿越你的一生',
+  nm: '中文（简体）', ct: 'Lifetime Grid-定制我的人生日历', cs: '填写信息，用滚轮缩放穿越你的一生',
   ln: '我的名字', lb: '我的出生日期', ll: '我希望我能活到', uy: '岁',
   bg: '✦ 开启人生之旅 ✦', am: '亲爱的，预计年龄不能超过120岁哦💗',
   al: '亲爱的💗，别调皮~你已经{a}了哦。请填写比你实际年龄大的岁数。',
@@ -118,7 +118,7 @@ LC.defLang('zh-CN', {
 
 // 繁体中文
 LC.defLang('zh-TW', {
-  nm: '中文（繁體）', ct: '定製我的人生日曆', cs: '填寫資訊，用滾輪縮放穿越你的一生',
+  nm: '中文（繁體）', ct: 'Lifetime Grid-定製我的人生日曆', cs: '填寫資訊，用滾輪縮放穿越你的一生',
   ln: '我的名字', lb: '我的出生日期', ll: '我希望我能活到', uy: '歲',
   bg: '✦ 開啟人生之旅 ✦', am: '親愛的，預計年齡不能超過120歲哦💗',
   al: '親愛的💗，別調皮~你已經{a}了哦。請填寫比你實際年齡大的歲數。',
@@ -164,7 +164,7 @@ LC.defLang('zh-TW', {
 
 // 西班牙语
 LC.defLang('es', {
-  nm: 'Español', ct: 'Personaliza Mi Calendario Vital', cs: 'Completa tus datos, zoom para viajar por tu vida',
+  nm: 'Español', ct: 'Lifetime Grid-Personaliza Mi Calendario Vital', cs: 'Completa tus datos, zoom para viajar por tu vida',
   ln: 'Mi Nombre', lb: 'Mi Fecha de Nacimiento', ll: 'Espero vivir hasta', uy: 'años',
   bg: '✦ Inicia Mi Viaje Vital ✦', am: 'Querido, la edad esperada no puede superar 120 💗',
   al: 'Querido 💗, no bromees~ Ya tienes {a}. Por favor ingresa una edad mayor a tu edad real.',
@@ -211,7 +211,7 @@ LC.defLang('es', {
 
 // 日语
 LC.defLang('ja', {
-  nm: '日本語', ct: '人生カレンダーをカスタマイズ', cs: '情報を入力し、ズームして人生を旅する',
+  nm: '日本語', ct: 'Lifetime Grid-人生カレンダーをカスタマイズ', cs: '情報を入力し、ズームして人生を旅する',
   ln: '名前', lb: '生年月日', ll: '私は生きたい', uy: '歳',
   bg: '✦ 人生の旅を始める ✦', am: '予定年齢は120歳を超えられません 💗',
   al: '💗 いたずらしないで～ あなたはもう{a}歳です。実際の年齢より大きい年齢を入力してください。',
@@ -258,7 +258,7 @@ LC.defLang('ja', {
 
 // 韩语
 LC.defLang('ko', {
-  nm: '한국어', ct: '내 인생 달력 맞춤 설정', cs: '정보를 입력하고 확대/축소하여 인생 여행을 떠나세요',
+  nm: '한국어', ct: 'Lifetime Grid-내 인생 달력 맞춤 설정', cs: '정보를 입력하고 확대/축소하여 인생 여행을 떠나세요',
   ln: '이름', lb: '생년월일', ll: '나는 살고 싶다', uy: '세',
   bg: '✦ 인생 여행 시작 ✦', am: '예상 연령은 120세를 초과할 수 없습니다 💗',
   al: '💗 장난치지 마세요~ 당신은 이미 {a}세입니다. 실제 나이보다 큰 나이를 입력하세요.',
@@ -305,7 +305,7 @@ LC.defLang('ko', {
 
 // 法语
 LC.defLang('fr', {
-  nm: 'Français', ct: 'Personnaliser Mon Calendrier de Vie', cs: 'Remplissez vos infos, zoomez pour voyager dans votre vie',
+  nm: 'Français', ct: 'Lifetime Grid-Personnaliser Mon Calendrier de Vie', cs: 'Remplissez vos infos, zoomez pour voyager dans votre vie',
   ln: 'Mon Nom', lb: 'Ma Date de Naissance', ll: 'J\'espère vivre jusqu\'à', uy: 'ans',
   bg: '✦ Commencer Mon Voyage de Vie ✦', am: 'Cher, l\'âge prévu ne peut pas dépasser 120 💗',
   al: 'Cher 💗, arrête de plaisanter~ Tu as déjà {a}. Veuillez entrer un âge supérieur à votre âge réel.',
@@ -352,7 +352,7 @@ LC.defLang('fr', {
 
 // 德语
 LC.defLang('de', {
-  nm: 'Deutsch', ct: 'Meinen Lebenskalender anpassen', cs: 'Gib deine Daten ein, zoome und reise durch dein Leben',
+  nm: 'Deutsch', ct: 'Lifetime Grid-Meinen Lebenskalender anpassen', cs: 'Gib deine Daten ein, zoome und reise durch dein Leben',
   ln: 'Mein Name', lb: 'Mein Geburtsdatum', ll: 'Ich hoffe, ich werde', uy: 'Jahre alt',
   bg: '✦ Beginne meine Lebensreise ✦', am: 'Lieber, das erwartete Alter kann 120 nicht überschreiten 💗',
   al: 'Lieber 💗, hör auf zu scherzen~ Du bist bereits {a}. Bitte gib ein Alter ein, das größer ist als dein tatsächliches Alter.',
@@ -399,7 +399,7 @@ LC.defLang('de', {
 
 // 意大利语
 LC.defLang('it', {
-  nm: 'Italiano', ct: 'Personalizza il Mio Calendario della Vita', cs: 'Inserisci i tuoi dati, zoom per viaggiare nella tua vita',
+  nm: 'Italiano', ct: 'Lifetime Grid-Personalizza il Mio Calendario della Vita', cs: 'Inserisci i tuoi dati, zoom per viaggiare nella tua vita',
   ln: 'Il Mio Nome', lb: 'La Mia Data di Nascita', ll: 'Spero di vivere fino a', uy: 'anni',
   bg: '✦ Inizia il Mio Viaggio nella Vita ✦', am: 'Caro, l\'età prevista non può superare 120 💗',
   al: 'Caro 💗, smettila di scherzare~ Hai già {a}. Inserisci un\'età maggiore della tua età reale.',
@@ -446,7 +446,7 @@ LC.defLang('it', {
 
 // 葡萄牙语
 LC.defLang('pt', {
-  nm: 'Português', ct: 'Personalizar Meu Calendário da Vida', cs: 'Preencha seus dados, zoom para viajar pela sua vida',
+  nm: 'Português', ct: 'Lifetime Grid-Personalizar Meu Calendário da Vida', cs: 'Preencha seus dados, zoom para viajar pela sua vida',
   ln: 'Meu Nome', lb: 'Minha Data de Nascimento', ll: 'Espero viver até', uy: 'anos',
   bg: '✦ Inicie Minha Jornada da Vida ✦', am: 'Querido, a idade esperada não pode exceder 120 💗',
   al: 'Querido 💗, pare de brincar~ Você já tem {a}. Por favor, insira uma idade maior que sua idade real.',
@@ -493,7 +493,7 @@ LC.defLang('pt', {
 
 // 俄语
 LC.defLang('ru', {
-  nm: 'Русский', ct: 'Настройка моего календаря жизни', cs: 'Заполните информацию, масштабируйте, чтобы путешествовать по жизни',
+  nm: 'Русский', ct: 'Lifetime Grid-Настройка моего календаря жизни', cs: 'Заполните информацию, масштабируйте, чтобы путешествовать по жизни',
   ln: 'Моё имя', lb: 'Моя дата рождения', ll: 'Я надеюсь прожить до', uy: 'лет',
   bg: '✦ Начать моё жизненное путешествие ✦', am: 'Дорогой, ожидаемый возраст не может превышать 120 💗',
   al: 'Дорогой 💗, хватит шутить~ Тебе уже {a}. Пожалуйста, введите возраст больше вашего реального возраста.',
@@ -540,7 +540,7 @@ LC.defLang('ru', {
 
 // 阿拉伯语
 LC.defLang('ar', {
-  nm: 'العربية', ct: 'تخصيص تقويم حياتي', cs: 'املأ معلوماتك، قم بالتكبير للسفر عبر حياتك',
+  nm: 'العربية', ct: 'Lifetime Grid-تخصيص تقويم حياتي', cs: 'املأ معلوماتك، قم بالتكبير للسفر عبر حياتك',
   ln: 'اسمي', lb: 'تاريخ ميلادي', ll: 'آمل أن أعيش حتى', uy: 'سنة',
   bg: '✦ ابدأ رحلة حياتي ✦', am: 'عزيزي، العمر المتوقع لا يمكن أن يتجاوز 120 💗',
   al: 'عزيزي 💗، توقف عن المزاح~ أنت بالفعل {a}. يرجى إدخال عمر أكبر من عمرك الفعلي.',
@@ -587,7 +587,7 @@ LC.defLang('ar', {
 
 // 印地语
 LC.defLang('hi', {
-  nm: 'हिन्दी', ct: 'मेरा जीवन कैलेंडर अनुकूलित करें', cs: 'अपनी जानकारी भरें, अपने जीवन की यात्रा करने के लिए ज़ूम करें',
+  nm: 'हिन्दी', ct: 'Lifetime Grid-मेरा जीवन कैलेंडर अनुकूलित करें', cs: 'अपनी जानकारी भरें, अपने जीवन की यात्रा करने के लिए ज़ूम करें',
   ln: 'मेरा नाम', lb: 'मेरी जन्म तिथि', ll: 'मैं जीना चाहता हूँ', uy: 'साल',
   bg: '✦ मेरी जीवन यात्रा शुरू करें ✦', am: 'प्रिय, अपेक्षित आयु 120 से अधिक नहीं हो सकती 💗',
   al: 'प्रिय 💗, मज़ाक करना बंद करो~ आप पहले से ही {a} वर्ष के हैं। कृपया अपनी वास्तविक आयु से अधिक आयु दर्ज करें।',
@@ -634,7 +634,7 @@ LC.defLang('hi', {
 
 // 泰语
 LC.defLang('th', {
-  nm: 'ไทย', ct: 'ปรับแต่งปฏิทินชีวิตของฉัน', cs: 'กรอกข้อมูลของคุณ ซูมเพื่อเดินทางผ่านชีวิตของคุณ',
+  nm: 'ไทย', ct: 'Lifetime Grid-ปรับแต่งปฏิทินชีวิตของฉัน', cs: 'กรอกข้อมูลของคุณ ซูมเพื่อเดินทางผ่านชีวิตของคุณ',
   ln: 'ชื่อของฉัน', lb: 'วันเกิดของฉัน', ll: 'ฉันหวังว่าจะมีชีวิตอยู่ถึง', uy: 'ปี',
   bg: '✦ เริ่มการเดินทางในชีวิตของฉัน ✦', am: 'ที่รัก อายุที่คาดหวังต้องไม่เกิน 120 💗',
   al: 'ที่รัก 💗 หยุดล้อเล่น~ คุณอายุ {a} แล้ว กรุณากรอกอายุที่มากกว่าอายุจริงของคุณ',
