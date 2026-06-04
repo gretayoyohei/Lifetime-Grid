@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>人生日历</title>
+<!-- 添加方格阵 SVG 作为浏览器标签页图标（favicon） -->
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -15,82 +17,13 @@
   gtag('js', new Date());
   gtag('config', 'G-LJ7JWER07V');
 </script>
-<style>
-  /* 保证 Logo 与标题同行，响应式折行 */
-  .logo-title-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 0.5rem;
-  }
-  .logo-svg {
-    flex-shrink: 0;
-    line-height: 1;
-  }
-  .logo-svg svg {
-    display: block;
-    width: 48px;
-    height: auto;
-  }
-  /* 原 h1 样式保留，只移除多余的 margin */
-  .logo-title-wrapper h1 {
-    margin: 0;
-  }
-  /* 移动端微调 */
-  @media (max-width: 480px) {
-    .logo-svg svg {
-      width: 40px;
-    }
-    .logo-title-wrapper {
-      gap: 8px;
-    }
-  }
-</style>
 </head>
 <body>
 <select class="lang-sel" id="langSel"></select>
 <div class="input-page" id="inputPage">
   <canvas id="bgCanvas"></canvas>
   <div class="input-card">
-    <!-- 品牌 Logo + 标题 并排显示 -->
-    <div class="logo-title-wrapper">
-      <div class="logo-svg">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="gridShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="3" dy="3.5" stdDeviation="3.5" flood-color="#7f6240" flood-opacity="0.16"/>
-            </filter>
-          </defs>
-          <rect x="10" y="10" width="80" height="80" rx="18" ry="18" fill="#FEFCF8" stroke="#D4C4A8" stroke-width="1.8" filter="url(#gridShadow)"/>
-          <!-- 第1行 -->
-          <rect x="20" y="20" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.9"/>
-          <rect x="36" y="20" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.6"/>
-          <rect x="52" y="20" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.4"/>
-          <rect x="68" y="20" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.3"/>
-          <!-- 第2行 -->
-          <rect x="20" y="36" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.7"/>
-          <rect x="36" y="36" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.7"/>
-          <rect x="52" y="36" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.55"/>
-          <rect x="68" y="36" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.5"/>
-          <!-- 第3行 -->
-          <rect x="20" y="52" width="12" height="12" rx="3" fill="#FFDCB5" fill-opacity="0.9" stroke="#D4956B" stroke-width="0.8"/>
-          <rect x="36" y="52" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.5"/>
-          <rect x="52" y="52" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.85"/>
-          <rect x="68" y="52" width="12" height="12" rx="3" fill="#FEFCF8" stroke="#E0D0B8" stroke-width="0.8"/>
-          <!-- 第4行 -->
-          <rect x="20" y="68" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.4"/>
-          <rect x="36" y="68" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.8"/>
-          <rect x="52" y="68" width="12" height="12" rx="3" fill="#E8DCC8" fill-opacity="0.3"/>
-          <rect x="68" y="68" width="12" height="12" rx="3" fill="#D4956B" fill-opacity="0.6"/>
-          <!-- 点缀小圆点 -->
-          <circle cx="29" cy="59" r="2.2" fill="#D4956B" fill-opacity="0.9"/>
-          <circle cx="77" cy="27" r="1.8" fill="#D4956B" fill-opacity="0.7"/>
-        </svg>
-      </div>
-      <h1 id="cTitle"></h1>
-    </div>
+    <h1 id="cTitle"></h1>
     <p id="cSub"></p>
     <label id="lName"></label>
     <input id="inName" placeholder="">
