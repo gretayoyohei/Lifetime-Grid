@@ -25,7 +25,11 @@ LC.langOrder = [
 
 // 英语
 LC.defLang('en', {
-  nm: 'English', ct: 'Lifetime Grid-Customize My Life Calendar', cs: 'Fill in your info, zoom to travel through your life',
+  nm: 'English',
+  html_title: 'Lifetime Grid | See Your Whole Life at a Glance',
+  meta_desc: 'Lifetime Grid turns your life into a customizable calendar. Zoom in and out across years, months, and days. Plan your journey.',
+  ct: 'Customize My Life Calendar',
+  cs: 'Fill in your info, zoom to travel through your life',
   ln: 'My Name', lb: 'My Birth Date', ll: 'I hope I can live to', uy: 'years old',
   bg: '✦ Start My Life Journey ✦', am: 'Dear, expected age cannot exceed 120 💗',
   al: 'Dear 💗, stop teasing~ You are already {a}. Please enter an age greater than your actual age.',
@@ -53,7 +57,6 @@ LC.defLang('en', {
   import_confirm: 'Confirm Import', import_cancel: 'Cancel', import_success: 'Import successful! Page will refresh.',
   import_format_error: 'Invalid file format. Please select a valid life calendar backup file.',
   import_parse_error: 'Parse failed: ', todo_title: 'To-Do List', todo_empty: 'No pending tasks',
-  // 提醒相关
   remind: 'Remind',
   remind_none: 'No reminder',
   remind_on_time: 'On time',
@@ -72,7 +75,11 @@ LC.defLang('en', {
 
 // 简体中文
 LC.defLang('zh-CN', {
-  nm: '中文（简体）', ct: 'Lifetime Grid-定制我的人生日历', cs: '填写信息，用滚轮缩放穿越你的一生',
+  nm: '中文（简体）',
+  html_title: 'Lifetime Grid | 一目了览你的一生',
+  meta_desc: 'Lifetime Grid 把你的人生变成可定制的日历。跨年、月、日缩放，规划你的旅程。',
+  ct: '定制我的人生日历',
+  cs: '填写信息，用滚轮缩放穿越你的一生',
   ln: '我的名字', lb: '我的出生日期', ll: '我希望我能活到', uy: '岁',
   bg: '✦ 开启人生之旅 ✦', am: '亲爱的，预计年龄不能超过120岁哦💗',
   al: '亲爱的💗，别调皮~你已经{a}了哦。请填写比你实际年龄大的岁数。',
@@ -99,7 +106,6 @@ LC.defLang('zh-CN', {
   import_confirm: '确认导入', import_cancel: '取消', import_success: '导入成功！页面将刷新',
   import_format_error: '文件格式不正确，请选择正确的人生日历备份文件',
   import_parse_error: '解析失败：', todo_title: '待办日程', todo_empty: '暂无待办日程',
-  // 提醒相关
   remind: '提醒',
   remind_none: '无提醒',
   remind_on_time: '准时',
@@ -118,7 +124,11 @@ LC.defLang('zh-CN', {
 
 // 繁体中文
 LC.defLang('zh-TW', {
-  nm: '中文（繁體）', ct: 'Lifetime Grid-定製我的人生日曆', cs: '填寫資訊，用滾輪縮放穿越你的一生',
+  nm: '中文（繁體）',
+  html_title: 'Lifetime Grid | 一目瞭覽你的一生',
+  meta_desc: 'Lifetime Grid 把你的人生變成可定製的日曆。跨年、月、日縮放，規劃你的旅程。',
+  ct: '定製我的人生日曆',
+  cs: '填寫資訊，用滾輪縮放穿越你的一生',
   ln: '我的名字', lb: '我的出生日期', ll: '我希望我能活到', uy: '歲',
   bg: '✦ 開啟人生之旅 ✦', am: '親愛的，預計年齡不能超過120歲哦💗',
   al: '親愛的💗，別調皮~你已經{a}了哦。請填寫比你實際年齡大的歲數。',
@@ -145,7 +155,6 @@ LC.defLang('zh-TW', {
   import_confirm: '確認匯入', import_cancel: '取消', import_success: '匯入成功！頁面將刷新',
   import_format_error: '文件格式不正確，請選擇正確的人生日曆備份文件',
   import_parse_error: '解析失敗：', todo_title: '待辦日程', todo_empty: '暫無待辦日程',
-  // 提醒相关
   remind: '提醒',
   remind_none: '無提醒',
   remind_on_time: '準時',
@@ -164,7 +173,11 @@ LC.defLang('zh-TW', {
 
 // 西班牙语
 LC.defLang('es', {
-  nm: 'Español', ct: 'Lifetime Grid-Personaliza Mi Calendario Vital', cs: 'Completa tus datos, zoom para viajar por tu vida',
+  nm: 'Español',
+  html_title: 'Lifetime Grid | Vea Toda Su Vida de Un Vistazo',
+  meta_desc: 'Lifetime Grid convierte tu vida en un calendario personalizable. Acerca y aleja entre años, meses y días. Planifica tu viaje.',
+  ct: 'Personaliza Mi Calendario Vital',
+  cs: 'Completa tus datos, zoom para viajar por tu vida',
   ln: 'Mi Nombre', lb: 'Mi Fecha de Nacimiento', ll: 'Espero vivir hasta', uy: 'años',
   bg: '✦ Inicia Mi Viaje Vital ✦', am: 'Querido, la edad esperada no puede superar 120 💗',
   al: 'Querido 💗, no bromees~ Ya tienes {a}. Por favor ingresa una edad mayor a tu edad real.',
@@ -192,7 +205,6 @@ LC.defLang('es', {
   import_confirm: 'Confirmar Importación', import_cancel: 'Cancelar', import_success: '¡Importación exitosa! La página se actualizará',
   import_format_error: 'Formato de archivo inválido. Selecciona un archivo de respaldo válido.',
   import_parse_error: 'Error de análisis: ', todo_title: 'Lista de Tareas', todo_empty: 'No hay tareas pendientes',
-  // 提醒相关
   remind: 'Recordar',
   remind_none: 'Sin recordatorio',
   remind_on_time: 'En punto',
@@ -211,7 +223,11 @@ LC.defLang('es', {
 
 // 日语
 LC.defLang('ja', {
-  nm: '日本語', ct: 'Lifetime Grid-人生カレンダーをカスタマイズ', cs: '情報を入力し、ズームして人生を旅する',
+  nm: '日本語',
+  html_title: 'Lifetime Grid | 人生を一目で',
+  meta_desc: 'Lifetime Grid はあなたの人生をカスタマイズ可能なカレンダーに変えます。年、月、日をズームして旅を計画しましょう。',
+  ct: '人生カレンダーをカスタマイズ',
+  cs: '情報を入力し、ズームして人生を旅する',
   ln: '名前', lb: '生年月日', ll: '私は生きたい', uy: '歳',
   bg: '✦ 人生の旅を始める ✦', am: '予定年齢は120歳を超えられません 💗',
   al: '💗 いたずらしないで～ あなたはもう{a}歳です。実際の年齢より大きい年齢を入力してください。',
@@ -239,7 +255,6 @@ LC.defLang('ja', {
   import_confirm: 'インポートを確認', import_cancel: 'キャンセル', import_success: 'インポート成功！ページをリフレッシュします',
   import_format_error: 'ファイル形式が正しくありません。有効なバックアップファイルを選択してください。',
   import_parse_error: '解析失敗：', todo_title: 'ToDoリスト', todo_empty: '未完了のタスクはありません',
-  // 提醒相关
   remind: 'リマインダー',
   remind_none: 'リマインダーなし',
   remind_on_time: 'ちょうど',
@@ -258,7 +273,11 @@ LC.defLang('ja', {
 
 // 韩语
 LC.defLang('ko', {
-  nm: '한국어', ct: 'Lifetime Grid-내 인생 달력 맞춤 설정', cs: '정보를 입력하고 확대/축소하여 인생 여행을 떠나세요',
+  nm: '한국어',
+  html_title: 'Lifetime Grid | 인생을 한눈에',
+  meta_desc: 'Lifetime Grid는 당신의 인생을 맞춤형 달력으로 바꿉니다. 연, 월, 일을 확대/축소하여 여정을 계획하세요.',
+  ct: '내 인생 달력 맞춤 설정',
+  cs: '정보를 입력하고 확대/축소하여 인생 여행을 떠나세요',
   ln: '이름', lb: '생년월일', ll: '나는 살고 싶다', uy: '세',
   bg: '✦ 인생 여행 시작 ✦', am: '예상 연령은 120세를 초과할 수 없습니다 💗',
   al: '💗 장난치지 마세요~ 당신은 이미 {a}세입니다. 실제 나이보다 큰 나이를 입력하세요.',
@@ -286,7 +305,6 @@ LC.defLang('ko', {
   import_confirm: '가져오기 확인', import_cancel: '취소', import_success: '가져오기 성공! 페이지가 새로고침됩니다',
   import_format_error: '파일 형식이 올바르지 않습니다. 유효한 백업 파일을 선택하세요.',
   import_parse_error: '분석 실패: ', todo_title: '할 일 목록', todo_empty: '대기 중인 작업 없음',
-  // 提醒相关
   remind: '알림',
   remind_none: '알림 없음',
   remind_on_time: '정시',
@@ -305,7 +323,11 @@ LC.defLang('ko', {
 
 // 法语
 LC.defLang('fr', {
-  nm: 'Français', ct: 'Lifetime Grid-Personnaliser Mon Calendrier de Vie', cs: 'Remplissez vos infos, zoomez pour voyager dans votre vie',
+  nm: 'Français',
+  html_title: 'Lifetime Grid | Voyez Toute Votre Vie en Un Coup d\'Œil',
+  meta_desc: 'Lifetime Grid transforme votre vie en un calendrier personnalisable. Zoomez sur les années, mois et jours. Planifiez votre voyage.',
+  ct: 'Personnaliser Mon Calendrier de Vie',
+  cs: 'Remplissez vos infos, zoomez pour voyager dans votre vie',
   ln: 'Mon Nom', lb: 'Ma Date de Naissance', ll: 'J\'espère vivre jusqu\'à', uy: 'ans',
   bg: '✦ Commencer Mon Voyage de Vie ✦', am: 'Cher, l\'âge prévu ne peut pas dépasser 120 💗',
   al: 'Cher 💗, arrête de plaisanter~ Tu as déjà {a}. Veuillez entrer un âge supérieur à votre âge réel.',
@@ -333,7 +355,6 @@ LC.defLang('fr', {
   import_confirm: 'Confirmer l\'importation', import_cancel: 'Annuler', import_success: 'Importation réussie ! La page va être actualisée',
   import_format_error: 'Format de fichier invalide. Veuillez sélectionner un fichier de sauvegarde valide.',
   import_parse_error: 'Échec de l\'analyse : ', todo_title: 'Liste de tâches', todo_empty: 'Aucune tâche en attente',
-  // 提醒相关
   remind: 'Rappeler',
   remind_none: 'Pas de rappel',
   remind_on_time: 'À l\'heure',
@@ -352,7 +373,11 @@ LC.defLang('fr', {
 
 // 德语
 LC.defLang('de', {
-  nm: 'Deutsch', ct: 'Lifetime Grid-Meinen Lebenskalender anpassen', cs: 'Gib deine Daten ein, zoome und reise durch dein Leben',
+  nm: 'Deutsch',
+  html_title: 'Lifetime Grid | Sehen Sie Ihr Ganzes Leben Auf Einen Blick',
+  meta_desc: 'Lifetime Grid verwandelt dein Leben in einen anpassbaren Kalender. Zoome durch Jahre, Monate und Tage. Plane deine Reise.',
+  ct: 'Meinen Lebenskalender anpassen',
+  cs: 'Gib deine Daten ein, zoome und reise durch dein Leben',
   ln: 'Mein Name', lb: 'Mein Geburtsdatum', ll: 'Ich hoffe, ich werde', uy: 'Jahre alt',
   bg: '✦ Beginne meine Lebensreise ✦', am: 'Lieber, das erwartete Alter kann 120 nicht überschreiten 💗',
   al: 'Lieber 💗, hör auf zu scherzen~ Du bist bereits {a}. Bitte gib ein Alter ein, das größer ist als dein tatsächliches Alter.',
@@ -380,7 +405,6 @@ LC.defLang('de', {
   import_confirm: 'Import bestätigen', import_cancel: 'Abbrechen', import_success: 'Import erfolgreich! Seite wird neu geladen',
   import_format_error: 'Ungültiges Dateiformat. Bitte wählen Sie eine gültige Backup-Datei.',
   import_parse_error: 'Parse-Fehler: ', todo_title: 'Aufgabenliste', todo_empty: 'Keine ausstehenden Aufgaben',
-  // 提醒相关
   remind: 'Erinnern',
   remind_none: 'Keine Erinnerung',
   remind_on_time: 'Pünktlich',
@@ -399,7 +423,11 @@ LC.defLang('de', {
 
 // 意大利语
 LC.defLang('it', {
-  nm: 'Italiano', ct: 'Lifetime Grid-Personalizza il Mio Calendario della Vita', cs: 'Inserisci i tuoi dati, zoom per viaggiare nella tua vita',
+  nm: 'Italiano',
+  html_title: 'Lifetime Grid | Vedi Tutta La Tua Vita In Un Colpo D\'Occhio',
+  meta_desc: 'Lifetime Grid trasforma la tua vita in un calendario personalizzabile. Ingrandisci e rimpicciolisci anni, mesi e giorni. Pianifica il tuo viaggio.',
+  ct: 'Personalizza il Mio Calendario della Vita',
+  cs: 'Inserisci i tuoi dati, zoom per viaggiare nella tua vita',
   ln: 'Il Mio Nome', lb: 'La Mia Data di Nascita', ll: 'Spero di vivere fino a', uy: 'anni',
   bg: '✦ Inizia il Mio Viaggio nella Vita ✦', am: 'Caro, l\'età prevista non può superare 120 💗',
   al: 'Caro 💗, smettila di scherzare~ Hai già {a}. Inserisci un\'età maggiore della tua età reale.',
@@ -427,7 +455,6 @@ LC.defLang('it', {
   import_confirm: 'Conferma importazione', import_cancel: 'Annulla', import_success: 'Importazione riuscita! La pagina verrà aggiornata',
   import_format_error: 'Formato file non valido. Seleziona un file di backup valido.',
   import_parse_error: 'Errore di analisi: ', todo_title: 'Elenco delle cose da fare', todo_empty: 'Nessuna attività in sospeso',
-  // 提醒相关
   remind: 'Promemoria',
   remind_none: 'Nessun promemoria',
   remind_on_time: 'In orario',
@@ -446,7 +473,11 @@ LC.defLang('it', {
 
 // 葡萄牙语
 LC.defLang('pt', {
-  nm: 'Português', ct: 'Lifetime Grid-Personalizar Meu Calendário da Vida', cs: 'Preencha seus dados, zoom para viajar pela sua vida',
+  nm: 'Português',
+  html_title: 'Lifetime Grid | Veja Toda Sua Vida de Relance',
+  meta_desc: 'Lifetime Grid transforma sua vida em um calendário personalizável. Aumente e diminua o zoom entre anos, meses e dias. Planeje sua jornada.',
+  ct: 'Personalizar Meu Calendário da Vida',
+  cs: 'Preencha seus dados, zoom para viajar pela sua vida',
   ln: 'Meu Nome', lb: 'Minha Data de Nascimento', ll: 'Espero viver até', uy: 'anos',
   bg: '✦ Inicie Minha Jornada da Vida ✦', am: 'Querido, a idade esperada não pode exceder 120 💗',
   al: 'Querido 💗, pare de brincar~ Você já tem {a}. Por favor, insira uma idade maior que sua idade real.',
@@ -474,7 +505,6 @@ LC.defLang('pt', {
   import_confirm: 'Confirmar Importação', import_cancel: 'Cancelar', import_success: 'Importação bem-sucedida! A página será atualizada',
   import_format_error: 'Formato de arquivo inválido. Selecione um arquivo de backup válido.',
   import_parse_error: 'Falha na análise: ', todo_title: 'Lista de Tarefas', todo_empty: 'Nenhuma tarefa pendente',
-  // 提醒相关
   remind: 'Lembrar',
   remind_none: 'Sem lembrete',
   remind_on_time: 'Na hora',
@@ -493,7 +523,11 @@ LC.defLang('pt', {
 
 // 俄语
 LC.defLang('ru', {
-  nm: 'Русский', ct: 'Lifetime Grid-Настройка моего календаря жизни', cs: 'Заполните информацию, масштабируйте, чтобы путешествовать по жизни',
+  nm: 'Русский',
+  html_title: 'Lifetime Grid | Увидите Всю Свою Жизнь С Одного Взгляда',
+  meta_desc: 'Lifetime Grid превращает вашу жизнь в настраиваемый календарь. Масштабируйте годы, месяцы и дни. Планируйте своё путешествие.',
+  ct: 'Настройка моего календаря жизни',
+  cs: 'Заполните информацию, масштабируйте, чтобы путешествовать по жизни',
   ln: 'Моё имя', lb: 'Моя дата рождения', ll: 'Я надеюсь прожить до', uy: 'лет',
   bg: '✦ Начать моё жизненное путешествие ✦', am: 'Дорогой, ожидаемый возраст не может превышать 120 💗',
   al: 'Дорогой 💗, хватит шутить~ Тебе уже {a}. Пожалуйста, введите возраст больше вашего реального возраста.',
@@ -521,7 +555,6 @@ LC.defLang('ru', {
   import_confirm: 'Подтвердить импорт', import_cancel: 'Отмена', import_success: 'Импорт успешен! Страница будет обновлена',
   import_format_error: 'Неверный формат файла. Пожалуйста, выберите действительный файл резервной копии.',
   import_parse_error: 'Ошибка анализа: ', todo_title: 'Список дел', todo_empty: 'Нет незавершённых задач',
-  // 提醒相关
   remind: 'Напоминание',
   remind_none: 'Нет напоминания',
   remind_on_time: 'Точно вовремя',
@@ -540,7 +573,11 @@ LC.defLang('ru', {
 
 // 阿拉伯语
 LC.defLang('ar', {
-  nm: 'العربية', ct: 'Lifetime Grid-تخصيص تقويم حياتي', cs: 'املأ معلوماتك، قم بالتكبير للسفر عبر حياتك',
+  nm: 'العربية',
+  html_title: 'Lifetime Grid | انظر حياتك كلها بنظرة واحدة',
+  meta_desc: 'Lifetime Grid يحول حياتك إلى تقويم قابل للتخصيص. قم بالتكبير والتصغير عبر السنوات والأشهر والأيام. خطط لرحلتك.',
+  ct: 'تخصيص تقويم حياتي',
+  cs: 'املأ معلوماتك، قم بالتكبير للسفر عبر حياتك',
   ln: 'اسمي', lb: 'تاريخ ميلادي', ll: 'آمل أن أعيش حتى', uy: 'سنة',
   bg: '✦ ابدأ رحلة حياتي ✦', am: 'عزيزي، العمر المتوقع لا يمكن أن يتجاوز 120 💗',
   al: 'عزيزي 💗، توقف عن المزاح~ أنت بالفعل {a}. يرجى إدخال عمر أكبر من عمرك الفعلي.',
@@ -568,7 +605,6 @@ LC.defLang('ar', {
   import_confirm: 'تأكيد الاستيراد', import_cancel: 'إلغاء', import_success: 'تم الاستيراد بنجاح! سيتم تحديث الصفحة',
   import_format_error: 'تنسيق ملف غير صالح. يرجى تحديد ملف نسخ احتياطي صالح.',
   import_parse_error: 'فشل التحليل: ', todo_title: 'قائمة المهام', todo_empty: 'لا توجد مهام معلقة',
-  // 提醒相关
   remind: 'تذكير',
   remind_none: 'لا تذكير',
   remind_on_time: 'في الموعد',
@@ -587,7 +623,11 @@ LC.defLang('ar', {
 
 // 印地语
 LC.defLang('hi', {
-  nm: 'हिन्दी', ct: 'Lifetime Grid-मेरा जीवन कैलेंडर अनुकूलित करें', cs: 'अपनी जानकारी भरें, अपने जीवन की यात्रा करने के लिए ज़ूम करें',
+  nm: 'हिन्दी',
+  html_title: 'Lifetime Grid | अपना पूरा जीवन एक नज़र में देखें',
+  meta_desc: 'Lifetime Grid आपके जीवन को एक अनुकूलन योग्य कैलेंडर में बदल देता है। वर्षों, महीनों और दिनों में ज़ूम करें। अपनी यात्रा की योजना बनाएं।',
+  ct: 'मेरा जीवन कैलेंडर अनुकूलित करें',
+  cs: 'अपनी जानकारी भरें, अपने जीवन की यात्रा करने के लिए ज़ूम करें',
   ln: 'मेरा नाम', lb: 'मेरी जन्म तिथि', ll: 'मैं जीना चाहता हूँ', uy: 'साल',
   bg: '✦ मेरी जीवन यात्रा शुरू करें ✦', am: 'प्रिय, अपेक्षित आयु 120 से अधिक नहीं हो सकती 💗',
   al: 'प्रिय 💗, मज़ाक करना बंद करो~ आप पहले से ही {a} वर्ष के हैं। कृपया अपनी वास्तविक आयु से अधिक आयु दर्ज करें।',
@@ -615,7 +655,6 @@ LC.defLang('hi', {
   import_confirm: 'आयात की पुष्टि करें', import_cancel: 'रद्द करें', import_success: 'आयात सफल! पृष्ठ ताज़ा हो जाएगा',
   import_format_error: 'अमान्य फ़ाइल स्वरूप। कृपया एक मान्य बैकअप फ़ाइल चुनें।',
   import_parse_error: 'पार्स विफल: ', todo_title: 'कार्य सूची', todo_empty: 'कोई लंबित कार्य नहीं',
-  // 提醒相关
   remind: 'याद दिलाएं',
   remind_none: 'कोई याद दिलाना नहीं',
   remind_on_time: 'सही समय पर',
@@ -634,7 +673,11 @@ LC.defLang('hi', {
 
 // 泰语
 LC.defLang('th', {
-  nm: 'ไทย', ct: 'Lifetime Grid-ปรับแต่งปฏิทินชีวิตของฉัน', cs: 'กรอกข้อมูลของคุณ ซูมเพื่อเดินทางผ่านชีวิตของคุณ',
+  nm: 'ไทย',
+  html_title: 'Lifetime Grid | เห็นชีวิตทั้งชีวิตของคุณได้ในพริบตา',
+  meta_desc: 'Lifetime Grid เปลี่ยนชีวิตของคุณให้เป็นปฏิทินที่ปรับแต่งได้ ซูมเข้าออกตามปี เดือน และวัน วางแผนการเดินทางของคุณ',
+  ct: 'ปรับแต่งปฏิทินชีวิตของฉัน',
+  cs: 'กรอกข้อมูลของคุณ ซูมเพื่อเดินทางผ่านชีวิตของคุณ',
   ln: 'ชื่อของฉัน', lb: 'วันเกิดของฉัน', ll: 'ฉันหวังว่าจะมีชีวิตอยู่ถึง', uy: 'ปี',
   bg: '✦ เริ่มการเดินทางในชีวิตของฉัน ✦', am: 'ที่รัก อายุที่คาดหวังต้องไม่เกิน 120 💗',
   al: 'ที่รัก 💗 หยุดล้อเล่น~ คุณอายุ {a} แล้ว กรุณากรอกอายุที่มากกว่าอายุจริงของคุณ',
@@ -662,7 +705,6 @@ LC.defLang('th', {
   import_confirm: 'ยืนยันการนำเข้า', import_cancel: 'ยกเลิก', import_success: 'นำเข้าสำเร็จ! หน้านี้จะรีเฟรช',
   import_format_error: 'รูปแบบไฟล์ไม่ถูกต้อง กรุณาเลือกไฟล์สำรองที่ถูกต้อง',
   import_parse_error: 'การวิเคราะห์ล้มเหลว: ', todo_title: 'รายการสิ่งที่ต้องทำ', todo_empty: 'ไม่มีงานค้าง',
-  // 提醒相关
   remind: 'เตือน',
   remind_none: 'ไม่ต้องเตือน',
   remind_on_time: 'ตรงเวลา',
@@ -741,8 +783,15 @@ LC.populateBirthSelects = function() {
 /* ========= 刷新界面文字 ========= */
 LC.refreshText = function() {
   try {
-    document.title = LC.t('ct', 'Life Calendar');
+    // 浏览器标题使用 html_title，如果不存在则回退到 ct
+    document.title = LC.t('html_title', LC.t('ct', 'Life Calendar'));
+    // 个人信息页面的大标题仍然使用 ct
     document.getElementById('cTitle').textContent = LC.t('ct', 'Life Calendar');
+    // 动态更新 meta description
+    var metaDesc = document.getElementById('metaDescription');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', LC.t('meta_desc', ''));
+    }
     document.getElementById('cSub').textContent = LC.t('cs', '');
     document.getElementById('lName').textContent = LC.t('ln', 'Name');
     document.getElementById('lBirth').textContent = LC.t('lb', 'Birth Date');
